@@ -5,7 +5,6 @@
 
 # Ignoring static/assets folders
 ./assets/
-static/
 staticfiles/
 # Byte-compiled / optimized / DLL files
 __pycache__/
