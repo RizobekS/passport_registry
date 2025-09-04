@@ -1,0 +1,106 @@
+{% extends "passports/pdf/base.html" %}
+{% load pdf_utils %}
+
+{% block extra_css %}
+<style>
+  .owner-stable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 4mm;
+  }
+  .owner-stable th,
+  .owner-stable td {
+    border: 0.6pt solid #333;
+    vertical-align: top;
+    padding: 2.2mm;
+    line-height: 1.25;
+    font-size: 10.5pt;
+  }
+  .owner-stable th { text-align: center; }
+  .col-50 { width: 50%; }
+
+  /* строки под заполнение от руки */
+  .row-fill { height: 14mm; }           /* высота строки */
+  .lined {                               /* «линейка» для ручной записи */
+    min-height: 12mm;
+    background-image: linear-gradient(to bottom, transparent 92%, #bbb 92%, #bbb 94%, transparent 94%);
+    background-size: 100% 6mm;           /* шаг линий */
+    padding: 1mm 1.5mm;
+  }
+
+  .hdr { text-align:center; margin:0 0 3mm 0; }
+  .muted { color:#555; }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h3 class="hdr">
+    <!-- Заголовок можно убрать, если не требуется -->
+    <span class="muted">Владелец и адрес / Owner & stable</span>
+  </h3>
+
+  <table class="owner-stable">
+    <colgroup>
+      <col class="col-50">
+      <col class="col-50">
+    </colgroup>
+
+    <!-- Шапка -->
+    <thead>
+      <tr>
+        <th>
+          От эгасининг ф.и.ш. ва манзили<br>
+          Ф.И.О владельца и адрес<br>
+          <strong>Name, address of the owner</strong>
+        </th>
+        <th>
+          Отхонa манзили<br>
+          Адрес конюшни<br>
+          <strong>Address of the stable</strong>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Первая строка — пытаемся заполнить из БД -->
+      <tr class="row-fill">
+        <td class="lined">
+          {% if horse.owner_current %}
+            {% with o=horse.owner_current %}
+              {% if o.person %}
+                {{ o.person.last_name }} {{ o.person.first_name }} {{ o.person.middle_name }}{% if o.address %}, {{ o.address }}{% endif %}
+              {% elif o.organization %}
+                {{ o.organization.name }}{% if o.address %}, {{ o.address }}{% endif %}
+              {% else %}
+                <!-- нет детальных данных -->
+              {% endif %}
+            {% endwith %}
+          {% endif %}
+        </td>
+        <td class="lined">
+          {# если адрес стойла хранится у владельца или в самом Horse — выведем #}
+          {% if horse.owner_current and horse.owner_current.address %}
+            {{ horse.owner_current.address }}
+          {% elif horse.place_of_birth %}
+            {{ horse.place_of_birth }}
+          {% endif %}
+        </td>
+      </tr>
+
+      <!-- Пустые строки для ручного заполнения -->
+      <tr class="row-fill">
+        <td class="lined"></td>
+        <td class="lined"></td>
+      </tr>
+      <tr class="row-fill">
+        <td class="lined"></td>
+        <td class="lined"></td>
+      </tr>
+      <tr class="row-fill">
+        <td class="lined"></td>
+        <td class="lined"></td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock content %}

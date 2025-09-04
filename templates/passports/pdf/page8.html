@@ -1,0 +1,118 @@
+{% extends "passports/pdf/base.html" %}
+{% load pdf_utils %} {# dmy, dash #}
+
+{% block extra_css %}
+<style>
+  .vacc-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 3mm;
+    font-size: 10.5pt;
+    line-height: 1.25;
+  }
+  .vacc-table th, .vacc-table td {
+    border: 0.6pt solid #333;
+    vertical-align: top;
+    padding: 2mm;
+  }
+
+  /* ширины колонок — как в бланке */
+  .col-vaccine   { width: 28%; }
+  .col-manuf     { width: 28%; }
+  .col-vaccdate  { width: 22%; }
+  .col-vet       { width: 22%; }
+
+  .tri { display:block; text-align:center; }
+  .title { text-align:center; margin: 0 0 2mm 0; }
+  .row-fill { height: 14mm; }          /* пустые строки для ручного ввода */
+  .lined {
+    min-height: 12mm;
+    background-image: linear-gradient(to bottom, transparent 92%, #bbb 92%, #bbb 94%, transparent 94%);
+    background-size: 100% 6mm;
+    padding: 1mm 1.25mm;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h3 class="title">
+    Отларни эмлаш (вакцинация килин) тўғрисида белгилар<br>
+    Отметки о вакцинации лошадей<br>
+    <span class="muted">Vaccination record</span>
+  </h3>
+
+  <table class="vacc-table">
+    <colgroup>
+      <col class="col-vaccine">
+      <col class="col-manuf">
+      <col class="col-vaccdate">
+      <col class="col-vet">
+    </colgroup>
+
+    <thead>
+      <tr>
+        <th>
+          <span class="tri">Эмаланишнинг номи</span>
+          <span class="tri">Наименование вакцины</span>
+          <span class="tri"><strong>Name of vaccine</strong></span>
+        </th>
+        <th>
+          <span class="tri">Эмаланиш тайёрланган санаси, серия рақами, тайёрловчининг манзили</span>
+          <span class="tri">Дата изготовления вакцины, номер серии, страна изготовитель</span>
+          <span class="tri"><strong>Date of manufacture, batch number, place and country manufacturer</strong></span>
+        </th>
+        <th>
+          <span class="tri">Эмаланган санаси, эмламанинг қайд этилган рақами</span>
+          <span class="tri">Дата вакцинации, номер регистрации вакцины</span>
+          <span class="tri"><strong>Date of vaccination, registration number</strong></span>
+        </th>
+        <th>
+          <span class="tri">Ветеринария врачининг ф.и.ш., имзоси, муҳри</span>
+          <span class="tri">Ф.И.О. ветеринарного врача, подпись, печать</span>
+          <span class="tri"><strong>Name, signature and stamp of official veterinarian</strong></span>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {# реальные записи из БД #}
+      {% for v in horse.vaccinations.all|dictsort:"date" %}
+        <tr>
+          <td>
+            {% if v.vaccine %}{{ v.vaccine.name }}{% endif %}
+          </td>
+          <td>
+            {# что у нас реально есть в моделях: batch_no и vaccine.manufacturer #}
+            {% if v.vaccine and v.vaccine.manufacturer %}{{ v.vaccine.manufacturer }}{% endif %}
+            {% if v.batch_no %}{% if v.vaccine and v.vaccine.manufacturer %}, {% endif %}серия: {{ v.batch_no }}{% endif %}
+            {% if v.place %}{% if v.vaccine or v.batch_no %}, {% endif %}{{ v.place }}{% endif %}
+          </td>
+          <td>
+            {{ v.date|dmy }}
+            {% if v.batch_no %} — № регистрации: {{ v.batch_no }}{% endif %}
+          </td>
+          <td>
+            {% if v.veterinarian %}
+              {% with p=v.veterinarian.person %}
+                {% if p %}{{ p.last_name }} {{ p.first_name }} {{ p.middle_name }}{% endif %}
+              {% endwith %}
+              {% if v.veterinarian.license_no %}<br>Лицензия: {{ v.veterinarian.license_no }}{% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+
+      {# 3 пустые строки для ручного заполнения #}
+      <tr class="row-fill">
+        <td class="lined"></td><td class="lined"></td><td class="lined"></td><td class="lined"></td>
+      </tr>
+      <tr class="row-fill">
+        <td class="lined"></td><td class="lined"></td><td class="lined"></td><td class="lined"></td>
+      </tr>
+      <tr class="row-fill">
+        <td class="lined"></td><td class="lined"></td><td class="lined"></td><td class="lined"></td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}

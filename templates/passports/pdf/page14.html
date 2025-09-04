@@ -1,0 +1,45 @@
+{% extends "passports/pdf/base.html" %}
+{% load pdf_utils %}
+
+{% block extra_css %}
+<style>
+  .exh-table{ width:100%; border-collapse:collapse; table-layout:fixed; margin-top:3mm; }
+  .exh-table th,.exh-table td{ border:0.6pt solid #333; vertical-align:top; padding:2mm; line-height:1.25; font-size:10.5pt; }
+  .c-year{ width:14%; } .c-place{ width:36%; } .c-info{ width:50%; }
+  .title{ text-align:center; margin:0 0 2mm 0; }
+  .tri{ display:block; text-align:center; }
+  .row-fill{ height:12mm; } .lined{ min-height:10mm; background-image:linear-gradient(to bottom,transparent 92%,#bbb 92%,#bbb 94%,transparent 94%); background-size:100% 6mm; padding:1mm 1.25mm; }
+</style>
+{% endblock %}
+
+{% block content %}
+  <h3 class="title">
+    Кўргазмалардаги чиқишлари тўғрисида маълумотлар<br>
+    Сведения о выставках-выводках<br>
+    <span class="muted">Information of exhibitions and demonstrations</span>
+  </h3>
+
+  <table class="exh-table">
+    <colgroup><col class="c-year"><col class="c-place"><col class="c-info"></colgroup>
+    <thead>
+      <tr>
+        <th><span class="tri">Йил</span><span class="tri">Год</span><span class="tri"><strong>Year</strong></span></th>
+        <th><span class="tri">Жойи</span><span class="tri">Место</span><span class="tri"><strong>Place</strong></span></th>
+        <th><span class="tri">Малумотлар</span><span class="tri">Сведения</span><span class="tri"><strong>Info</strong></span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in horse.exhibitions.all|dictsortreversed:"year" %}
+        <tr>
+          <td>{{ e.year|dash }}</td>
+          <td>{{ e.place|dash }}</td>
+          <td>{{ e.info|dash }}</td>
+        </tr>
+      {% endfor %}
+
+      {# Пустые строки для ручного заполнения #}
+      <tr class="row-fill"><td class="lined"></td><td class="lined"></td><td class="lined"></td></tr>
+      <tr class="row-fill"><td class="lined"></td><td class="lined"></td><td class="lined"></td></tr>
+    </tbody>
+  </table>
+{% endblock %}

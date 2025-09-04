@@ -1,0 +1,29 @@
+{% extends "passports/pdf/base.html" %}
+{% load static %}
+{% load pdf_utils %}
+
+{% block extra_css %}
+<style>
+  /* На всю страницу с небольшими полями */
+  @page { margin: 10mm }
+  .sheet {
+    width: 100%;
+    height: calc(297mm - 20mm); /* 297 - top/bottom margins */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .sheet img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    /* если нужно "впритык" без пустых полей — задай width: 100%; height: 100%; object-fit: contain; */
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  <div class="sheet">
+    <img class="bg-img" src="{% static_file 'report/passport_7.png' %}" alt="">
+  </div>
+{% endblock %}

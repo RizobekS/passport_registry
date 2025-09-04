@@ -1,0 +1,354 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <style>
+    @page { size: A4; margin: 0 }
+    body {
+      margin: 0;
+      font-family: DejaVu Sans, Arial, sans-serif;
+      color:#111;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      position: relative;
+      width: 210mm; height: 297mm;
+      break-after: page; page-break-after: always;
+      overflow: hidden;
+    }
+
+    /* ФОН ЧЕРЕЗ IMG */
+    .bg-img {
+      position:absolute; left:0; top:0;
+      width: 210mm; height: 297mm;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .ovl { position:absolute; left:0; top:0; width:210mm; height:297mm; z-index: 1; }
+
+    /* ====== Страница 2 — координаты ====== */
+    :root{
+      --val-col-left: 86mm;
+      --row-top:      101mm;
+      --row-gap:      11.0mm;
+      --val-size:     12px;
+    }
+    .val { position:absolute; left: var(--val-col-left); font-size: var(--val-size); white-space: nowrap; }
+    .r1  { top: calc(var(--row-top) + 0 * var(--row-gap)); }
+    .r2  { top: calc(var(--row-top) + 1 * var(--row-gap)); }
+    .r3  { top: calc(var(--row-top) + 2 * var(--row-gap)); }
+    .r4  { top: calc(var(--row-top) + 3 * var(--row-gap)); }
+    .r5  { top: calc(var(--row-top) + 4 * var(--row-gap)); }
+    .r6  { top: calc(var(--row-top) + 5 * var(--row-gap)); }
+    .r7  { top: calc(var(--row-top) + 6 * var(--row-gap)); }
+    .r8  { top: calc(var(--row-top) + 7 * var(--row-gap)); }
+    .r9  { top: calc(var(--row-top) + 8 * var(--row-gap)); }
+    .r10 { top: calc(var(--row-top) + 9 * var(--row-gap)); }
+    .wide { width:110mm; white-space: normal; line-height: 1.15; }
+
+    table { border-collapse: collapse; font-size: 11px; }
+    td { padding: 2mm 2mm; vertical-align: top; }
+
+    .vacc { position:absolute; left: 22mm; top: 86mm; width: 166mm; z-index:1; }
+    .vacc td { border: 0; }
+
+    .lab { position:absolute; left: 22mm; top: 78mm; width: 166mm; z-index:1; }
+    .lab td { border: 0; }
+
+    .diag { position:absolute; left: 22mm; top: 92mm; width: 166mm; z-index:1; }
+    .diag td { border: 0; }
+
+    .qr { position:absolute; right: 100mm; top: 230mm; width: 40mm; z-index:1; }
+    .bar{ position:absolute; right: 28mm; top: 192mm; width: 60mm; z-index:1; }
+  </style>
+</head>
+<body>
+
+<!-- p1 -->
+<section class="page">
+  {% if bgs.0 %}<img class="bg-img" src="{{ bgs.0 }}">{% endif %}
+</section>
+
+<!-- p2 (с полями) -->
+<section class="page">
+  <div class="ovl">
+    <div class="val r1 wide">{{ h.name }}</div>
+    <div class="val r2">{{ h.birth_date|date:'d.m.Y' }}</div>
+    <div class="val r3">{{ h.breed.name }}</div>
+    <div class="val r4">{{ h.color.name }}</div>
+    <div class="val r5">{% if h.sex == 'M' %}Жеребец / Stallion{% else %}Кобыла / Mare{% endif %}</div>
+    <div class="val r6 wide">{% if h.place_of_birth %}{{ h.place_of_birth.name }}{% endif %}</div>
+    <div class="val r7">{{ p.number }}</div>
+    <div class="val r8 wide">
+      {% if h.owner_current %}
+        {% if h.owner_current.person %}{{ h.owner_current.person }}{% endif %}
+        {% if h.owner_current.organization %}{{ h.owner_current.organization.name }}{% endif %}
+      {% else %}—{% endif %}
+    </div>
+    <div class="val r9">Uzbekistan</div>
+    <div class="val r10">{{ h.microchip }}</div>
+
+    {% if p.qr_image %}<img class="qr" style="margin-top: 20px" src="{{ p.qr_image.url }}">{% endif %}
+    {% if p.barcode_image %}<img class="bar" src="{{ p.barcode_image.url }}">{% endif %}
+  </div>
+</section>
+
+<!-- p3 -->
+<section class="page">
+  {% if bgs.2 %}<img class="bg-img" src="{{ bgs.2 }}">{% endif %}
+</section>
+
+<!-- p4 -->
+<section class="page">
+  {% if bgs.3 %}<img class="bg-img" src="{{ bgs.3 }}">{% endif %}
+</section>
+
+<!-- p5 -->
+<section class="page">
+  {% if bgs.4 %}<img class="bg-img" src="{{ bgs.4 }}">{% endif %}
+</section>
+
+<!-- p6 -->
+<section class="page">
+  {% if bgs.5 %}<img class="bg-img" src="{{ bgs.5 }}">{% endif %}
+</section>
+
+<!-- p7 -->
+<section class="page">
+  {% if bgs.6 %}<img class="bg-img" src="{{ bgs.6 }}">{% endif %}
+</section>
+
+<!-- p8 (вакцинации 1) -->
+<section class="page">
+  {% if bgs.7 %}<img class="bg-img" src="{{ bgs.7 }}">{% endif %}
+  <table class="vacc"><tbody>
+    {% for v in vacc_pages.0 %}
+      <tr>
+        <td style="width:42mm">{{ v.name }}</td>
+        <td style="width:52mm">{{ v.mfg }}{% if v.batch %}<br>№ партии: {{ v.batch }}{% endif %}</td>
+        <td style="width:36mm">{{ v.date }}</td>
+        <td>{{ v.vet }}</td>
+      </tr>
+    {% empty %}{% for i in "12345678" %}<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>{% endfor %}{% endfor %}
+  </tbody></table>
+</section>
+
+<!-- p9 (вакцинации 2) -->
+<section class="page">
+  {% if bgs.8 %}<img class="bg-img" src="{{ bgs.8 }}">{% endif %}
+  <table class="vacc"><tbody>
+    {% for v in vacc_pages.1 %}
+      <tr>
+        <td style="width:42mm">{{ v.name }}</td>
+        <td style="width:52mm">{{ v.mfg }}{% if v.batch %}<br>№ партии: {{ v.batch }}{% endif %}</td>
+        <td style="width:36mm">{{ v.date }}</td>
+        <td>{{ v.vet }}</td>
+      </tr>
+    {% empty %}{% for i in "12345678" %}<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>{% endfor %}{% endfor %}
+  </tbody></table>
+</section>
+
+<!-- p10 (лаборатория) -->
+<section class="page">
+  {% if bgs.9 %}<img class="bg-img" src="{{ bgs.9 }}">{% endif %}
+  <table class="lab"><tbody>
+    {% for t in lab_pages.0 %}
+      <tr>
+        <td style="width:24mm">{{ t.date }}</td>
+        <td style="width:32mm">{{ t.type }}</td>
+        <td style="width:36mm">{{ t.disease }}</td>
+        <td style="width:36mm">{{ t.result }}</td>
+        <td>{{ t.labname }}</td>
+      </tr>
+    {% empty %}{% for i in "123456" %}<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>{% endfor %}{% endfor %}
+  </tbody></table>
+</section>
+
+<!-- p11 (диагностика) -->
+<section class="page">
+  {% if bgs.10 %}<img class="bg-img" src="{{ bgs.10 }}">{% endif %}
+  <table class="diag"><tbody>
+    {% for d in diag_pages.0 %}
+      <tr>
+        <td style="width:28mm">{{ d.date }}</td>
+        <td style="width:84mm">{{ d.result }}</td>
+        <td style="width:28mm">{{ d.no }}</td>
+        <td>{{ d.vet }}</td>
+      </tr>
+    {% empty %}{% for i in "123" %}<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>{% endfor %}{% endfor %}
+  </tbody></table>
+</section>
+
+<!-- === p12: Спорт/достижения (стр.1) === -->
+<section class="page">
+  {% if bgs.11 %}<img class="bg-img" src="{{ bgs.11 }}">{% endif %}
+  <style>
+    .ach { position:absolute; left: 26mm; top: 106mm; width: 158mm; }
+    .ach td { border:0; padding: 2mm 2mm; }
+  </style>
+  <table class="ach">
+    <tbody>
+    {% for a in ach_pages.0 %}
+      <tr>
+        <td style="width:24mm">{{ a.year }}</td>
+        <td style="width:58mm">{{ a.place }}</td>
+        <td>{{ a.info }}</td>
+      </tr>
+    {% empty %}
+      {% for i in "12" %}<tr><td>&nbsp;</td><td></td><td></td></tr>{% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- === p13: Спорт/достижения (стр.2) === -->
+<section class="page">
+  {% if bgs.12 %}<img class="bg-img" src="{{ bgs.12 }}">{% endif %}
+  <table class="ach">
+    <tbody>
+    {% for a in ach_pages.1 %}
+      <tr>
+        <td style="width:24mm">{{ a.year }}</td>
+        <td style="width:58mm">{{ a.place }}</td>
+        <td>{{ a.info }}</td>
+      </tr>
+    {% empty %}
+      {% for i in "12" %}<tr><td>&nbsp;</td><td></td><td></td></tr>{% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- === p14: Выставки === -->
+<section class="page">
+  {% if bgs.13 %}<img class="bg-img" src="{{ bgs.13 }}">{% endif %}
+  <style>
+    .exh { position:absolute; left: 26mm; top: 106mm; width: 158mm; }
+    .exh td { border:0; padding: 2mm 2mm; }
+  </style>
+  <table class="exh">
+    <tbody>
+    {% for e in exh_pages.0 %}
+      <tr>
+        <td style="width:24mm">{{ e.year }}</td>
+        <td style="width:58mm">{{ e.place }}</td>
+        <td>{{ e.info }}</td>
+      </tr>
+    {% empty %}
+      {% for i in "12" %}<tr><td>&nbsp;</td><td></td><td></td></tr>{% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- === p15: Приплод === -->
+<section class="page">
+  {% if bgs.14 %}<img class="bg-img" src="{{ bgs.14 }}">{% endif %}
+  <style>
+    .offs { position:absolute; left: 22mm; top: 126mm; width: 166mm; }
+    .offs td { border:0; padding: 2mm 2mm; font-size: 10.5px; }
+  </style>
+  <table class="offs">
+    <tbody>
+    {% for o in off_pages.0 %}
+      <tr>
+        <td style="width:38mm">
+          Отец: {{ o.sire_name }}<br>Мать: {{ o.dam_name }}
+        </td>
+        <td style="width:28mm">
+          Порода: {{ o.sire_breed }} / {{ o.dam_breed }}
+        </td>
+        <td style="width:24mm">{{ o.colour }}</td>
+        <td style="width:16mm">{{ o.sex }}</td>
+        <td style="width:20mm">{{ o.brand_no }}</td>
+        <td>{{ o.birth_year }}</td>
+      </tr>
+    {% empty %}
+      {% for i in "123" %}<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>{% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<!-- === p16: Смена владельца (верх) + Родословная (нижний блок полей) === -->
+<section class="page">
+  {% if bgs.15 %}<img class="bg-img" src="{{ bgs.15 }}">{% endif %}
+  <style>
+    .own { position:absolute; left: 22mm; top: 90mm; width: 166mm; }
+    .own td { border:0; padding: 2mm 2mm; }
+    /* Поля родословной (нижний блок строк) */
+    .p16 { position:absolute; left: 22mm; width: 166mm; font-size: 11px; }
+    .p16 .line { position:absolute; left:0; right:0; }
+    .p16 .place  { top: 140mm; }
+    .p16 .name   { top: 160mm; }
+    .p16 .brand  { top: 175mm; }
+    .p16 .breed  { top: 193mm; }
+    .p16 .sexdob { top: 209mm; }
+    .p16 .dna    { top: 175mm; right:auto; left: 120mm; } /* при необходимости разнести */
+    .p16 .imm    { top: 224mm; }
+  </style>
+
+  <table class="own">
+    <tbody>
+    {% for o in own_pages.0 %}
+      <tr>
+        <td style="width:48mm">{{ o.date }}</td>
+        <td>{{ o.owner }}</td>
+        <td style="width:48mm"></td>
+      </tr>
+    {% empty %}
+      <tr><td>&nbsp;</td><td></td><td></td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="p16">
+    <div class="line place">{{ h.place_of_birth.name }}</div>
+    <div class="line name">{{ h.name }}</div>
+    <div class="line brand">{{ h.brand_mark }}</div>
+    <div class="line breed">{{ h.breed.name }}</div>
+    <div class="line sexdob">{% if h.sex == 'M' %}Жеребец{% else %}Кобыла{% endif %} — {{ h.birth_date|date:'d.m.Y' }}</div>
+    <div class="line imm">{% if h.docs %}№ {{ h.docs.immunity_expertise_no }} от {{ h.docs.immunity_expertise_date|date:'d.m.Y' }}{% endif %}</div>
+  </div>
+</section>
+
+<!-- === p17: Схема родословной (оставим только основные поля) === -->
+<section class="page">
+  {% if bgs.16 %}<img class="bg-img" src="{{ bgs.16 }}">{% endif %}
+  <style>
+    .ped { position:absolute; left: 26mm; top: 102mm; width: 158mm; font-size: 10.5px; }
+    .ped .self { position:absolute; left:0; top:42mm; width:38mm; }
+    .ped .sire { position:absolute; left:48mm; top:12mm; width:38mm; }
+    .ped .dam  { position:absolute; left:48mm; top:72mm; width:38mm; }
+  </style>
+  <div class="ped">
+    <div class="self">Лошадь:<br>{{ h.name }}<br>Тавро № {{ h.brand_mark }}</div>
+    <div class="sire">Отец:<br>{{ h.sire }}</div>
+    <div class="dam">Мать:<br>{{ h.dam }}</div>
+  </div>
+</section>
+
+<!-- === p18: Chip identification number (дата/чип/штрихкод) === -->
+<section class="page">
+  {% if bgs.17 %}<img class="bg-img" src="{{ bgs.17 }}">{% endif %}
+  <style>
+    .chip { position:absolute; left: 22mm; top: 86mm; width: 166mm; }
+    .chip td { border:0; padding: 2mm 2mm; }
+  </style>
+  <table class="chip">
+    <tbody>
+      <tr>
+        <td style="width:28mm">{{ p.issue_date|date:'d.m.Y' }}</td>
+        <td style="width:56mm">{{ h.microchip }}</td>
+        <td>{{ p.barcode_value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>
