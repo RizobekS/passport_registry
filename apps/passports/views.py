@@ -11,6 +11,7 @@ from web_project import TemplateLayout
 from .models import Passport
 from .filters import PassportFilter
 from apps.vet.models import Vaccination, LabTest
+from ..parties.models import Organization
 
 
 class PassportListView(ListView):
@@ -37,17 +38,36 @@ class RegistryDashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
-        qs = Passport.objects.all()
+        # База с related’ами (чтобы не ддосить БД)
+        qs = (Passport.objects
+              .select_related(
+                  "horse",
+                  "horse__breed",
+                  "horse__place_of_birth",
+                  "horse__owner_current",
+                  "horse__owner_current__organization",
+              ))
 
         ctx["kpi"] = {
             "total": qs.count(),
             "issued": qs.filter(status__in=[Passport.Status.ISSUED, Passport.Status.REISSUED]).count(),
             "revoked": qs.filter(status=Passport.Status.REVOKED).count(),
         }
+
         ctx["by_status"] = list(qs.values("status").annotate(c=Count("id")).order_by("-c"))
         ctx["by_breed"]  = list(qs.values("horse__breed__name").annotate(c=Count("id")).order_by("-c")[:10])
         ctx["by_region"] = list(qs.values("horse__place_of_birth__name").annotate(c=Count("id")).order_by("-c")[:10])
 
+        phys        = qs.filter(horse__owner_current__person__isnull=False).count()
+        org_state   = qs.filter(horse__owner_current__organization__org_type=Organization.OrgType.STATE).count()
+        org_private = qs.filter(horse__owner_current__organization__org_type=Organization.OrgType.PRIVATE).count()
+        ctx["by_owner_kind"] = [
+            {"label": "Физические лица", "value": phys},
+            {"label": "Юр. лица (гос)", "value": org_state},
+            {"label": "Юр. лица (частные)", "value": org_private},
+        ]
+
+        # Динамика за 30 дней
         start = now().date() - timedelta(days=29)
         daily = (
             qs.filter(issue_date__gte=start)

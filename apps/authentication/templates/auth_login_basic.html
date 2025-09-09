@@ -19,51 +19,52 @@
         <div class="card-body">
           <!-- Logo -->
           <div class="app-brand justify-content-center">
-            <a href="{% url 'passports:dashboard' %}" class="app-brand-link gap-2">
+            <a href="{% url 'dashboard' %}" class="app-brand-link gap-2">
               <span class="app-brand-logo demo">{% include 'partials/logo.html' with withbg="#696cff" %}</span>
               <span class="app-brand-text demo text-heading fw-bold">{% get_theme_variables 'template_name' %}</span>
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-1">Welcome to {% get_theme_variables 'template_name' %}! 👋</h4>
-          <p class="mb-6">Please sign-in to your account and start the adventure</p>
+          <h4 class="mb-1">Добро пожаловать {% get_theme_variables 'template_name' %}! </h4>
+          <p class="mb-6">Авторизуйтесь, чтобы продолжить</p>
 
-          <form id="formAuthentication" class="mb-6" action="{% url 'passports:dashboard' %}">
+          <form method="post" action="{% url 'auth:login' %}" class="mb-6" novalidate>
             {% csrf_token %}
+            {% if form.non_field_errors %}
+              <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
             <div class="mb-6">
-              <label for="email" class="form-label">Email or Username</label>
-              <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus>
+              <label for="id_username" class="form-label">Логин</label>
+              <input type="text" class="form-control" id="id_username" name="username" autocomplete="username" required autofocus>
             </div>
+
             <div class="mb-6 form-password-toggle">
-              <label class="form-label" for="password">Password</label>
+              <label class="form-label" for="id_password">Пароль</label>
               <div class="input-group input-group-merge">
-                <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
+                <input type="password" id="id_password" class="form-control" name="password" autocomplete="current-password" required>
                 <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
               </div>
             </div>
-            <div class="mb-8">
-              <div class="d-flex justify-content-between mt-8">
-                <div class="form-check mb-0 ms-2">
-                  <input class="form-check-input" type="checkbox" id="remember-me">
-                  <label class="form-check-label" for="remember-me">
-                    Remember Me
-                  </label>
-                </div>
-                <a href="{% url 'auth-forgot-password-basic' %}">
-                  <span>Forgot Password?</span>
-                </a>
+
+            {% if request.GET.next %}
+              <input type="hidden" name="next" value="{{ request.GET.next }}">
+            {% endif %}
+
+            <div class="d-flex justify-content-between mt-8 mb-8">
+              <div class="form-check mb-0 ms-2">
+                <input class="form-check-input" type="checkbox" id="remember-me" name="remember">
+                <label class="form-check-label" for="remember-me">Запомнить меня</label>
               </div>
+              <a href="{% url 'auth:forgot-password' %}"><span>Забыли пароль?</span></a>
             </div>
-            <div class="mb-6">
-              <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
-            </div>
+
+            <button class="btn btn-primary d-grid w-100" type="submit">Войти</button>
           </form>
 
           <p class="text-center">
-            <span>New on our platform?</span>
-            <a href="{% url 'auth-register-basic' %}">
-              <span>Create an account</span>
-            </a>
+            <span>Нет аккаунта?</span>
+            <a href="{% url 'auth:register' %}"><span>Создать</span></a>
           </p>
         </div>
       </div>

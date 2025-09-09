@@ -3,4 +3,7 @@ from django.apps import AppConfig
 
 class PassportsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.passports'
+    name = "apps.passports"
+
+    def ready(self):
+        from . import signals  # noqa

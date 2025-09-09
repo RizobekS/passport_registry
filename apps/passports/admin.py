@@ -8,7 +8,12 @@ class PassportAdmin(admin.ModelAdmin):
     list_display = ("number", "horse", "status", "issue_date", "version", "created_at")
     list_filter = ("status", "issue_date", "version")
     search_fields = ("number", "horse__name", "horse__registry_no", "horse__microchip")
-    readonly_fields = ("barcode_image", "qr_image", "pdf_file", "qr_public_id", "created_at")
+    readonly_fields = (
+        "barcode_value",
+        "number", "qr_public_id", "created_at",
+        "barcode_image", "qr_image", "pdf_file",
+        "version",
+    )
 
     fieldsets = (
         ("Паспорт", {

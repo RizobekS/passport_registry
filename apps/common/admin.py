@@ -4,7 +4,8 @@ from .models import Region, Breed, Color, Vaccine, LabTestType, NumberSequence
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
-    search_fields = ("name",)
+    list_display = ("name", "code")
+    search_fields = ("name", "code")
 
 
 @admin.register(Breed)

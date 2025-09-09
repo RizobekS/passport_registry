@@ -40,4 +40,10 @@ pie('chartBreed', b.map(i=>i[0]), b.map(i=>i[1]));
 
 const d = (D.daily||[]).map(x=> [x.d, x.c]);
 area('chartDaily', d.map(i=>i[0]), d.map(i=>i[1]));
+
+
+const ok = (D.owner_kind || []);
+const okLabels = ok.map(o => o.label);
+const okValues = ok.map(o => o.value);
+pie('chartOwnerKind', okLabels, okValues);
 })();

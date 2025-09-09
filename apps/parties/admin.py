@@ -11,9 +11,9 @@ class PersonAdmin(admin.ModelAdmin):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ("name", "reg_no", "inn", "phone", "region")
-    search_fields = ("name", "reg_no", "inn")
-    list_filter = ("region",)
+    list_display = ("name", "org_type", "region", "inn", "phone")
+    list_filter = ("org_type", "region")
+    search_fields = ("name", "inn", "reg_no")
 
 
 @admin.register(Veterinarian)

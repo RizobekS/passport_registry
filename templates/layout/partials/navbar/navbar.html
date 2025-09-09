@@ -1,8 +1,11 @@
 {% load i18n %}
 {% load static %}
+{% load theme %} {# get_theme_variables #}
 
+<nav class="layout-navbar {{ container_class }} navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+     id="layout-navbar">
 
-<nav class="layout-navbar {{container_class}} navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+  {# Бургер на мобильных #}
   {% if not navbar_hide_toggle %}
   <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
     <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
@@ -10,73 +13,88 @@
     </a>
   </div>
   {% endif %}
+
   <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 
-    <!-- Search -->
-    <div class="navbar-nav align-items-center">
+    {# Search: можно привязать к твоему списку паспортов #}
+    <form class="navbar-nav align-items-center" method="get" action="{% url 'passports:list' %}">
       <div class="nav-item d-flex align-items-center">
         <i class="bx bx-search bx-md"></i>
-        <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2" placeholder="Search..." aria-label="Search...">
+        <input type="text"
+               class="form-control border-0 shadow-none ps-1 ps-sm-2"
+               name="q"
+               placeholder="{% trans 'Search...' %}"
+               aria-label="Search">
       </div>
-    </div>
-    <!-- /Search -->
+    </form>
 
     <ul class="navbar-nav flex-row align-items-center ms-auto">
-      <!-- User -->
+
+      {# Если пользователь не вошёл — показываем Вход/Регистрацию #}
+      {% if not request.user.is_authenticated %}
+        <li class="nav-item me-2">
+          <a class="btn btn-outline-primary" href="{% url 'auth:login' %}">{% trans 'Log in' %}</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{% url 'auth:register' %}">{% trans 'Sign up' %}</a>
+        </li>
+
+      {% else %}
+      {# Пользователь вошёл — аватар + меню #}
       <li class="nav-item navbar-dropdown dropdown-user dropdown">
-        <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+        <a class="nav-link dropdown-toggle hide-arrow p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
           <div class="avatar avatar-online">
-            <img src="{% static 'img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle">
+            <img src="{% static 'img/avatars/user.jpg' %}" alt="" class="w-px-40 h-auto rounded-circle">
           </div>
         </a>
+
         <ul class="dropdown-menu dropdown-menu-end">
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);">
-              <div class="d-flex">
-                <div class="flex-shrink-0 me-3">
-                  <div class="avatar avatar-online">
-                    <img src="{% static 'img/avatars/1.png' %}" alt class="w-px-40 h-auto rounded-circle">
-                  </div>
-                </div>
-                <div class="flex-grow-1">
-                  <h6 class="mb-0">John Doe</h6>
-                  <small class="text-muted">Admin</small>
+          <li class="px-3 py-2">
+            <div class="d-flex">
+              <div class="flex-shrink-0 me-3">
+                <div class="avatar avatar-online">
+                  <img src="{% static 'img/avatars/user.jpg' %}" alt="" class="w-px-40 h-auto rounded-circle">
                 </div>
               </div>
+              <div class="flex-grow-1">
+                <h6 class="mb-0">
+                  {{ request.user.get_full_name|default:request.user.get_username }}
+                </h6>
+                <small class="text-muted">
+                  {% if request.user.is_superuser %}Admin{% else %}User{% endif %}
+                </small>
+              </div>
+            </div>
+          </li>
+
+          <li><div class="dropdown-divider my-1"></div></li>
+
+          <li>
+            {# Профиль — можно вести в админку на смену пароля или на свою страницу настроек #}
+            <a class="dropdown-item" href="#!">
+              <i class="bx bx-user bx-md me-3"></i><span>{% trans 'My Profile' %}</span>
             </a>
           </li>
           <li>
-            <div class="dropdown-divider my-1"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);">
-             <i class="bx bx-user bx-md me-3"></i><span>My Profile</span>
+            <a class="dropdown-item" href="#!">
+              <i class="bx bx-cog bx-md me-3"></i><span>{% trans 'Settings' %}</span>
             </a>
           </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);">
-              <i class="bx bx-cog bx-md me-3"></i><span>Settings</span>
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);">
-              <span class="d-flex align-items-center align-middle">
-                <i class="flex-shrink-0 bx bx-credit-card bx-md me-3"></i><span class="flex-grow-1 align-middle">Billing Plan</span>
-                <span class="flex-shrink-0 badge rounded-pill bg-danger">4</span>
-              </span>
-            </a>
-          </li>
-          <li>
-            <div class="dropdown-divider my-1"></div>
-          </li>
-          <li>
-            <a class="dropdown-item" href="javascript:void(0);">
-              <i class="bx bx-power-off bx-md me-3"></i><span>Log Out</span>
-            </a>
+
+          <li><div class="dropdown-divider my-1"></div></li>
+
+          <li class="px-3 pb-2">
+            <form method="post" action="{% url 'auth:logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="dropdown-item d-flex align-items-center">
+                <i class="bx bx-power-off bx-md me-3"></i>
+                <span>{% trans 'Log Out' %}</span>
+              </button>
+            </form>
           </li>
         </ul>
       </li>
-      <!--/ User -->
+      {% endif %}
     </ul>
   </div>
 </nav>

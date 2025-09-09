@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "config.middleware.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -155,6 +156,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = "/auth/login/"
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/auth/login/"
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -193,11 +198,11 @@ JAZZMIN_SETTINGS = {
     "copyright": "WEBadiko",
 
     # Логотипы/иконки (положи свои файлы в STATIC)
-    "site_logo": "img/logo-passport-registry.svg",   # 256x256 или SVG
+    "site_logo": "img/logo.png",   # 256x256 или SVG
     "site_logo_classes": "img-fluid",
-    "login_logo": "img/logo-passport-registry.svg",
+    "login_logo": "img/logo.png",
     "login_logo_dark": None,                          # или логотип под тёмную тему
-    "site_icon": "img/favicon.png",                  # 32x32
+    "site_icon": "img/logo.png",                      # 32x32
 
     # Язык и время
     "language_chooser": False,   # у тебя сайт многоязычный — если надо, поставь True

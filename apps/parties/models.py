@@ -19,12 +19,24 @@ class Person(models.Model):
         return f"{self.last_name} {self.first_name}".strip()
 
 class Organization(models.Model):
+    class OrgType(models.TextChoices):
+        STATE = "STATE", "Государственная"
+        PRIVATE = "PRIVATE", "Частная"
+
     name = models.CharField("Наименование", max_length=200)
     reg_no = models.CharField("Рег. номер", max_length=64, blank=True)
     inn = models.CharField("ИНН", max_length=20, blank=True)
     phone = models.CharField("Телефон", max_length=30, blank=True)
     address = models.CharField("Адрес", max_length=255, blank=True)
     region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True, blank=True)
+    org_type = models.CharField(
+        "Тип организации",
+        max_length=20,
+        choices=OrgType.choices,
+        default=OrgType.PRIVATE,
+        db_index=True,
+        help_text="Гос. организация или частная"
+    )
 
     class Meta:
         verbose_name = "Организация"

@@ -21,11 +21,15 @@
       <label class="form-label">{{ filter.form.region.label }}</label>
       {{ filter.form.region|add_class:"form-select" }}
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
+      <label class="form-label">{{ filter.form.owner_kind.label }}</label>
+      {{ filter.form.owner_kind|add_class:"form-select" }}
+    </div>
+    <div class="col-md-4">
       <label class="form-label">{{ filter.form.year.label }}</label>
       {{ filter.form.year|add_class:"form-control" }}
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <label class="form-label">{{ filter.form.microchip.label }}</label>
       {{ filter.form.microchip|add_class:"form-control" }}
     </div>

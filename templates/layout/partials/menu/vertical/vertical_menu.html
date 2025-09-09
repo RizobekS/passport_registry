@@ -2,11 +2,11 @@
   <!-- ! Hide app brand if navbar-full -->
   {% if not navbar_full %}
   <div class="app-brand demo">
-    <a href="{% url 'passports:dashboard' %}" class="app-brand-link">
+    <a href="{% url 'dashboard' %}" class="app-brand-link">
       <span class="app-brand-logo demo">
         {% include 'partials/logo.html' with withbg="#696cff" %}
       </span>
-      <span class="app-brand-text demo menu-text fw-bold ms-2">{% get_theme_variables 'template_name' %}</span>
+      <span class="demo menu-text fw-bold ms-2">{% get_theme_variables 'template_name' %}</span>
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -20,18 +20,11 @@
 
   <ul class="menu-inner py-1">
 
-    <li class="menu-item {% if 'passports:dashboard' == request.resolver_match.url_name or '/dashboard/' in request.path %}active open{% endif %}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-home-smile"></i>
-        <div class="text-truncate" data-i18n="Dashboards">Dashboards</div>
+    <li class="menu-item {% if '/dashboard/' in request.path %}active{% endif %}">
+      <a href="{% url 'dashboard' %}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-analyse"></i>
+        <div class="text-truncate" data-i18n="Analytics">Аналитика</div>
       </a>
-      <ul class="menu-sub">
-        <li class="menu-item {% if 'passports:dashboard' == request.resolver_match.url_name %}active{% endif %}">
-          <a href="{% url 'passports:dashboard' %}" class="menu-link">
-            <div class="text-truncate" data-i18n="Analytics">Analytics</div>
-          </a>
-        </li>
-      </ul>
     </li>
     <li class="menu-item {% if '/list/' in request.path %}active{% endif %}">
       <a href="{% url 'passports:list' %}" class="menu-link">
@@ -67,17 +60,17 @@
 <!--      </a>-->
 <!--      <ul class="menu-sub">-->
 <!--        <li class="menu-item {% if '/login/' in request.path %}active{% endif %}">-->
-<!--          <a href="{% url 'auth-login-basic' %}" class="menu-link" target="_blank">-->
+<!--          <a href="{% url 'auth:login' %}" class="menu-link" target="_blank">-->
 <!--            <div class="text-truncate" data-i18n="Login">Login</div>-->
 <!--          </a>-->
 <!--        </li>-->
 <!--        <li class="menu-item {% if '/register/' in request.path %}active{% endif %}">-->
-<!--          <a href="{% url 'auth-register-basic' %}" class="menu-link" target="_blank">-->
+<!--          <a href="{% url 'auth:register' %}" class="menu-link" target="_blank">-->
 <!--            <div class="text-truncate" data-i18n="Register">Register</div>-->
 <!--          </a>-->
 <!--        </li>-->
 <!--        <li class="menu-item {% if '/forgot_password/' in request.path %}active{% endif %}">-->
-<!--          <a href="{% url 'auth-forgot-password-basic' %}" class="menu-link" target="_blank">-->
+<!--          <a href="{% url 'auth:forgot-password' %}" class="menu-link" target="_blank">-->
 <!--            <div class="text-truncate" data-i18n="Frogot Password">Frogot Password</div>-->
 <!--          </a>-->
 <!--        </li>-->

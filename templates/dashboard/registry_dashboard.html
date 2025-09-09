@@ -1,8 +1,9 @@
 {% extends layout_path %}
+{% load static %}
+
 {% block vendor_js %}{{ block.super }}
 <script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
 {% endblock %}
-
 
 {% block page_js %}{{ block.super }}
 <script>
@@ -11,15 +12,16 @@
     status: {{ by_status|safe }},
     region: {{ by_region|safe }},
     breed: {{ by_breed|safe }},
-    daily: {{ by_day|safe }}
+    daily: {{ by_day|safe }},
+    owner_kind: {{ by_owner_kind|safe }}   {# <-- добавили #}
   };
 </script>
 <script src="{% static 'js/registry_dashboard.js' %}"></script>
 {% endblock %}
 
-
 {% block content %}
 <div class="row g-4">
+
   <div class="col-xxl-8">
     <div class="card h-100">
       <div class="card-body">
@@ -53,6 +55,7 @@
       </div>
     </div>
   </div>
+
   <div class="col-xxl-4">
     <div class="card h-100">
       <div class="card-body">
@@ -62,6 +65,15 @@
     </div>
   </div>
 
+  {# НОВОЕ: срез по типу владельца (пирог) #}
+  <div class="col-xxl-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="mb-4">Тип владельца</h5>
+        <div id="chartOwnerKind"></div>
+      </div>
+    </div>
+  </div>
 
   <div class="col-xl-6">
     <div class="card h-100">
@@ -71,6 +83,16 @@
       </div>
     </div>
   </div>
+
+  <div class="col-6">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="mb-4">Выдачи по дням (30 дней)</h5>
+        <div id="chartDaily"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-xl-6">
     <div class="card h-100">
       <div class="card-body">
@@ -80,14 +102,5 @@
     </div>
   </div>
 
-
-  <div class="col-12">
-    <div class="card h-100">
-      <div class="card-body">
-        <h5 class="mb-4">Выдачи по дням (30 дней)</h5>
-        <div id="chartDaily"></div>
-      </div>
-    </div>
-  </div>
 </div>
 {% endblock %}
