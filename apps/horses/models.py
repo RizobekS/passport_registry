@@ -42,8 +42,9 @@ class Horse(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.registry_no:
-            region = (self.place_of_birth.name if self.place_of_birth else "")
-            self.registry_no = make_horse_registry_no(region)
+            reg_code = self.place_of_birth.code if self.place_of_birth and getattr(self.place_of_birth, "code",
+                                                                                   None) else ""
+            self.registry_no = make_horse_registry_no(reg_code)
         super().save(*args, **kwargs)
 
 class IdentificationEvent(models.Model):

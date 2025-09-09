@@ -77,15 +77,14 @@ class NumberSequence(models.Model):
         verbose_name_plural = "Счётчики номеров"
 
     @classmethod
-    def next(cls, *, scope: str, year: int, region_code: str) -> int:
+    def next(cls, scope: str, year: int, region_name: str) -> int:
         """
         Атомарно увеличивает и возвращает следующий порядковый номер
-        для данного scope+year+region_code. Используем select_for_update для защиты от гонок.
+        для пары (scope, year, region_name).
         """
         with transaction.atomic():
-            # region_name оставим равным region_code (чтобы не ломать существующую схему)
             obj, _ = cls.objects.select_for_update().get_or_create(
-                scope=scope, year=year, region_name=region_code, defaults={"value": 0}
+                scope=scope, year=year, region_name=region_name or ""
             )
             obj.value = F("value") + 1
             obj.save(update_fields=["value"])
@@ -95,15 +94,4 @@ class NumberSequence(models.Model):
 
     def __str__(self):
         return f"{self.scope}/{self.year}/{self.region_name or '-'} = {self.value}"
-
-
-    @classmethod
-    def next(cls, scope: str, year: int, region_name: str = "") -> int:
-        with transaction.atomic():
-            seq, _ = cls.objects.select_for_update().get_or_create(
-                scope=scope, year=year, region_name=region_name
-            )
-            seq.value += 1
-            seq.save(update_fields=["value"])
-            return seq.value
 
