@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from config import settings
 from apps.passports.views import RegistryDashboardView
 from web_project.views import SystemView
+from django.views.generic import RedirectView
 
 admin.site.site_header = 'Реестр паспортов'
 admin.site.site_title = 'Реестр паспортов'
@@ -14,6 +15,7 @@ urlpatterns = [
     path("auth/", include(("apps.authentication.urls", "auth"), namespace="auth")),
 
     path("dashboard/", RegistryDashboardView.as_view(), name="dashboard"),
+    path('', RedirectView.as_view(pattern_name='dashboard', permanent=False)),
 
     path("", include("apps.pages.urls")),
 
