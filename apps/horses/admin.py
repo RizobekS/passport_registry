@@ -27,6 +27,7 @@ class HorseAdmin(admin.ModelAdmin):
     list_display = ("name", "registry_no", "microchip", "breed", "color", "birth_date", "place_of_birth")
     search_fields = ("name", "registry_no", "microchip", "brand_mark")
     list_filter = ("breed", "color", "place_of_birth")
+    readonly_fields = ("registry_no",)
 
     fieldsets = (
         ("Основная информация", {
