@@ -24,16 +24,16 @@ class LabTestInline(admin.TabularInline):
 
 @admin.register(Horse)
 class HorseAdmin(admin.ModelAdmin):
-    list_display = ("name", "registry_no", "microchip", "breed", "color", "birth_date", "place_of_birth")
+    list_display = ("name", "registry_no", "microchip", "breed", "color", "birth_date", "place_of_birth", "horse_type")
     search_fields = ("name", "registry_no", "microchip", "brand_mark")
-    list_filter = ("breed", "color", "place_of_birth")
+    list_filter = ("breed", "color", "place_of_birth", "horse_type")
     readonly_fields = ("registry_no",)
 
     fieldsets = (
         ("Основная информация", {
             "classes": ("tab", "tab-main"),
             "fields": (
-                "registry_no", "name", "sex",
+                "registry_no", "name", "sex", "horse_type",
                 "birth_date", "breed", "color", "place_of_birth",
                 "microchip", "brand_mark",
                 "owner_current",

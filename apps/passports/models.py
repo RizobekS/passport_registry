@@ -41,26 +41,50 @@ class Passport(models.Model):
 
         # ---- Автонумерация ----
     def _detect_region_code(self) -> str:
-        # определяет место рождения -> регион владельца -> 'FAL')
-        if self.horse and self.horse.place_of_birth and getattr(self.horse.place_of_birth, "code", None):
-            return self.horse.place_of_birth.code
+        """
+        Для паспорта приоритетно использовать регион ВЛАДЕЛЬЦА.
+        Если нет владельца/региона — fallback: место рождения лошади.
+        """
         owner = getattr(self.horse, "owner_current", None)
         if owner and getattr(owner, "region", None) and getattr(owner.region, "code", None):
             return owner.region.code
+        if self.horse and self.horse.place_of_birth and getattr(self.horse.place_of_birth, "code", None):
+            return self.horse.place_of_birth.code
         return "FAL"
+
+    def _detect_district_number(self) -> int:
+        """
+        Ищем номер района у владельца (Organization/Person).
+        Если район не указан — вернём 0 (номер будет с RR=00).
+        """
+        owner = getattr(self.horse, "owner_current", None)
+        if not owner:
+            return 0
+        # Прямое поле district
+        d = getattr(owner, "district", None)
+        if d and getattr(d, "number", None):
+            return int(d.number or 0)
+
+        # На случай обёрток (если Owner ссылается на person/organization/party)
+        for attr in ("organization", "person", "party"):
+            obj = getattr(owner, attr, None)
+            if obj:
+                d2 = getattr(obj, "district", None)
+                if d2 and getattr(d2, "number", None):
+                    return int(d2.number or 0)
+
+        return 0
 
     def _ensure_number(self):
         """
-        Если номер не задан — сгенерировать по схеме: UZ-<REG>-<YEAR>-<####>
-        через общий утилитарный генератор (под капотом — NumberSequence.next).
-        Также заполняем barcode_value номером, если он пустой.
+        Если номер не задан — генерируем по новой схеме UZ-<REG>-<RR><NNNN>.
+        Также заполняем barcode_value microchip’ом, если пустой.
         """
         if self.number:
             return
-        # Год берём из issue_date, если уже задан, иначе — текущий (на уровне utils это не критично)
-        # Основное — корректно определить код региона:
         region_code = self._detect_region_code()
-        self.number = make_passport_number(region_code)
+        district_number = self._detect_district_number()
+        self.number = make_passport_number(region_code, district_number)
 
     def _ensure_barcode(self):
         """

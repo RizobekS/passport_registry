@@ -7,9 +7,16 @@ from apps.common.utils import make_horse_registry_no
 MICROCHIP_VALIDATOR = RegexValidator(r'^\d{15}$', 'Микрочип должен содержать 15 цифр (ISO 11784/11785).')
 
 class Horse(models.Model):
+    HORSE_TYPE_CHOICES = [
+        ("SPORT", "Спортивная"),
+        ("SERVICE", "Служебная"),
+        ("EXPO", "Выставочная"),
+    ]
     registry_no = models.CharField("Реестровый номер (Генерируется автоматически)", max_length=32, unique=True, blank=True)
     name = models.CharField("Кличка", max_length=120)
     sex = models.CharField("Пол", max_length=1, choices=[('M','Жеребец'),('F','Кобыла')])
+    horse_type = models.CharField("Тип лошади", max_length=10, choices=HORSE_TYPE_CHOICES, default="SPORT",
+                                  db_index=True)
     birth_date = models.DateField("Дата рождения")
     breed = models.ForeignKey(Breed, verbose_name="Порода", on_delete=models.PROTECT)
     color = models.ForeignKey(Color, verbose_name="Масть", on_delete=models.PROTECT)

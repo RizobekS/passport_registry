@@ -12,13 +12,16 @@ def make_horse_registry_no(region_code: str = "") -> str:
     return f"H-{reg}-{seq:06d}"
 
 
-def make_passport_number(region_code: str = "") -> str:
+def make_passport_number(region_code: str, district_number: int | None = None) -> str:
     """
-    Генерирует номер паспорта в формате UZ-<REG>-<YYYY>-<######>.
-    region_code — трёхбуквенный код региона (FAR, NMG, TSV, ...).
-    Счётчик ведём отдельно по scope='PASSPORT', году и region_code.
+    Возвращает номер паспорта: UZ-<REG>-<RR><NNNN>.
+    Счётчик ведём раздельно по (scope='PASSPORT', RR, REG), где:
+      - REG: код региона (например, JIZ),
+      - RR: номер района (01..99).
+    Для совместимости district_number может быть None — тогда RR=0.
     """
-    year = date.today().year
     reg = (region_code or "FAL").upper()
-    seq = NumberSequence.next("PASSPORT", year, reg)
-    return f"UZ-{reg}-{seq:06d}"
+    rr = int(district_number) if district_number is not None else 0
+    # NumberSequence: year=RR, region_name=REG
+    seq = NumberSequence.next("PASSPORT", rr, reg)
+    return f"UZ-{reg}-{rr:02d}{seq:04d}"

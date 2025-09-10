@@ -1,5 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.db import models
-from apps.common.models import Region
+from apps.common.models import Region, District
 
 class Person(models.Model):
     last_name = models.CharField("Фамилия", max_length=120)
@@ -9,7 +10,13 @@ class Person(models.Model):
     inn = models.CharField("ИНН", max_length=20, blank=True)
     phone = models.CharField("Телефон", max_length=30, blank=True)
     address = models.CharField("Адрес", max_length=255, blank=True)
-    region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True, blank=True)
+    region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True)
+    district = models.ForeignKey(District, on_delete=models.PROTECT, verbose_name="Район", null=True)
+
+    def clean(self):
+        super().clean()
+        if self.district and self.district.region_id != self.region_id:
+            raise ValidationError({"district": "Выбранный район не относится к указанному региону."})
 
     class Meta:
         verbose_name = "Физическое лицо"
@@ -28,7 +35,8 @@ class Organization(models.Model):
     inn = models.CharField("ИНН", max_length=20, blank=True)
     phone = models.CharField("Телефон", max_length=30, blank=True)
     address = models.CharField("Адрес", max_length=255, blank=True)
-    region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True, blank=True)
+    region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True)
+    district = models.ForeignKey(District, on_delete=models.PROTECT, verbose_name="Район", null=True)
     org_type = models.CharField(
         "Тип организации",
         max_length=20,
@@ -37,6 +45,11 @@ class Organization(models.Model):
         db_index=True,
         help_text="Гос. организация или частная"
     )
+
+    def clean(self):
+        super().clean()
+        if self.district and self.district.region_id != self.region_id:
+            raise ValidationError({"district": "Выбранный район не относится к указанному региону."})
 
     class Meta:
         verbose_name = "Организация"

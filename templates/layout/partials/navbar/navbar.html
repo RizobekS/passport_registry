@@ -23,8 +23,8 @@
         <input type="text"
                class="form-control border-0 shadow-none ps-1 ps-sm-2"
                name="q"
-               placeholder="{% trans 'Search...' %}"
-               aria-label="Search">
+               placeholder="{% trans 'Поиск...' %}"
+               aria-label="Поиск">
       </div>
     </form>
 
@@ -83,7 +83,7 @@
 
           <li><div class="dropdown-divider my-1"></div></li>
 
-          <li class="px-3 pb-2">
+          <li class="">
             <form method="post" action="{% url 'auth:logout' %}">
               {% csrf_token %}
               <button type="submit" class="dropdown-item d-flex align-items-center">

@@ -33,6 +33,23 @@ class Region(models.Model):
 
     def __str__(self): return self.name
 
+
+class District(models.Model):
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="districts", verbose_name="Регион")
+    number = models.PositiveSmallIntegerField("Номер района", help_text="01..99", db_index=True)
+    name = models.CharField("Название района", max_length=120)
+
+    class Meta:
+        verbose_name = "Район"
+        verbose_name_plural = "Районы"
+        constraints = [
+            models.UniqueConstraint(fields=["region", "number"], name="uniq_region_district_number"),
+        ]
+
+    def __str__(self):
+        return f"{self.region.code}-{self.number:02d} {self.name}"
+
+
 class Breed(models.Model):
     name = models.CharField("Название", max_length=120, unique=True)
     class Meta:

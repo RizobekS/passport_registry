@@ -1,11 +1,18 @@
 from django.contrib import admin
-from .models import Region, Breed, Color, Vaccine, LabTestType, NumberSequence
+from .models import Region, Breed, Color, Vaccine, LabTestType, NumberSequence, District
+
+
+class DistrictInline(admin.TabularInline):
+    model = District
+    extra = 0
+    classes = ("tab", "tab-identity")
 
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_display = ("name", "code")
     search_fields = ("name", "code")
+    inlines = (DistrictInline, )
 
 
 @admin.register(Breed)
