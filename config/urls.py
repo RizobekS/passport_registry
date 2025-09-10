@@ -12,7 +12,7 @@ admin.site.site_title = 'Реестр паспортов'
 urlpatterns = [
     path("admin/", admin.site.urls),
 
-    path("auth/", include(("apps.authentication.urls", "auth"), namespace="auth")),
+    path("auth/", include("apps.authentication.urls", namespace="auth")),
 
     path("dashboard/", RegistryDashboardView.as_view(), name="dashboard"),
     path('', RedirectView.as_view(pattern_name='dashboard', permanent=False)),
