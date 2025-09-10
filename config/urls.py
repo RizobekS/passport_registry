@@ -17,9 +17,8 @@ urlpatterns = [
     path("dashboard/", RegistryDashboardView.as_view(), name="dashboard"),
     path('', RedirectView.as_view(pattern_name='dashboard', permanent=False)),
 
-    path("", include("apps.pages.urls")),
-
     path("", include("apps.passports.urls", namespace="passports")),
+    path("", include("apps.pages.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
