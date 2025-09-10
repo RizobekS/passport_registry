@@ -9,7 +9,7 @@ def make_horse_registry_no(region_code: str = "") -> str:
     year = date.today().year
     reg = (region_code or "FAL").upper() # FAL — безопасный fallback
     seq = NumberSequence.next("HORSE", year, reg)
-    return f"H-{reg}-{year}-{seq:04d}"
+    return f"H-{reg}-{seq:06d}"
 
 
 def make_passport_number(region_code: str = "") -> str:
@@ -21,4 +21,4 @@ def make_passport_number(region_code: str = "") -> str:
     year = date.today().year
     reg = (region_code or "FAL").upper()
     seq = NumberSequence.next("PASSPORT", year, reg)
-    return f"UZ-{reg}-{year}-{seq:04d}"
+    return f"UZ-{reg}-{seq:06d}"
