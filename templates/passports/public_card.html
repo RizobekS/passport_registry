@@ -134,55 +134,93 @@
         <div class="card-body">
           <h6 class="text-muted">Данные лошади</h6>
           <hr>
-          <div class="row mb-10">
+          <div class="row mb-3">
             <div class="col-sm-6"><strong>Кличка:</strong> {{ p.horse.name }}</div>
             <div class="col-sm-6"><strong>Микрочип:</strong> {{ p.horse.microchip }}</div>
             <div class="col-sm-6"><strong>Порода:</strong> {{ p.horse.breed.name }}</div>
             <div class="col-sm-6"><strong>Масть:</strong> {{ p.horse.color.name }}</div>
             <div class="col-sm-6"><strong>Дата рождения:</strong> {{ p.horse.birth_date|date:'d.m.Y' }}</div>
-            <div class="col-sm-6"><strong>Регион рождения:</strong> {{ p.horse.place_of_birth.name }}</div>
-            <div class="col-sm-6"><strong>Отец:</strong> {{ p.horse.sire|default:'—' }}</div>
-            <div class="col-sm-6"><strong>Мать:</strong> {{ p.horse.dam|default:'—' }}</div>
           </div>
 
+          {# Одно фото лошади: показываем первое доступное #}
+          {% if p.horse.photo_right_side %}
+            <div class="text-center mb-4">
+              <img src="{{ p.horse.photo_right_side.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
+            </div>
+          {% elif p.horse.photo_left_side %}
+            <div class="text-center mb-4">
+              <img src="{{ p.horse.photo_left_side.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
+            </div>
+          {% elif p.horse.photo_muzzle %}
+            <div class="text-center mb-4">
+              <img src="{{ p.horse.photo_muzzle.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
+            </div>
+          {% elif p.horse.photo_upper_eye_level %}
+            <div class="text-center mb-4">
+              <img src="{{ p.horse.photo_upper_eye_level.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
+            </div>
+          {% endif %}
+
           <h6 class="text-muted">Ветеринарные отметки</h6>
-          <div class="mb-10 table-responsive">
+          <div class="mb-4 table-responsive">
             <table class="table table-sm">
               <thead>
-              <tr>
-                <th>Дата</th>
-                <th>Тип</th>
-                <th>Название/результат</th>
-                <th>Врач</th>
-              </tr>
+                <tr>
+                  <th>Дата</th>
+                  <th>Тип</th>
+                  <th>Название/результат</th>
+                  <th>Врач</th>
+                </tr>
               </thead>
               <tbody>
-              {% for v in p.horse.vaccinations.all %}
-              <tr>
-                <td>{{ v.date|date:'d.m.Y' }}</td>
-                <td>Вакцинация</td>
-                <td>{{ v.vaccine.name }}{% if v.batch_no %} ({{ v.batch_no }}){% endif %}</td>
-                <td>{{ v.veterinarian }}</td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="4" class="text-center">Нет данных</td>
-              </tr>
-              {% endfor %}
-              {% for t in p.horse.lab_tests.all %}
-              <tr>
-                <td>{{ t.date|date:'d.m.Y' }}</td>
-                <td>{{ t.test_type.name }}</td>
-                <td>{{ t.result }}</td>
-                <td>{{ t.veterinarian }}</td>
-              </tr>
-              {% endfor %}
+                {# Показываем ЛАБОРАТОРНЫЕ ИССЛЕДОВАНИЯ #}
+                {% for t in p.horse.lab_tests.all %}
+                  <tr>
+                    <td>{{ t.date|date:'d.m.Y' }}</td>
+                    <td>{{ t.test_type.name }}</td>
+                    <td>{{ t.result }}</td>
+                    <td>{{ t.veterinarian }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="4" class="text-center">Нет данных</td></tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
+
+          {# Отдельная таблица: Вакцинация #}
+          <h6 class="text-muted">Вакцинация</h6>
+          <div class="mb-4 table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Дата</th>
+                  <th>Вакцина</th>
+                  <th>Серия/партия</th>
+                  <th>Врач</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for v in p.horse.vaccinations.all %}
+                  <tr>
+                    <td>{{ v.date|date:'d.m.Y' }}</td>
+                    <td>{{ v.vaccine.name }}</td>
+                    <td>{{ v.batch_no|default:"—" }}</td>
+                    <td>{{ v.veterinarian }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="4" class="text-center">Нет данных</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
           <div class="card-footer text-center">
-            {% if p.barcode_image %}<img src="{{ p.barcode_image.url }}" class="mb-3" style="max-width:260px;" alt="BAR"/>{% endif %}
-            <div class="text-muted">Статус: {{ p.get_status_display }}{% if p.issue_date %} от {{ p.issue_date|date:'d.m.Y' }}{% endif %}
+            {% if p.barcode_image %}
+              <img src="{{ p.barcode_image.url }}" class="mb-3" style="max-width:260px;" alt="BAR"/>
+            {% endif %}
+            <div class="text-muted">
+              Статус: {{ p.get_status_display }}{% if p.issue_date %} от {{ p.issue_date|date:'d.m.Y' }}{% endif %}
             </div>
           </div>
         </div>
