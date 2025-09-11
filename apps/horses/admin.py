@@ -1,26 +1,58 @@
+# horses/admin.py
 from django.contrib import admin
-from .models import Horse, IdentificationEvent, Ownership, HorseMeasurements, DiagnosticCheck, SportAchievement, ExhibitionEntry, Offspring
+from .models import (
+    Horse, IdentificationEvent, Ownership,
+    HorseMeasurements, DiagnosticCheck,
+    SportAchievement, ExhibitionEntry, Offspring
+)
 from apps.vet.models import Vaccination, LabTest
+
 
 class IdentificationEventInline(admin.TabularInline):
     model = IdentificationEvent
     extra = 0
-    classes = ("tab", "tab-identity")  # <-- вкладка «Идентификация»
+    classes = ("tab", "tab-identity")
+
 
 class OwnershipInline(admin.TabularInline):
     model = Ownership
     extra = 0
-    classes = ("tab", "tab-ownership")  # <-- вкладка «Владение»
+    classes = ("tab", "tab-ownership")
+
 
 class VaccinationInline(admin.TabularInline):
     model = Vaccination
     extra = 0
-    classes = ("tab", "tab-vet")  # <-- вкладка «Ветеринария»
+    classes = ("tab", "tab-vet")
+
 
 class LabTestInline(admin.TabularInline):
     model = LabTest
     extra = 0
-    classes = ("tab", "tab-vet")  # <-- вкладка «Ветеринария»
+    classes = ("tab", "tab-vet")
+
+
+class OffspringInline(admin.TabularInline):
+    model = Offspring
+    extra = 0
+    classes = ("tab", "tab-pedigree")
+    fields = (
+        "relation", "name_klichka", "sex", "breed",
+        "date_birth", "place_birth",
+        "colour_horse", "brand_no", "shb_no", "reg_number",
+        "immunity_exp_number", "immunity_exp_date",
+    )
+    autocomplete_fields = ()
+    show_change_link = True
+
+
+class HorseMeasurementsInline(admin.StackedInline):
+    model = HorseMeasurements
+    extra = 0
+    max_num = 1
+    can_delete = True
+    classes = ("tab", "tab-measure")
+
 
 @admin.register(Horse)
 class HorseAdmin(admin.ModelAdmin):
@@ -40,10 +72,6 @@ class HorseAdmin(admin.ModelAdmin):
                 "ident_notes",
             ),
         }),
-        ("Родословная", {
-            "classes": ("tab", "tab-pedigree"),
-            "fields": ("sire", "dam",),
-        }),
         ("Фотографии", {
             "classes": ("tab", "tab-photos"),
             "fields": (
@@ -61,28 +89,44 @@ class HorseAdmin(admin.ModelAdmin):
     )
 
     inlines = [
+        HorseMeasurementsInline,   # ← удобно редактировать на карточке лошади
+        OffspringInline,           # ← новая вкладка «Родословная»
         IdentificationEventInline,
         OwnershipInline,
         VaccinationInline,
         LabTestInline,
     ]
 
+
+# Если хочешь оставить отдельные административные страницы — можно и так:
+
 @admin.register(HorseMeasurements)
 class HorseMeasurementsAdmin(admin.ModelAdmin):
-    list_display = ("horse", "withers_height_cm", "chest_girth_cm", "metacarpus_girth_cm")
+    list_display = ("horse", "head", "left_foreleg", "right_foreleg", "left_hindleg", "right_hindleg")
+    search_fields = ("horse__name", "horse__registry_no")
+
 
 @admin.register(DiagnosticCheck)
 class DiagnosticCheckAdmin(admin.ModelAdmin):
-    list_display = ("horse", "date", "result", "expertise_no")
+    list_display = ("horse", "date", "veterinarian", "place_event", "urine", "blood", "others")
+    list_filter = ("date",)
+    search_fields = ("horse__name", "horse__registry_no", "veterinarian__person__last_name")
+
 
 @admin.register(SportAchievement)
 class SportAchievementAdmin(admin.ModelAdmin):
     list_display = ("horse", "year", "place", "info")
+    search_fields = ("horse__name", "place", "info")
+
 
 @admin.register(ExhibitionEntry)
 class ExhibitionEntryAdmin(admin.ModelAdmin):
     list_display = ("horse", "year", "place", "info")
+    search_fields = ("horse__name", "place", "info")
+
 
 @admin.register(Offspring)
 class OffspringAdmin(admin.ModelAdmin):
-    list_display = ("horse", "birth_year", "colour", "sex", "brand_no")
+    list_display = ("horse", "relation", "name_klichka", "date_birth", "breed", "colour_horse")
+    list_filter = ("relation", "breed")
+    search_fields = ("horse__name", "name_klichka", "reg_number", "brand_no", "shb_no")
