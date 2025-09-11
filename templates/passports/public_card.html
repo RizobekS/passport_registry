@@ -141,25 +141,28 @@
             <div class="col-sm-6"><strong>Масть:</strong> {{ p.horse.color.name }}</div>
             <div class="col-sm-6"><strong>Дата рождения:</strong> {{ p.horse.birth_date|date:'d.m.Y' }}</div>
           </div>
-
-          {# Одно фото лошади: показываем первое доступное #}
-          {% if p.horse.photo_right_side %}
-            <div class="text-center mb-4">
-              <img src="{{ p.horse.photo_right_side.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
+          <div class="row">
+            <div class="col-12">
+              {# Одно фото лошади: показываем первое доступное #}
+              {% if p.horse.photo_right_side %}
+                <div class="text-center mb-4">
+                  <img src="{{ p.horse.photo_right_side.url }}" alt="Фото лошади" style="max-width:300px; height:auto; border-radius:10px; object-fit: contain;">
+                </div>
+              {% elif p.horse.photo_left_side %}
+                <div class="text-center mb-4">
+                  <img src="{{ p.horse.photo_left_side.url }}" alt="Фото лошади" style="max-width:300px; height:auto; border-radius:10px; object-fit: contain;">
+                </div>
+              {% elif p.horse.photo_muzzle %}
+                <div class="text-center mb-4">
+                  <img src="{{ p.horse.photo_muzzle.url }}" alt="Фото лошади" style="max-width:300px; height:auto; border-radius:10px; object-fit: contain;">
+                </div>
+              {% elif p.horse.photo_upper_eye_level %}
+                <div class="text-center mb-4">
+                  <img src="{{ p.horse.photo_upper_eye_level.url }}" alt="Фото лошади" style="max-width:300px; height:auto; border-radius:10px; object-fit: contain;">
+                </div>
+              {% endif %}
             </div>
-          {% elif p.horse.photo_left_side %}
-            <div class="text-center mb-4">
-              <img src="{{ p.horse.photo_left_side.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
-            </div>
-          {% elif p.horse.photo_muzzle %}
-            <div class="text-center mb-4">
-              <img src="{{ p.horse.photo_muzzle.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
-            </div>
-          {% elif p.horse.photo_upper_eye_level %}
-            <div class="text-center mb-4">
-              <img src="{{ p.horse.photo_upper_eye_level.url }}" alt="Фото лошади" style="max-width:350px; height:auto; border-radius:10px;">
-            </div>
-          {% endif %}
+          </div>
 
           <h6 class="text-muted">Ветеринарные отметки</h6>
           <div class="mb-4 table-responsive">
