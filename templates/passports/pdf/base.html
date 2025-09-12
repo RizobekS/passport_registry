@@ -1,73 +1,55 @@
-{% load static %}
+{% load static pdf_utils %}
 <!doctype html>
-<html lang="ru">
+<html lang="uz">
 <head>
 <meta charset="utf-8">
 <style>
-  /* Размер страницы и поля */
   @page {
     size: A4;
     margin: 12mm 12mm 16mm 12mm;
-    @bottom-center {
-      content: "Стр. " counter(page) ";
-      font-size: 9pt;
-      color: #444;
-      border-top: 0.5pt solid #999;
-      padding-top: 3mm;
-    }
+    /* лёгкий водяной знак на всех страницах, за текстом */
+    background: url("{% static_file 'img/watermark-hefu2.png' %}") center 55% / 70% no-repeat;
   }
 
-  /* Шрифты: DejaVu Sans покрывает кириллицу и узбекский (латиница) */
-  body {
-    font-family: "DejaVu Sans", Arial, sans-serif;
-    color: #111;
-    line-height: 1.3;
-    font-size: 10.5pt;
-    word-break: break-word;
+  body { font-family: DejaVu Sans, Arial, sans-serif; color:#111; font-size:11pt; }
+
+  /* жесткий разрыв после каждого такого блока */
+  .page { break-after: page; page-break-after: always; }
+  /* (опционально) начать новый лист перед блоком */
+  .page-start { break-before: page; page-break-before: always; }
+
+  .page-cover { page: cover; }
+  .cover-bg {
+    position: relative; width: 210mm; height: 297mm;
+    background: #fff url("{% static_file 'passports/img/cover-bg.png' %}") center/cover no-repeat;
   }
 
-  /* ФОН ЧЕРЕЗ IMG */
-  .bg-img {
-    position:absolute; left:0; top:0;
-    width: 210mm; height: 297mm;
-    object-fit: cover;
-    z-index: 0;
-  }
-
-  h1, h2, h3 { margin: 0 0 6mm 0; text-align: center; }
-  .muted { color:#555; }
-
-  /* Таблица-паспорт (устойчивая верстка) */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;     /* чтобы ничего не «ехало» */
-  }
-  .table th, .table td {
-    border: 0.6pt solid #333;
-    vertical-align: top;
-    padding: 2.5mm;
-  }
-  .table .w-label { width: 48mm; }
-  .table td { white-space: pre-wrap; } /* многоязычные подписи */
-  .kv { margin-top: 1.5mm; font-size: 9pt; color:#444 }
-
-  /* Грид для блока кодов */
-  .row { display: flex; gap: 8mm; align-items: center; margin: 4mm 0 6mm 0; }
-  .col { flex: 1; }
-  .qr    { width: 36mm; height: auto; display:block; }
-  .barcode { width: 70mm; height: auto; display:block; }
-
-  /* Разделитель между логическими секциями */
-  .section { margin: 6mm 0; }
-  .page-break { page-break-before: always; }
-
-  /* Мелкие хелперы */
-  .center { text-align:center; }
+  /* общие утилиты */
+  .text-center { text-align: center; }
+  .p2-wrap { margin-top: 8mm; font-size: 12pt; line-height: 1.35; }
+  .p2-block { margin-bottom: 7mm; }
 </style>
-{% block extra_css %}{% endblock %}
 </head>
 <body>
-  {% block content %}{% endblock %}
+
+  <!-- Стр.1: обложка -->
+  <section class="page-cover">
+    <div class="cover-bg">
+      {% include 'passports/pdf/blocks/1cover_text.html' %}
+    </div>
+  </section>
+
+  <!-- Стр.2: текстовая -->
+  <section class="page">
+    {% include 'passports/pdf/blocks/2static_info.html' %}
+  </section>
+
+  <!-- Стр.3: Information about horse -->
+  <section class="page">
+    {% include 'passports/pdf/blocks/3info.html' %}
+  </section>
+
+
+
 </body>
 </html>

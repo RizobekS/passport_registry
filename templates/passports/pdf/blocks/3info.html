@@ -1,0 +1,89 @@
+{# templates/passports/pdf/blocks/page3_info.html #}
+{% load pdf_utils %}
+
+<style>
+  .info-wrap { margin: 6mm 8mm 0; }
+  .ttl-3line { text-align:center; font-weight:700; margin: 0 0 4mm; }
+  .ttl-3line .l1 { font-size: 12.5pt; }
+  .ttl-3line .l2 { font-size: 12.5pt; }
+  .ttl-3line .l3 { font-size: 12.5pt; }
+
+  .info-table { width:100%; border-collapse: collapse; font-size: 12pt; }
+  .info-table td { border:1px solid #000; padding: 3mm 2mm; vertical-align: middle; }
+  .info-label { width: 38%; }           /* как на примере — широкая левая колонка */
+  .info-value { text-align: center; }   /* ВСЕ динамические значения по центру */
+
+  .barcode img { height: 16mm; }
+  .microchip-text { font-size: 10pt; margin-top: 1mm; }
+</style>
+
+<div class="info-wrap">
+
+  <!-- Заголовок из трёх строк -->
+  <div class="ttl-3line">
+    <div class="l1">От тўғрисида маълумотлар</div>
+    <div class="l2">Сведения о лошади</div>
+    <div class="l3">Information about horse</div>
+  </div>
+
+  <table class="info-table">
+    <tr>
+      <td class="info-label">Лакаби:<br>Кличка:<br>Name:</td>
+      <td class="info-value">{{ horse.name }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Туғилган санаси:<br>Дата рождения:<br>Date of birth:</td>
+      <td class="info-value">{{ horse.birth_date|date:"d.m.Y" }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Зоти:<br>Порода:<br>Breed:</td>
+      <td class="info-value">{{ horse.breed }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Туси:<br>Масть:<br>Colour:</td>
+      <td class="info-value">{{ horse.color }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Жинси:<br>Пол:<br>Sex:</td>
+      <td class="info-value">
+        {{ horse.sex }}
+      </td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Туғилган жойи:<br>Место рождения:<br>Place of birth:</td>
+      <td class="info-value">{{ horse.place_of_birth }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Паспорт рақами:<br>Номер паспорта:<br>Passport Number:</td>
+      <td class="info-value">{{ passport.number }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Эгаси:<br>Владелец:<br>Owner:</td>
+      <td class="info-value">{{ horse.owner_current }}</td>
+    </tr>
+
+    <tr>
+      <td class="info-label">Мамлакат:<br>Страна:<br>Country:</td>
+      <td class="info-value">{{ passport.owner_country|default:"Ўзбекистон / Узбекистан / Uzbekistan" }}</td>
+    </tr>
+
+    <!-- Последняя строка — штрих-код микрочипа по центру -->
+    <tr>
+      <td class="info-label">Микрочип рақами:<br>Номер микрочипа:<br>Micro chip number:</td>
+      <td class="info-value">
+        {% if passport.barcode_image %}
+          <div class="barcode">
+            <img src="{{ passport.barcode_image|fileuri }}" alt="barcode">
+          </div>
+        {% endif %}
+      </td>
+    </tr>
+  </table>
+</div>
