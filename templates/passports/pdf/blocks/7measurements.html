@@ -1,0 +1,102 @@
+{# templates/passports/pdf/blocks/page7_characteristics.html #}
+
+<style>
+  /* Чуть компактнее поля только для этой страницы, если нужно — раскомментируй
+  @page p7 { margin: 10mm 9mm 14mm 9mm; }
+  .p7-page { page: p7; }
+  */
+  .p7-wrap   { margin: 6mm 8mm 0; font-size: 11pt; }
+  .p7-title  { text-align:center; font-weight:700; line-height:1.2; margin-bottom: 5mm; }
+
+  .p7-table  { width:100%; border-collapse: collapse; }
+  .p7-table th, .p7-table td { border:1px solid #000; padding: 2mm 1.5mm; }
+  .p7-table th { text-align:center; font-weight:700; }
+  .left-col  { width: 36%; }              /* колонка «Промеры» */
+  .mid3      { width: 8%; text-align:center; }  /* I/II/III (частота бонитировки) */
+  .ind-col   { width: 28%; }              /* колонка «Показатели» */
+  .mark3     { width: 8%; text-align:center; }/* I/II/III (баллы бонитировки) */
+  .h-row     { height: 11mm; vertical-align: middle; }
+
+  .t-center  { text-align:center; }
+  .t-left    { text-align:left; }
+</style>
+
+<div class="p7-wrap p7-page">
+
+  <div class="p7-title">
+    От тавсифи<br>
+    Характеристика лошади<br>
+    Characteristics of horse
+  </div>
+
+  <table class="p7-table">
+    <thead>
+      <tr>
+        <th class="left-col" rowspan="2">Ўлчамлари<br>Промеры<br>Measure</th>
+        <th class="t-center" colspan="3">Бонитировка сони<br>Кратность бонитировке<br>Frequency rate of bonitation</th>
+        <th class="ind-col" rowspan="2">Кўрсаткичлар<br>Показатели<br>Indicators</th>
+        <th class="t-center" colspan="3">Бонитировка баллари<br>Баллы бонитировки<br>Bonitation mark</th>
+      </tr>
+      <tr>
+        <th class="mid3">I</th>
+        <th class="mid3">II</th>
+        <th class="mid3">III</th>
+        <th class="mark3">I</th>
+        <th class="mark3">II</th>
+        <th class="mark3">III</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Ряд 1 -->
+      <tr class="h-row">
+        <td class="t-left">Ёши<br>Возраст<br>Age</td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Насл-набасби<br>Происхождение<br>Origin</td>
+        <td></td><td></td><td></td>
+      </tr>
+      <!-- Ряд 2 -->
+      <tr class="h-row">
+        <td class="t-left">Қаричғай баландлиги, см.<br>Высота в холке, см.<br>Height from withers, sm.</td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Типичлиги<br>Типичность<br>Typicality</td>
+        <td></td><td></td><td></td>
+      </tr>
+      <!-- Ряд 3 -->
+      <tr class="h-row">
+        <td class="t-left">Тананинг қис узунлиги, см.<br>Косая длина туловища, см.<br>Oblique length of torso, sm.</td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Ўлчамлари<br>Промеры<br>Measure</td>
+        <td></td><td></td><td></td>
+      </tr>
+      <!-- Ряд 4 -->
+      <tr class="h-row">
+        <td class="t-left">Кўкрак айланаси, см.<br>Обхват груди, см.<br>Chest girth, sm.</td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Ташқи тузилиши<br>Экстерьер<br>Exteriors</td>
+        <td></td><td></td><td></td>
+      </tr>
+      <!-- Ряд 5 -->
+      <tr class="h-row">
+        <td class="t-left">Қафт айланаси, см.<br>Обхват пясти, см.<br>Metacarpus girth, sm.</td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Ишчанлик қобилияти<br>Работоспособность<br>Capacity</td>
+        <td></td><td></td><td></td>
+      </tr>
+      <!-- Ряд 6 -->
+      <tr class="h-row">
+        <td class="t-left"></td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Авлодининг сифати<br>Качество потомства<br>Quality of breed</td>
+        <td></td><td></td><td></td>
+      </tr>
+      <!-- Ряд 7 -->
+      <tr class="h-row">
+        <td class="t-left"></td>
+        <td></td><td></td><td></td>
+        <td class="t-left">Синфи<br>Класс<br>Class</td>
+        <td></td><td></td><td></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>

@@ -59,5 +59,19 @@
     {% include 'passports/pdf/blocks/5photos.html' %}
   </section>
 
+  <section class="page">
+    {% include 'passports/pdf/blocks/6marks.html' %}
+  </section>
+
+  <section class="page">
+    {% include 'passports/pdf/blocks/7measurements.html' %}
+  </section>
+
+  {% for rows in vacc_other_pages %}
+  <section class="page">
+    {% include 'passports/pdf/blocks/vaccinations.html' with rows=rows %}
+  </section>
+  {% endfor %}
+
 </body>
 </html>
