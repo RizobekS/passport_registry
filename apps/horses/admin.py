@@ -81,8 +81,6 @@ class HorseAdmin(admin.ModelAdmin):
                 "photo_muzzle",
                 "photo_neck_lower_view",
                 "photo_front_view_forelegs",
-                "photo_front_view_hind_legs",
-                "photo_hind_view_forelegs",
                 "photo_hind_view_hind_legs",
             ),
         }),

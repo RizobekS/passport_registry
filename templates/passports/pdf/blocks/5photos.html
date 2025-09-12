@@ -1,0 +1,170 @@
+{# templates/passports/pdf/blocks/page5_photos.html #}
+{% load pdf_utils %}
+
+<style>
+  .p5-wrap  { margin: 8mm 10mm 0; }
+  .p5-title { text-align: center; font-weight: 700; line-height: 1.35; margin-bottom: 8mm; }
+  .p5-title .small { font-weight: 400; }
+
+  /* Сетка 4 колонки, 2-я строка автоматически заполнится тремя карточками */
+  .p5-grid  { width: 100%; border-collapse: separate; border-spacing: 6mm 10mm; }
+  .p5-cell  { width: 25%; vertical-align: top; }
+
+  .card     { border: 1px solid #1f4d8f; padding: 2mm; }
+  .imgbox   { padding: 1mm; text-align: center; }
+  .imgbox img { max-width: 100%; object-fit: contain; }
+
+  .cap  { margin-top: 2mm; text-align: center; line-height: 1.2; }
+  .cap b { font-weight: 700; }
+
+  .placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 10pt;
+    color: #888;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Для второй строки оставим 1 пустую ячейку, чтобы было 3 карточки */
+  .empty { }
+</style>
+
+<div class="p5-wrap">
+
+  <div class="p5-title">
+    График тасвири<br>
+    Графическое изображение<br>
+    Graphical photos<br>
+    <span class="small">(реальные фотографии лошади)</span>
+  </div>
+
+  <table class="p5-grid">
+    <tr>
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_right_side %}
+            <img src="{{ horse.photo_right_side|fileuri }}" alt="Right side">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Ўнг ён томонидан кўриниш<br>
+            Правая боковая сторона<br>
+            <b>Right side</b>
+          </div>
+        </div>
+      </td>
+
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_upper_eye_level %}
+            <img src="{{ horse.photo_upper_eye_level|fileuri }}" alt="Upper eye level">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Кўзнинг юқори қисми<br>
+            Верхний уровень глаза<br>
+            <b>Upper eye level</b>
+          </div>
+        </div>
+      </td>
+
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_left_side %}
+            <img src="{{ horse.photo_left_side|fileuri }}" alt="Left side">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Чап ён томонидаги кўриниш<br>
+            Левая боковая сторона<br>
+            <b>Left side</b>
+          </div>
+        </div>
+      </td>
+
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_front_view_forelegs %}
+            <img src="{{ horse.photo_front_view_forelegs|fileuri }}" alt="Forelegs front view">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Олд оёқ (олдиндан)<br>
+            Передние ноги (вид спереди)<br>
+            <b>Forelegs, front view</b>
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_muzzle %}
+            <img src="{{ horse.photo_muzzle|fileuri }}" alt="Muzzle">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Тумшуқ<br>
+            Морда (крупно)<br>
+            <b>Muzzle</b>
+          </div>
+        </div>
+      </td>
+
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_hind_view_hind_legs %}
+            <img src="{{ horse.photo_hind_view_hind_legs|fileuri }}" alt="Hind legs">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Орқа оёқ (орқадан)<br>
+            Задние ноги (вид сзади)<br>
+            <b>Hind legs, rear view</b>
+          </div>
+        </div>
+      </td>
+
+      <td class="p5-cell">
+        <div class="card">
+          <div class="imgbox">
+            {% if horse.photo_neck_lower_view %}
+            <img src="{{ horse.photo_neck_lower_view|fileuri }}" alt="Neck lower view">
+            {% else %}
+            <div class="placeholder">Нет фото</div>
+            {% endif %}
+          </div>
+          <div class="cap">
+            Бўйин (паст томондан)<br>
+            Шея (снизу)<br>
+            <b>Neck lower view</b>
+          </div>
+        </div>
+      </td>
+
+      <!-- пустая ячейка, чтобы ряд был из трёх карточек -->
+      <td class="p5-cell empty"></td>
+    </tr>
+  </table>
+</div>

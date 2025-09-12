@@ -32,10 +32,8 @@ class Horse(models.Model):
     photo_upper_eye_level = models.ImageField("Фото: уровень выше глаз", upload_to="horses/", blank=True)
     photo_muzzle = models.ImageField("Фото: морда (крупно)", upload_to="horses/", blank=True)
     photo_neck_lower_view = models.ImageField("Фото: шея (снизу)", upload_to="horses/", blank=True)
-    photo_front_view_forelegs = models.ImageField("Фото: передние ноги (спереди)", upload_to="horses/", blank=True)
-    photo_front_view_hind_legs = models.ImageField("Фото: задние ноги (спереди)", upload_to="horses/", blank=True)
-    photo_hind_view_forelegs = models.ImageField("Фото: передние ноги (сзади)", upload_to="horses/", blank=True)
-    photo_hind_view_hind_legs = models.ImageField("Фото: задние ноги (сзади)", upload_to="horses/", blank=True)
+    photo_front_view_forelegs = models.ImageField("Фото: передние и задние ноги (спереди)", upload_to="horses/", blank=True)
+    photo_hind_view_hind_legs = models.ImageField("Фото: задние и передние ноги (сзади)", upload_to="horses/", blank=True)
 
     created_at = models.DateTimeField("Создано", auto_now_add=True)
 

@@ -1,0 +1,17 @@
+{# templates/passports/pdf/blocks/4diagram.html #}
+{% load static pdf_utils %}
+
+<style>
+  .p4-wrap  { margin: 10mm 12mm 0; text-align: center; }
+  .p4-title { font-weight: 700; font-size: 13pt; line-height: 1.35; margin-bottom: 6mm; }
+  .p4-img   { display: block; margin: 0 auto; width: 100%; height: auto; }
+</style>
+
+<div class="p4-wrap">
+  <div class="p4-title">
+    График тасвири/Графическое изображение /Diagram outline<br>
+    ({{ diagram_label }} ёш, возраст, Age)
+  </div>
+
+  <img src="{% static_file 'report/passport_4.png' %}" class="p4-img" alt="Diagram outline">
+</div>
