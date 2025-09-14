@@ -1,0 +1,13 @@
+{# templates/passports/pdf/blocks/page_parentage_tree.html #}
+{% load static pdf_utils %}
+<style>
+  /* По этой странице можно дать чуть меньше поля, чтобы картинка входила полностью */
+  @page p_tree { margin: 10mm; }
+  .p-tree { page: p_tree; }
+  .tree-wrap { margin: 0; }
+  .tree-img  { width: 100%; height: auto; display: block; }
+</style>
+
+<div class="p-tree tree-wrap">
+  <img class="tree-img" src="{% static_file 'report/passport_17.png' %}" alt="Pedigree diagram">
+</div>

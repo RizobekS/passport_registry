@@ -1,0 +1,66 @@
+{# templates/passports/pdf/blocks/page_diagnostic_control.html #}
+<style>
+  .dc-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
+  .dc-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+  .dc-table { width:100%; border-collapse: collapse; }
+  .dc-table th, .dc-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: top; }
+  .dc-table th { text-align:center; font-weight:700; }
+  .c-date { width:14%; } .c-place { width:26%; }
+  .c-urine,.c-blood,.c-others { width:12%; text-align:center; }
+  .c-vet  { width:24%; }
+  .row { height: 12mm; }
+  .chk { font-size: 14pt; }  /* галка */
+</style>
+
+<div class="dc-wrap">
+  <div class="dc-title">
+    Диагностик текширишлар ўтказилганлиги тўғрисида маълумотлар<br>
+    Данные о проведении диагностических исследований<br>
+    Data on diagnostic medication control
+  </div>
+
+  <table class="dc-table">
+    <thead>
+      <tr>
+        <th rowspan="2" class="c-date">
+          Сана<br>(кун, ой, йил)<br>
+          Дата<br>(число, месяц, год)<br>
+          <i>Date (Day, month, year)</i>
+        </th>
+        <th rowspan="2" class="c-place">
+          Мусобақа ўтказиладиган жой<br>
+          Место проведения соревнования<br>
+          <i>Place of the event</i>
+        </th>
+        <th colspan="3">Намуна / Образец / Sample</th>
+        <th rowspan="2" class="c-vet">
+          Ветеринария врачининг Ф.И.Ш., имзоси, муҳри<br>
+          Ф.И.О. ветеринарного врача, подпись, печать<br>
+          <i>Name, signature and stamp of official veterinarian</i>
+        </th>
+      </tr>
+      <tr>
+        <th class="c-urine">Сийдик / Моча / <i>Urine</i></th>
+        <th class="c-blood">Қон / Кровь / <i>Blood</i></th>
+        <th class="c-others">Бошқалар / Другие / <i>Others</i></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+        {% if r %}
+          <tr class="row">
+            <td class="c-date">{{ r.date|date:"d.m.Y" }}</td>
+            <td class="c-place">{{ r.place }}</td>
+            <td class="c-urine">{% if r.urine %}<span class="chk">✓</span>{% endif %}</td>
+            <td class="c-blood">{% if r.blood %}<span class="chk">✓</span>{% endif %}</td>
+            <td class="c-others">{% if r.other %}{{ r.other }}{% endif %}</td>
+            <td class="c-vet">{{ r.vet_full }}</td>
+          </tr>
+        {% else %}
+          <tr class="row"><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

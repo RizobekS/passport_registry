@@ -73,5 +73,61 @@
   </section>
   {% endfor %}
 
+  {# Лабораторные исследования — 16 страниц #}
+  {% for rows in lab_pages %}
+    <section class="page">
+      {% include 'passports/pdf/blocks/lab_tests.html' with rows=rows %}
+    </section>
+  {% endfor %}
+
+  {# Диагностик текширишлар / Diagnostic control — 5 страниц #}
+  {% for rows in diag_pages %}
+    <section class="page">
+      {% include 'passports/pdf/blocks/diagnostic_control.html' with rows=rows %}
+    </section>
+  {% endfor %}
+
+  {# Синовлар ва спорт ютуқлари / Sport achievements — 2 страницы #}
+  {% for rows in ach_pages %}
+    <section class="page">
+      {% include 'passports/pdf/blocks/achievements.html' with rows=rows %}
+    </section>
+  {% endfor %}
+
+  {# Exhibitions & demonstrations — 2 страницы #}
+  {% for rows in exh_pages %}
+    <section class="page">
+      {% include 'passports/pdf/blocks/page_exhibitions.html' with rows=rows %}
+    </section>
+  {% endfor %}
+
+  <!-- Стр.: Приплод -->
+  <section class="page">
+    {% include 'passports/pdf/blocks/page_offspring.html' %}
+  </section>
+
+  <!-- Стр.: Смена владельца -->
+  <section class="page">
+    {% include 'passports/pdf/blocks/page_ownership.html' %}
+  </section>
+
+  {# Родословная: 1) данные из БД; 2) статическая схема #}
+  <section class="page">
+    {% include 'passports/pdf/blocks/page_parentage.html' %}
+  </section>
+
+  <section class="page">
+    {% include 'passports/pdf/blocks/page_parentage_tree.html' %}
+  </section>
+
+  <section class="page">
+  {% include 'passports/pdf/blocks/page_chip.html' %}
+  </section>
+
+  {# ----- После него статический текст ----- #}
+  <section class="page">
+    {% include 'passports/pdf/blocks/last_static_text.html' %}
+  </section>
+
 </body>
 </html>

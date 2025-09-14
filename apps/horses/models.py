@@ -23,6 +23,7 @@ class Horse(models.Model):
     place_of_birth = models.ForeignKey(Region, verbose_name="Место рождения (регион)", on_delete=models.SET_NULL, null=True, blank=True)
     microchip = models.CharField("Микрочип", max_length=15, unique=True, validators=[MICROCHIP_VALIDATOR])
     brand_mark = models.CharField("Клеймо/тавро", max_length=64, blank=True)
+    dna_no = models.CharField("днк номер", max_length=64, blank=True)
     owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, blank=True, on_delete=models.SET_NULL, related_name="horses")
 
     ident_notes = models.TextField("Особые приметы", blank=True)

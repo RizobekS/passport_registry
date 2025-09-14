@@ -1,0 +1,66 @@
+{# templates/passports/pdf/blocks/page_offspring.html #}
+<style>
+  .off-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
+  .off-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+
+  .off-table { width:100%; border-collapse: collapse; }
+  .off-table th, .off-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: middle; }
+  .off-table th { text-align:center; font-weight:700; }
+
+  .c-n  { width: 5%;  text-align:center; }
+  .c-pn { width: 22%; }  /* Parental name (2 колонки) */
+  .c-pb { width: 22%; }  /* Parental breed (2 колонки) */
+  .c-col{ width: 12%; text-align:center; }
+  .c-sex{ width: 8%;  text-align:center; }
+  .c-br { width: 13%; text-align:center; }
+  .c-yr { width: 10%; text-align:center; }
+
+  .row { height: 11mm; }
+</style>
+
+<div class="off-wrap">
+  <div class="off-title">
+    Биядан кулун олиш<br>
+    Приплод<br>
+    Offspring
+  </div>
+
+  <table class="off-table">
+    <thead>
+      <tr>
+        <th class="c-n" rowspan="2">№/P</th>
+        <th class="c-pn" colspan="2">Ота-онасининг лакаби<br>Кличка родителей<br><i>Parental name</i></th>
+        <th class="c-pb" colspan="2">Ота-онасининг зоти<br>Порода родителей<br><i>Parental breed</i></th>
+        <th class="c-col" rowspan="2">Туси<br>Масть<br><i>Colour</i></th>
+        <th class="c-sex" rowspan="2">Жинси<br>Пол<br><i>Sex</i></th>
+        <th class="c-br"  rowspan="2">Тамға рақами<br>Тавро №<br><i>Brand №</i></th>
+        <th class="c-yr"  rowspan="2">Туғилган йили<br>Год рождения<br><i>Date of birth</i></th>
+      </tr>
+      <tr>
+        <th>Отаси<br>Отец<br><i>Sire</i></th>
+        <th>Онаси<br>Мать<br><i>Dam</i></th>
+        <th>Отаси<br>Отец<br><i>Sire</i></th>
+        <th>Онаси<br>Мать<br><i>Dam</i></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in offspring_rows %}
+        {% if r %}
+          <tr class="row">
+            <td class="c-n">{{ forloop.counter }}</td>
+            <td>{{ r.sire_name }}</td>
+            <td>{{ r.dam_name }}</td>
+            <td>{{ r.sire_breed }}</td>
+            <td>{{ r.dam_breed }}</td>
+            <td class="c-col">{{ r.colour }}</td>
+            <td class="c-sex">{{ r.sex }}</td>
+            <td class="c-br">{{ r.brand }}</td>
+            <td class="c-yr">{{ r.birth_year }}</td>
+          </tr>
+        {% else %}
+          <tr class="row"><td class="c-n">{{ forloop.counter }}</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

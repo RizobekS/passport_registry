@@ -67,7 +67,7 @@ class HorseAdmin(admin.ModelAdmin):
             "fields": (
                 "registry_no", "name", "sex", "horse_type",
                 "birth_date", "breed", "color", "place_of_birth",
-                "microchip", "brand_mark",
+                "microchip", "brand_mark", 'dna_no',
                 "owner_current",
                 "ident_notes",
             ),

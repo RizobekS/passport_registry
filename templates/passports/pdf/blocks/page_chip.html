@@ -1,0 +1,72 @@
+{# templates/passports/pdf/blocks/page_chip.html #}
+{% load pdf_utils %}
+
+<style>
+  .chip-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
+  .chip-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+
+  .chip-table { width:100%; border-collapse: collapse; }
+  .chip-table th, .chip-table td { border:1px solid #000; padding:2mm 1.5mm; vertical-align: middle; }
+  .chip-table th { text-align:center; font-weight:700; }
+  .c-date { width: 28%; text-align:center; }
+  .c-code { width: 36%; text-align:center; }
+  .c-bar  { width: 36%; text-align:center; }
+  .row { height: 12mm; }
+
+  .barcode img { height: 14mm; }
+  .sign-line { margin-top: 8mm; border-top: 1px solid #000; width: 70%; }
+  .mt6 { margin-top: 6mm; }
+</style>
+
+<div class="chip-wrap">
+  <div class="chip-title">
+    Чипнинг идентификация рақами<br>
+    Идентификационный номер чипа<br>
+    Chip identification number
+  </div>
+
+  <table class="chip-table">
+    <thead>
+      <tr>
+        <th class="c-date">Сана<br>Дата<br><i>Date</i></th>
+        <th class="c-code">Чип коди<br>Код чипа<br><i>Chip code</i></th>
+        <th class="c-bar">Штрих код<br><i>Barcode</i></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in chip_rows %}
+        {% if r %}
+          <tr class="row">
+            <td class="c-date">{{ r.date|date:"d.m.Y" }}</td>
+            <td class="c-code">{{ r.code }}</td>
+            <td class="c-bar">
+              {# показываем баркод для основной записи микрочипа лошади #}
+              {% if passport.barcode_image %}
+                <div class="barcode"><img src="{{ passport.barcode_image|fileuri }}" alt="barcode"></div>
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr class="row"><td></td><td></td><td></td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="mt6">
+    Ўзбекистон йилқичилик ва от спорти федерацияси раиси ўринбосарининг имзоси<br>
+    Подпись заместителя председателя федерации коневодства и конного спорта Узбекистана<br>
+    Signature of Deputy-chairman of Horse breeding and equestrian Federation of Uzbekistan
+  </div>
+  <div class="sign-line"></div>
+
+  <div class="mt6">М.Ў./М.П./S.R.</div>
+  <div class="sign-line"></div>
+
+  <div class="mt6">
+    Паспорт берилган сана:<br>
+    Дата выдачи паспорта:<br>
+    <i>Date of issue of passport:</i>
+    {% if passport_issue_date %} {{ passport_issue_date|date:"d.m.Y" }}{% else %} ________________________________ {% endif %}
+  </div>
+</div>

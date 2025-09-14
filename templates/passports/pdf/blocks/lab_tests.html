@@ -1,0 +1,84 @@
+{# templates/passports/pdf/blocks/page_lab_tests.html #}
+
+<style>
+  .lab-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
+  .lab-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+
+  .lab-table { width:100%; border-collapse: collapse; }
+  .lab-table th, .lab-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: top; }
+  .lab-table th { text-align:center; font-weight:700; }
+
+  /* ширины колонок по макету */
+  .c-date  { width: 14%; }
+  .c-type  { width: 18%; }
+  .c-dis   { width: 16%; }
+  .c-res   { width: 18%; }
+  .c-lab   { width: 20%; }
+  .c-vet   { width: 14%; }
+
+  /* высота строки для рукописного ввода */
+  .row { height: 12mm; }
+</style>
+
+<div class="lab-wrap">
+  <div class="lab-title">
+    Лаборатория текширишлари ўтказилганлиги тўғрисида маълумотлар<br>
+    Данные о проведении лабораторных исследований<br>
+    Data of laboratory health test
+  </div>
+
+  <table class="lab-table">
+    <thead>
+      <tr>
+        <th class="c-date">
+          Сана<br>(кун, ой, йил)<br>
+          Дата<br>(число, месяц, год)<br>
+          <i>Date<br>(Day, month, year)</i>
+        </th>
+        <th class="c-type">
+          Текшириш тури<br>
+          Вид исследования<br>
+          <i>Type of test</i>
+        </th>
+        <th class="c-dis">
+          Касаллик номи<br>
+          Название болезни<br>
+          <i>Name of disease</i>
+        </th>
+        <th class="c-res">
+          Текшириш натижалари<br>
+          Результаты исследования<br>
+          <i>Results of test</i>
+        </th>
+        <th class="c-lab">
+          Лабораториянинг номи ва манзили<br>
+          Наименование и адрес лаборатории<br>
+          <i>Name and address of the laboratory</i>
+        </th>
+        <th class="c-vet">
+          Ветеринария врачининг Ф.И.Ш., имзоси, муҳри<br>
+          Ф.И.О. ветеринарного врача, подпись, печать<br>
+          <i>Name, signature and stamp of official veterinarian</i>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+        {% if r %}
+          <tr class="row">
+            <td class="c-date">{{ r.date|date:"d.m.Y" }}</td>
+            <td class="c-type">{{ r.test_type }}</td>
+            <td class="c-dis">{{ r.disease }}</td>
+            <td class="c-res">{{ r.result }}</td>
+            <td class="c-lab">{{ r.lab }}</td>
+            <td class="c-vet">{{ r.vet_full }}</td>
+          </tr>
+        {% else %}
+          <tr class="row">
+            <td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,46 @@
+{# templates/passports/pdf/blocks/page_exhibitions.html #}
+<style>
+  .exh-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
+  .exh-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+
+  .exh-table { width:100%; border-collapse: collapse; }
+  .exh-table th, .exh-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: top; }
+  .exh-table th { text-align:center; font-weight:700; }
+
+  .c-year  { width: 12%; text-align:center; }
+  .c-place { width: 38%; }
+  .c-info  { width: 50%; }
+
+  .row { height: 12mm; }
+</style>
+
+<div class="exh-wrap">
+  <div class="exh-title">
+    Қўргазмалардаги чиқишлари тўғрисида маълумотлар<br>
+    Сведения об участии в выставках-выводках<br>
+    Information about exhibitions and demonstrations participation
+  </div>
+
+  <table class="exh-table">
+    <thead>
+      <tr>
+        <th class="c-year">Йил<br>Год<br><i>Year</i></th>
+        <th class="c-place">Жойи<br>Место<br><i>Place</i></th>
+        <th class="c-info">Маълумотлар<br>Сведения<br><i>Information</i></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+        {% if r %}
+          <tr class="row">
+            <td class="c-year">{{ r.year }}</td>
+            <td class="c-place">{{ r.place }}</td>
+            <td class="c-info">{{ r.info }}</td>
+          </tr>
+        {% else %}
+          <tr class="row"><td></td><td></td><td></td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

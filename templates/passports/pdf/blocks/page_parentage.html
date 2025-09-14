@@ -1,0 +1,94 @@
+{# templates/passports/pdf/blocks/page_parentage.html #}
+{% load static %}
+<style>
+  .par-wrap  { margin: 6mm 12mm 0; font-size: 11pt; }
+  .par-title { text-align:center; font-weight:700; font-size: 14pt; margin-bottom: 6mm; }
+
+  .par-row      { display:flex; gap:6mm; align-items:flex-end; margin: 4mm 0; }
+  .par-row .lab { min-width: 52mm; }
+  .par-row .val { flex: 1 1 auto; border-bottom: 1px solid #000; min-height: 6mm; }
+
+  .par-cols { display:grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 8mm; }
+  .par-hr   { border-top:1px solid #000; margin: 6mm 0; }
+
+  .muted { opacity:.95; }
+</style>
+
+<div class="par-wrap">
+  <div class="par-title">Насл-насаби/Родословная/Parentage</div>
+
+  {# 1) Место рождения — во всю ширину #}
+  <div class="par-row">
+    <div class="lab">Туғилган жойи<br>Место рождения<br><span class="muted">Place of birth</span></div>
+    <div class="val">{{ parentage.place_of_birth }}</div>
+  </div>
+
+  <div class="par-hr"></div>
+
+  {# 2) Две колонки характеристик #}
+  <div class="par-cols">
+    <div>
+      <div class="par-row">
+        <div class="lab">Лакаби<br>Кличка<br><span class="muted">Name</span></div>
+        <div class="val"><b>{{ parentage.name }}</b></div>
+      </div>
+
+      <div class="par-row">
+        <div class="lab">Тамға<br>Тавро<br><span class="muted">Brand</span></div>
+        <div class="val">{{ parentage.brand }}</div>
+      </div>
+
+      <div class="par-row">
+        <div class="lab">Зоти<br>Порода<br><span class="muted">Breed</span></div>
+        <div class="val"><b>{{ parentage.breed }}</b></div>
+      </div>
+
+      <div class="par-row">
+        <div class="lab">Жинси<br>Пол<br><span class="muted">Sex</span></div>
+        <div class="val"><b>{{ parentage.sex }}</b></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="par-row">
+        <div class="lab">Туси<br>Масть<br><span class="muted">Colour</span></div>
+        <div class="val"><b>{{ parentage.colour }}</b></div>
+      </div>
+
+      <div class="par-row">
+        <div class="lab">ДНК №</div>
+        <div class="val">{{ parentage.dna_no }}</div>
+      </div>
+
+      <div class="par-row">
+        <div class="lab">ГПК №<br><span class="muted">SHB №</span></div>
+        <div class="val">{{ parentage.shb_no }}</div>
+      </div>
+
+      <div class="par-row">
+        <div class="lab">Қайд этиш рақами:<br>Регистрационный номер:<br><span class="muted">Registration Number</span></div>
+        <div class="val"><b>{{ parentage.reg_no }}</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="par-hr"></div>
+
+  <div class="par-cols">
+    <div>
+      <div class="par-row">
+        <div class="lab">Туғилган санаси<br>Дата рождения<br><span class="muted">Date of birth</span></div>
+        <div class="val"><b>{{ parentage.birth_date|date:"d.m.Y" }}</b></div>
+      </div>
+    </div>
+    <div>
+      <div class="par-row">
+        <div class="lab">Иммунитет экспертизаси рақами, санаси<br>№ экспертизы иммунитета и дата<br><span class="muted">Immunity expertise №, date</span></div>
+        <div class="val">
+          {% if parentage.immunity_no %}{{ parentage.immunity_no }}{% endif %}
+          {% if parentage.immunity_date %} {{ parentage.immunity_date|date:"d.m.Y" }}{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+{# templates/passports/pdf/blocks/page_ownership_changes.html #}
+<style>
+  .own-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
+  .own-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+
+  .own-table { width:100%; border-collapse:collapse; }
+  .own-table th, .own-table td { border:1px solid #000; padding:2mm 1.5mm; vertical-align:top; }
+  .own-table th { text-align:center; font-weight:700; }
+
+  .c-date  { width: 20%; text-align:center; }
+  .c-owner { width: 50%; }
+  .c-stmp  { width: 30%; text-align:center; }
+
+  .row { height: 12mm; }
+</style>
+
+<div class="own-wrap">
+  <div class="own-title">
+    От эгасининг ўзгарганлиги тўғрисида маълумот<br>
+    Сведения о смене владельца<br>
+    Information on change of the ownership
+  </div>
+
+  <table class="own-table">
+    <thead>
+      <tr>
+        <th class="c-date">
+          Сотилган санаси<br>
+          Дата продажи<br>
+          <i>Date of sale</i>
+        </th>
+        <th class="c-owner">
+          От эгасининг Ф.И.Ш. ва манзили<br>
+          Ф.И.О., владельца и адрес<br>
+          <i>Name, address of the owner</i>
+        </th>
+        <th class="c-stmp">
+          Федерация вакилининг имзоси ва муҳрининг ўрни<br>
+          Место для печати и подписи представителя федерации<br>
+          <i>Place for stamp and signature of the Federation representative</i>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in ownership_rows %}
+        {% if r %}
+          <tr class="row">
+            <td class="c-date">{{ r.date|date:"d.m.Y" }}</td>
+            <td class="c-owner">{{ r.owner }}</td>
+            <td class="c-stmp"></td>
+          </tr>
+        {% else %}
+          <tr class="row"><td></td><td></td><td></td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

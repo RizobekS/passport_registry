@@ -17,9 +17,12 @@ class Vaccination(models.Model):
 
 class LabTest(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="lab_tests")
+    lab_name = models.CharField("Наименование лаборатории", max_length=64, blank=True)
+    address_lab = models.CharField("Адрес лаборатории", max_length=80, blank=True)
     date = models.DateField("Дата")
     test_type = models.ForeignKey(LabTestType, verbose_name="Тип теста", on_delete=models.PROTECT)
     result = models.CharField("Результат", max_length=120)
+    name_of_disease = models.CharField("Название болезни", max_length=120, blank=True)
     document = models.FileField("Документ", upload_to="lab_docs/", blank=True)
     veterinarian = models.ForeignKey(Veterinarian, verbose_name="Ветеринарный врач", on_delete=models.SET_NULL, null=True, blank=True)
 
