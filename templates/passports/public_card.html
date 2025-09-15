@@ -1,6 +1,11 @@
 {% extends 'layout/master.html' %}
 {% load static %}
 {% load pdf_utils %}
+
+{% block extra_css %}
+
+{% endblock %}
+{% block layout %}
 <style>
   /* Размер страницы и поля */
   @page {
@@ -116,9 +121,34 @@
 
   .signbox { margin-top:8mm; font-size:10.5pt; }
   .line { border-bottom:0.6pt solid #333; display:inline-block; width:85%; vertical-align:bottom; }
+
+  /* Контейнер для водяного знака */
+  .wm-host { position: relative; }
+
+  /* Диагональный watermark «Аннулировано» */
+  .wm-revoked{
+    position: absolute!important;
+    left: 50%; top: 50%!important;
+    transform: translate(-50%, -50%) rotate(-18deg)!important;
+    font-size: 86px!important;
+    font-weight: 800!important;
+    text-transform: uppercase!important;
+    letter-spacing: 2px!important;
+    color: #b30000!important;
+    opacity: .12!important;
+    white-space: nowrap!important;
+    z-index: 1000!important;
+    pointer-events: none!important;
+    user-select: none!important;
+    mix-blend-mode: multiply!important; /* аккуратнее на тёмных фонах */
+  }
+  @media (max-width: 576px){
+    .wm-revoked{ font-size: 34px!important; }
+  }
+  @media print{
+    .wm-revoked{ opacity: .18!important; }
+  }
 </style>
-{% block extra_css %}{% endblock %}
-{% block layout %}
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h4 class="mb-0">Паспорт № {{ p.number }}</h4>
@@ -130,8 +160,14 @@
   </div>
   <div class="row g-4">
     <div class="col-lg-8">
-      <div class="card h-100">
+      <div class="card h-100 wm-host">
         <div class="card-body">
+
+          {# ВОДЯНОЙ ЗНАК ТОЛЬКО ДЛЯ АННУЛИРОВАННЫХ #}
+          {% if p.status == 'REVOKED' %}
+            <div class="wm-revoked" style="">Аннулировано</div>
+          {% endif %}
+
           <h6 class="text-muted">Данные лошади</h6>
           <hr>
           <div class="row mb-3">

@@ -187,6 +187,7 @@ class RegistryDashboardView(TemplateView):
 
 def public_passport(request, qr_id):
     public_base_url = PUBLIC_BASE_URL
+    allowed = [Passport.Status.ISSUED, Passport.Status.REISSUED, Passport.Status.REVOKED]
     p = get_object_or_404(
         Passport.objects.select_related('horse', 'horse__breed', 'horse__color', 'horse__place_of_birth')
         .prefetch_related(
@@ -196,6 +197,6 @@ def public_passport(request, qr_id):
                      queryset=LabTest.objects.select_related('test_type', 'veterinarian__person').order_by('-date')),
         ),
         qr_public_id=qr_id,
-        status__in=[Passport.Status.ISSUED, Passport.Status.REISSUED]
+        status__in=allowed
     )
     return render(request, 'passports/public_card.html', {'p': p, 'public_base_url': public_base_url})
