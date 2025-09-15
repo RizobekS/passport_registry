@@ -164,7 +164,7 @@
             </div>
           </div>
 
-          <h6 class="text-muted">Ветеринарные отметки</h6>
+          <h6 class="text-muted">Лабораторные исследования</h6>
           <div class="mb-4 table-responsive">
             <table class="table table-sm">
               <thead>
@@ -219,6 +219,7 @@
           </div>
 
           <div class="card-footer text-center">
+            <h5>Номер микрочипа</h5>
             {% if p.barcode_image %}
               <img src="{{ p.barcode_image.url }}" class="mb-3" style="max-width:260px;" alt="BAR"/>
             {% endif %}
