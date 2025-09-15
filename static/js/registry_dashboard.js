@@ -107,7 +107,7 @@
       document.getElementById(mountId).innerHTML = '';
       chart = new ApexCharts(document.querySelector('#'+mountId), {
         chart: { type: 'bar', height: 360, toolbar: { show:false } },
-        plotOptions: { bar: { vertical: true, borderRadius: 6 } },
+        plotOptions: { bar: { horizontal: true, borderRadius: 6 } },
         series: [{ name: 'Паспорта', data }],
         xaxis: { categories: labels },
         dataLabels: { enabled: false },
