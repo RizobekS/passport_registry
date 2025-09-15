@@ -122,6 +122,66 @@ class RegistryDashboardView(TemplateView):
                 cur = date(cur.year, cur.month + 1, 1)
         ctx["by_month"] = by_month
 
+        # ===== ВЛАДЕЛЬЦЫ: физ, гос-орг, частные =====
+        persons_q = (
+            qs.filter(horse__owner_current__person__isnull=False)
+            .values(
+                "horse__owner_current__person__id",
+                "horse__owner_current__person__last_name",
+                "horse__owner_current__person__first_name",
+                "horse__owner_current__person__middle_name",
+            )
+            .annotate(c=Count("id")).order_by("-c")
+        )
+
+        owners_person = []
+        for x in persons_q:
+            ln = (x["horse__owner_current__person__last_name"] or "").strip()
+            fn = (x["horse__owner_current__person__first_name"] or "").strip()
+            mn = (x["horse__owner_current__person__middle_name"] or "").strip()
+            label = " ".join([p for p in (ln, fn, mn) if p]) or "—"
+            owners_person.append({
+                "id": x["horse__owner_current__person__id"],
+                "label": label,
+                "kind": "PERSON",
+                "count": x["c"],
+            })
+
+        # Гос. организации
+        state_q = (
+            qs.filter(horse__owner_current__organization__org_type=Organization.OrgType.STATE)
+            .values(
+                "horse__owner_current__organization__id",
+                "horse__owner_current__organization__name",
+            )
+            .annotate(c=Count("id")).order_by("-c")
+        )
+        owners_state = [{
+            "id": x["horse__owner_current__organization__id"],
+            "label": x["horse__owner_current__organization__name"] or "—",
+            "kind": "STATE",
+            "count": x["c"],
+        } for x in state_q]
+
+        # Частные организации
+        private_q = (
+            qs.filter(horse__owner_current__organization__org_type=Organization.OrgType.PRIVATE)
+            .values(
+                "horse__owner_current__organization__id",
+                "horse__owner_current__organization__name",
+            )
+            .annotate(c=Count("id")).order_by("-c")
+        )
+        owners_private = [{
+            "id": x["horse__owner_current__organization__id"],
+            "label": x["horse__owner_current__organization__name"] or "—",
+            "kind": "PRIVATE",
+            "count": x["c"],
+        } for x in private_q]
+
+        # Общий массив для фронта
+        ctx["owners"] = owners_person + owners_state + owners_private
+
         return TemplateLayout().init(ctx)
 
 

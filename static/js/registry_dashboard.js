@@ -91,4 +91,55 @@
     const m = (D.monthly||[]).map(x=> [x.m, x.c]);
     area('chartMonthly', m.map(i=>i[0]), m.map(i=>i[1]));
   }, 'chartMonthly');
+
+  // ===== ВЛАДЕЛЬЦЫ: барчарт с фильтром =====
+  safeMount(() => {
+    const raw = Array.isArray(D.owners) ? D.owners : [];
+    const kindSel = document.getElementById('ownerKindFilter');
+    const searchInp = document.getElementById('ownerSearch');
+    const mountId = 'chartOwners';
+
+    let chart = null;
+
+    const makeBar = (labels, data) => {
+      if (!exists(mountId)) return;
+      // пересоздаём на каждый апдейт для простоты
+      document.getElementById(mountId).innerHTML = '';
+      chart = new ApexCharts(document.querySelector('#'+mountId), {
+        chart: { type: 'bar', height: 360, toolbar: { show:false } },
+        plotOptions: { bar: { horizontal: true, borderRadius: 6 } },
+        series: [{ name: 'Паспорта', data }],
+        xaxis: { categories: labels },
+        dataLabels: { enabled: false },
+        tooltip: commonTooltip
+      });
+      chart.render();
+    };
+
+    const norm = s => (s || '').toString().toLowerCase();
+    const debounce = (fn, ms=200) => {
+      let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+    };
+
+    const refresh = () => {
+      const kind = (kindSel && kindSel.value) || 'ALL';
+      const q = norm(searchInp && searchInp.value);
+
+      let arr = raw;
+      if (kind !== 'ALL') arr = arr.filter(x => x.kind === kind);
+      if (q) arr = arr.filter(x => norm(x.label).includes(q));
+
+      // сортировка по count ↓ и берём топ-20 для читаемости
+      arr = arr.slice().sort((a,b) => (b.count||0) - (a.count||0)).slice(0, 20);
+
+      const labels = arr.map(x => x.label);
+      const data = arr.map(x => x.count || 0);
+      makeBar(labels, data);
+    };
+
+    if (kindSel) kindSel.addEventListener('change', refresh);
+    if (searchInp) searchInp.addEventListener('input', debounce(refresh, 200));
+
+    refresh(); // первичный рендер
+  }, 'chartOwners');
 })();
