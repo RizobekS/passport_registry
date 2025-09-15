@@ -7,7 +7,7 @@
 THEME_VARIABLES = {
     "creator_name": "WEBadiko",
     "creator_url": "https://webadiko.uz/",
-    "template_name": "Реестр паспортов",
+    "template_name": "Реестр паспорта лошади",
     "template_suffix": "Реестр паспортов",
     "template_version": "0.0.1",
     "template_free": True,
