@@ -1,65 +1,58 @@
 {# templates/passports/pdf/blocks/page_lab_tests.html #}
 
 <style>
-  .lab-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
-  .lab-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+  /* отдельная страница с чуть меньшими полями, чтобы влезала вся сетка */
+  @page lab { margin: 10mm 10mm 14mm 10mm; }
+  .lab-page { page: lab; }
 
-  .lab-table { width:100%; border-collapse: collapse; }
-  .lab-table th, .lab-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: top; }
-  .lab-table th { text-align:center; font-weight:700; }
+  .lab-wrap  { margin: 4mm 6mm 0; font-size: var(--font-base); }
+  .lab-title { text-align:center; font-weight: var(--th-weight);
+               font-size: var(--font-title); line-height:1.2; margin-bottom:5mm; }
 
-  /* ширины колонок по макету */
-  .c-date  { width: 14%; }
-  .c-type  { width: 18%; }
-  .c-dis   { width: 16%; }
-  .c-res   { width: 18%; }
-  .c-lab   { width: 20%; }
-  .c-vet   { width: 14%; }
+  .lab-table{
+    width:100%; border-collapse:collapse; table-layout: fixed;  /* фиксированная раскладка */
+  }
+  .lab-table th, .lab-table td{
+    border:1px solid #000;
+    padding: 1.6mm 1.2mm;               /* было ~2mm */
+    vertical-align: top;
+  }
+  .lab-table th{
+    text-align:center;
+    font-weight: var(--th-weight);      /* легче чем 700 */
+    font-size: 8pt;
+    line-height: 1.15;                  /* компактнее */
+    word-break: break-word;
+    hyphens: auto;
+  }
 
-  /* высота строки для рукописного ввода */
-  .row { height: 12mm; }
+  .row{ height: 11mm; }                 /* было 12mm */
 </style>
 
-<div class="lab-wrap">
+<div class="lab-wrap lab-page">
   <div class="lab-title">
     Лаборатория текширишлари ўтказилганлиги тўғрисида маълумотлар<br>
     Данные о проведении лабораторных исследований<br>
     Data of laboratory health test
   </div>
 
-  <table class="lab-table">
+ <table class="lab-table">
+    <colgroup>
+      <col style="width:14%">
+      <col style="width:18%">
+      <col style="width:16%">
+      <col style="width:18%">
+      <col style="width:20%">
+      <col style="width:14%">
+    </colgroup>
     <thead>
       <tr>
-        <th class="c-date">
-          Сана<br>(кун, ой, йил)<br>
-          Дата<br>(число, месяц, год)<br>
-          <i>Date<br>(Day, month, year)</i>
-        </th>
-        <th class="c-type">
-          Текшириш тури<br>
-          Вид исследования<br>
-          <i>Type of test</i>
-        </th>
-        <th class="c-dis">
-          Касаллик номи<br>
-          Название болезни<br>
-          <i>Name of disease</i>
-        </th>
-        <th class="c-res">
-          Текшириш натижалари<br>
-          Результаты исследования<br>
-          <i>Results of test</i>
-        </th>
-        <th class="c-lab">
-          Лабораториянинг номи ва манзили<br>
-          Наименование и адрес лаборатории<br>
-          <i>Name and address of the laboratory</i>
-        </th>
-        <th class="c-vet">
-          Ветеринария врачининг Ф.И.Ш., имзоси, муҳри<br>
-          Ф.И.О. ветеринарного врача, подпись, печать<br>
-          <i>Name, signature and stamp of official veterinarian</i>
-        </th>
+        <th>Сана<br>Дата<br><i>Date<br>(Day, month, year)</i></th>
+        <th>Текшириш тури<br>Вид исследования<br><i>Type of test</i></th>
+        <th>Касаллик номи<br>Название болезни<br><i>Name of disease</i></th>
+        <th>Текшириш натижалари<br>Результаты исследования<br><i>Results of test</i></th>
+        <th>Лабораториянинг номи ва манзили<br>Наименование и адрес лаборатории<br><i>Name and address of the laboratory</i></th>
+        <th>Ветеринария врачининг Ф.И.Ш., имзоси, муҳри<br><i>Name, signature and stamp of official veterinarian</i></th>
       </tr>
     </thead>
     <tbody>

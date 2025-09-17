@@ -7,15 +7,35 @@
   @page {
     size: A4;
     margin: 12mm 12mm 16mm 12mm;
-    /* лёгкий водяной знак на всех страницах, за текстом */
     background: url("{% static_file 'img/watermark-hefu2.png' %}") center 55% / 70% no-repeat;
   }
 
-  body { font-family: DejaVu Sans, Arial, sans-serif; color:#111; font-size:11pt; }
+  @font-face{
+    font-family: 'DejaVuSansPassport';
+    src: url("{% static_file 'fonts/DejaVuSans.ttf' %}") format('truetype');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face{
+    font-family: 'DejaVuSansPassport';
+    src: url("{% static_file 'fonts/DejaVuSans-Bold.ttf' %}") format('truetype');
+    font-weight: 700; font-style: normal;
+  }
 
-  /* жесткий разрыв после каждого такого блока */
+  :root{
+    /* централизованно управляем кеглем */
+    --font-base: 10.5pt;      /* было 11pt */
+    --font-title: 13pt;       /* заголовки таблиц/страниц */
+    --th-weight: 600;         /* чуть легче чем 700 */
+  }
+
+  body{
+    font-family: 'DejaVuSansPassport', 'DejaVu Sans', Arial, sans-serif;
+    color:#111;
+    font-size: var(--font-base);
+    font-weight: 400;         /* страхуемся от «жирности по умолчанию» */
+  }
+
   .page { break-after: page; page-break-after: always; }
-  /* (опционально) начать новый лист перед блоком */
   .page-start { break-before: page; page-break-before: always; }
 
   .page-cover { page: cover; }
@@ -24,9 +44,8 @@
     background: #fff url("{% static_file 'passports/img/cover-bg.png' %}") center/cover no-repeat;
   }
 
-  /* общие утилиты */
   .text-center { text-align: center; }
-  .p2-wrap { margin-top: 8mm; font-size: 12pt; line-height: 1.35; }
+  .p2-wrap { margin-top: 8mm; font-size: calc(var(--font-base) + 1pt); line-height: 1.35; }
   .p2-block { margin-bottom: 7mm; }
 </style>
 </head>
