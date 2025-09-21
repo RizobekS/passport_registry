@@ -1,17 +1,16 @@
 {# templates/passports/pdf/blocks/page_achievements.html #}
 <style>
-  .ach-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
-  .ach-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+  .ach-wrap{ margin:5mm 6mm 0; font-size:6pt; }
+  .ach-title{ text-align:center; font-weight:700; line-height:1; margin-bottom:2mm; font-size:10pt; }
 
-  .ach-table { width:100%; border-collapse: collapse; }
-  .ach-table th, .ach-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: top; }
-  .ach-table th { text-align:center; font-weight:700; font-size: 8pt; }
+  .ach-table{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .ach-table th,.ach-table td{ border:1px solid #000; padding:1mm; vertical-align:top; }
+  .ach-table th{ text-align:center; font-weight:700; font-size:7pt; }
 
-  .c-year { width: 12%; text-align:center; }
-  .c-place { width: 38%; }
-  .c-info { width: 50%; }
-
-  .row { height: 12mm; }  /* удобная высота для рукописного ввода */
+  .c-year{ width:12%; text-align:center; }
+  .c-place{ width:36%; }
+  .c-info{ width:52%; }
+  .row{ height:4mm; }
 </style>
 
 <div class="ach-wrap">

@@ -1,91 +1,57 @@
-{# templates/passports/pdf/blocks/cover_text.html #}
 {% load pdf_utils %}
-
 <style>
-  /* локальные стили только для этой таблицы/обложки */
-  .cover-table { width: 100%; border-collapse: collapse; font-size: 12pt; }
-  .cover-table td { border: 1px solid #000; padding: 3mm 2mm; vertical-align: middle; }
-  .cover-label { width: 40%; }
-  .barcode img { height: 18mm; }
-  .qr { width: 36mm; height: 36mm; object-fit: contain; }
-
-  .text-center { text-align: center; }
-
-  /* колонка "Номер паспорта" — центр по горизонтали и вертикали */
-  .center-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3mm;
-    padding: 4mm 2mm;
-  }
-  .pass-no { font-weight: 700; font-size: 14pt; letter-spacing: 0.3pt; }
-
-  /* логотип сверху по центру */
-  .cover-top-logo { display: block; margin: 0 auto 8mm; width: 64mm; }
+  .cover-table{ border-collapse:collapse; font-size:8pt; }
+  .cover-table td{ border:1px solid #000; padding:2mm 1mm; vertical-align:middle; }
+  .cover-label{ width:40%; }
+  .barcode img{ height:12mm; }
+  .qr{ width:26mm; height:26mm; object-fit:contain; margin:auto; }
+  .text-center{ text-align:center; }
+  .center-col{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.5mm; padding:3mm 1mm; }
+  .pass-no{ font-weight:700; font-size:11.2pt; letter-spacing:.2pt; }
+  .cover-top-logo{ display:block; margin:0 auto 6mm; width:46mm; }
 </style>
 
-<!-- поднял блок выше: было top:24mm, стало top:16mm -->
-<div style="position:absolute; left:18mm; top:12mm; right:28mm;">
 
-
-
-  <!-- Заголовок из трёх строк -->
-  <div class="text-center" style="font-weight:700; font-size:12pt; margin-bottom:6mm;">
-    ЎЗБЕКИСТОН РЕСПУБЛИКАСИ <br>
-    РЕСПУБЛИКА УЗБЕКИСТАН <br>
-    THE REPUBLIC OF UZBEKISTAN
+<div style="position:absolute; left:8mm; top:5mm; right:18mm;">
+  <div class="text-center" style="font-weight:700; font-size:10pt; margin-bottom:4mm;">
+    ЎЗБЕКИСТОН РЕСПУБЛИКАСИ <br> РЕСПУБЛИКА УЗБЕКИСТАН <br> THE REPUBLIC OF UZBEKISTAN
   </div>
-  <!-- логотип по центру -->
+
   <img class="cover-top-logo" src="{% static_file 'img/hefu-logo.png' %}" alt="HEFU">
 
-  <!-- Название паспорта из трёх строк -->
-  <div class="text-center" style="font-weight:700; font-size:14pt; margin-bottom:10mm;">
-    ОТ ПАСПОРТИ <br>
-    ПАСПОРТ ЛОШАДИ <br>
-    HORSE PASSPORT
+  <div class="text-center" style="font-weight:700; font-size:11pt; margin-bottom:5mm;">
+    ОТ ПАСПОРТИ <br> ПАСПОРТ ЛОШАДИ <br> HORSE PASSPORT
   </div>
 
-  <!-- Таблица с полями обложки (2 колонки: метка, значение/QR) -->
-  <table class="cover-table">
-    <tr>
-      <td class="cover-label">Лакаби:<br>Кличка:<br>Name:</td>
-      <td class="text-center">{{ horse.name }}</td>
-    </tr>
-
-    <tr>
-      <td>Тамға:<br>Тавро:<br>Brand:</td>
-      <td class="text-center">{{ horse.brand_mark }}</td>
-    </tr>
-
-    <tr>
-      <td>Микрочип рақами:<br>Номер микрочипа:<br>Microchip number:</td>
-      <td class="text-center">
-        {% if passport.barcode_image %}
-          <div class="barcode">
-            <img src="{{ passport.barcode_image|fileuri }}" alt="barcode">
-          </div>
-        {% endif %}
-      </td>
-    </tr>
-
-    <tr>
-      <td>Паспорт рақами:<br>Номер паспорта:<br>Passport Number:</td>
-      <td class="center-col">
-        <div class="pass-no">{{ passport.number }}</div>
-        {% if passport.qr_image %}
+  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <table class="cover-table">
+      <tr>
+        <td class="cover-label">Лакаби:<br>Кличка:<br>Name:</td>
+        <td class="text-center">{{ horse.name }}</td>
+        <td rowspan="3">
+          {% if passport.qr_image %}
           <img class="qr" src="{{ passport.qr_image|fileuri }}" alt="qr">
-        {% endif %}
-      </td>
-    </tr>
-  </table>
-
-  <!-- FEI-текст ниже таблицы -->
-  <div class="text-center" style="font-size:11pt; margin-top:8mm; opacity:.9;">
-    Мазкур паспорт 18 сентябрь 2019 йилда Халқаро от спорти федерацияси (FEI) томонидан тасдиқланган. <br>
-    Этот паспорт утвержден Международной федерацией конного спорта (FEI) 18 сентября 2019 году. <br>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td>Тамға:<br>Тавро:<br>Brand:</td>
+        <td class="text-center">{{ horse.brand_mark }}</td>
+      </tr>
+      <tr>
+        <td>Микрочип рақами:<br>Номер микрочипа:<br>Microchip number:</td>
+        <td class="text-center">{% if passport.barcode_image %}<div class="barcode"><img src="{{ passport.barcode_image|fileuri }}" alt="barcode"></div>{% endif %}</td>
+      </tr>
+    </table>
+  </div>
+  <div style="margin: 2mm auto; display:flex; flex-direction:column; align-items:center;">
+    <div>
+      <strong>Паспорт рақами: {{passport.number}}</strong><br>Номер паспорта:<br>Passport Number:
+    </div>
+  </div>
+  <div class="text-center" style="font-size:8pt; margin-top:8mm;">
+    Мазкур паспорт 18 сентябрь 2019 йилда Халқаро от спорти федерацияси (FEI) томонидан тасдиқланган. <br><br>
+    Этот паспорт утвержден Международной федерацией конного спорта (FEI) 18 сентября 2019 году. <br><br>
     This passport approved by Federation Equestre International (FEI) in 18 September 2019.
   </div>
-
 </div>

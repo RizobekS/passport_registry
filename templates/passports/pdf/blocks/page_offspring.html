@@ -1,21 +1,20 @@
 {# templates/passports/pdf/blocks/page_offspring.html #}
 <style>
-  .off-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
-  .off-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+  .off-wrap  { margin: 5mm 6mm 0; font-size: var(--font-base); }
+  .off-title { text-align:center; font-weight: var(--th-weight); line-height:1;
+               font-size: var(--font-title); margin-bottom: 2mm; }
 
-  .off-table { width:100%; border-collapse: collapse; }
-  .off-table th, .off-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align: middle; }
-  .off-table th { text-align:center; font-weight:700; font-size: 8pt;}
+  .off-table { width:100%; border-collapse:collapse; table-layout: fixed; }
+  .off-table th, .off-table td {
+    border:1px solid #000; padding:1.0mm; vertical-align: middle;
+  }
+  .off-table th { text-align:center; font-weight: var(--th-weight); font-size: 7pt; line-height:1; }
 
-  .c-n  { width: 5%;  text-align:center; }
-  .c-pn { width: 22%; }  /* Parental name (2 колонки) */
-  .c-pb { width: 22%; }  /* Parental breed (2 колонки) */
-  .c-col{ width: 12%; text-align:center; }
-  .c-sex{ width: 8%;  text-align:center; }
-  .c-br { width: 13%; text-align:center; }
-  .c-yr { width: 10%; text-align:center; }
+  /* ширины колонок (в сумме ~100%) */
+  .c-n { text-align:center; }
+  .c-col, .c-sex, .c-br, .c-yr { text-align:center; white-space:nowrap; }
 
-  .row { height: 11mm; }
+  .row { height: 4mm; } /* компактная строка для A5 */
 </style>
 
 <div class="off-wrap">
@@ -26,15 +25,26 @@
   </div>
 
   <table class="off-table">
+    <colgroup>
+      <col style="width:5%">   <!-- №/P -->
+      <col style="width:15%">  <!-- Parental name: Sire -->
+      <col style="width:15%">  <!-- Parental name: Dam  -->
+      <col style="width:15%">  <!-- Parental breed: Sire -->
+      <col style="width:15%">  <!-- Parental breed: Dam  -->
+      <col style="width:10%">  <!-- Colour -->
+      <col style="width:8%">   <!-- Sex -->
+      <col style="width:8%">   <!-- Brand № -->
+      <col style="width:9%">   <!-- Birth year -->
+    </colgroup>
     <thead>
       <tr>
-        <th class="c-n" rowspan="2">№/P</th>
-        <th class="c-pn" colspan="2">Ота-онасининг лакаби<br>Кличка родителей<br><i>Parental name</i></th>
-        <th class="c-pb" colspan="2">Ота-онасининг зоти<br>Порода родителей<br><i>Parental breed</i></th>
-        <th class="c-col" rowspan="2">Туси<br>Масть<br><i>Colour</i></th>
-        <th class="c-sex" rowspan="2">Жинси<br>Пол<br><i>Sex</i></th>
-        <th class="c-br"  rowspan="2">Тамға рақами<br>Тавро №<br><i>Brand №</i></th>
-        <th class="c-yr"  rowspan="2">Туғилган йили<br>Год рождения<br><i>Date of birth</i></th>
+        <th rowspan="2" class="c-n">№/P</th>
+        <th colspan="2">Ота-онасининг лакаби<br>Кличка родителей<br><i>Parental name</i></th>
+        <th colspan="2">Ота-онасининг зоти<br>Порода родителей<br><i>Parental breed</i></th>
+        <th rowspan="2">Туси<br>Масть<br><i>Colour</i></th>
+        <th rowspan="2">Жинси<br>Пол<br><i>Sex</i></th>
+        <th rowspan="2">Тамға рақами<br>Тавро №<br><i>Brand №</i></th>
+        <th rowspan="2">Туғилган йили<br>Год рождения<br><i>Date of birth</i></th>
       </tr>
       <tr>
         <th>Отаси<br>Отец<br><i>Sire</i></th>

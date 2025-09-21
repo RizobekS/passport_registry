@@ -388,53 +388,53 @@ def render_passport_pdf(passport):
     marks = _marks_from_models(horse)
     ctx_parentage = _parentage_ctx(passport)
 
-    ROWS_PER_PAGE = 10
+    ROWS_PER_PAGE = 6
     filled = _vaccinations_other_first_page(passport)[:ROWS_PER_PAGE]
     if len(filled) < ROWS_PER_PAGE:
         filled += [None] * (ROWS_PER_PAGE - len(filled))
     empty_page = [None] * ROWS_PER_PAGE
     vacc_other_pages = [filled] + [empty_page for _ in range(8)]  # 1 + 8 = 9 страниц
 
-    LAB_ROWS_PER_PAGE = 10
+    LAB_ROWS_PER_PAGE = 7
     filled_labs = _lab_tests_first_page(passport)[:LAB_ROWS_PER_PAGE]
     if len(filled_labs) < LAB_ROWS_PER_PAGE:
         filled_labs += [None] * (LAB_ROWS_PER_PAGE - len(filled_labs))
     empty_lab_page = [None] * LAB_ROWS_PER_PAGE
     lab_pages = [filled_labs] + [empty_lab_page for _ in range(9)]  # 1 + 9 = 10
 
-    DIAG_ROWS_PER_PAGE = 10
+    DIAG_ROWS_PER_PAGE = 8
     filled_diag = _diag_controls_first_page(passport)[:DIAG_ROWS_PER_PAGE]
     if len(filled_diag) < DIAG_ROWS_PER_PAGE:
         filled_diag += [None] * (DIAG_ROWS_PER_PAGE - len(filled_diag))
     empty_diag_page = [None] * DIAG_ROWS_PER_PAGE
     diag_pages = [filled_diag] + [empty_diag_page for _ in range(4)]  # 1 + 4 = 5
 
-    ACH_ROWS_PER_PAGE = 10  # строк на лист (при необходимости подгони)
+    ACH_ROWS_PER_PAGE = 8  # строк на лист (при необходимости подгони)
     ach_filled = _achievements_first_page(passport)[:ACH_ROWS_PER_PAGE]
     if len(ach_filled) < ACH_ROWS_PER_PAGE:
         ach_filled += [None] * (ACH_ROWS_PER_PAGE - len(ach_filled))
     ach_empty_page = [None] * ACH_ROWS_PER_PAGE
     ach_pages = [ach_filled, ach_empty_page]  # 1 из БД + 1 пустая
 
-    EXH_ROWS_PER_PAGE = 10  # сколько строк помещается на лист
+    EXH_ROWS_PER_PAGE = 8  # сколько строк помещается на лист
     exh_filled = _exhibitions_first_page(passport)[:EXH_ROWS_PER_PAGE]
     if len(exh_filled) < EXH_ROWS_PER_PAGE:
         exh_filled += [None] * (EXH_ROWS_PER_PAGE - len(exh_filled))
     exh_empty_page = [None] * EXH_ROWS_PER_PAGE
     exh_pages = [exh_filled, exh_empty_page]
 
-    OFFSPRING_ROWS_PER_PAGE = 10  # под макет;
+    OFFSPRING_ROWS_PER_PAGE = 7  # под макет;
     offspring_rows = _offspring_rows_for_passport(passport)[:OFFSPRING_ROWS_PER_PAGE]
     if len(offspring_rows) < OFFSPRING_ROWS_PER_PAGE:
         offspring_rows += [None] * (OFFSPRING_ROWS_PER_PAGE - len(offspring_rows))
 
-    OWN_ROWS_PER_PAGE = 10
+    OWN_ROWS_PER_PAGE = 6
     ownership_rows = _ownership_rows_for_passport(passport)[:OWN_ROWS_PER_PAGE]
     if len(ownership_rows) < OWN_ROWS_PER_PAGE:
         ownership_rows += [None] * (OWN_ROWS_PER_PAGE - len(ownership_rows))
 
     # ---- Chip page (1 страница) ----
-    CHIP_ROWS_PER_PAGE = 5
+    CHIP_ROWS_PER_PAGE = 3
     chip_rows = _chip_rows_for_passport(passport, CHIP_ROWS_PER_PAGE)
 
     # Баркод: используем тот же, что на обложке (для microchip).

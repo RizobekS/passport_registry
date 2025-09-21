@@ -1,32 +1,29 @@
 {# templates/passports/pdf/blocks/page_lab_tests.html #}
 
 <style>
-  /* отдельная страница с чуть меньшими полями, чтобы влезала вся сетка */
-  @page lab { margin: 10mm 10mm 14mm 10mm; }
-  .lab-page { page: lab; }
 
   .lab-wrap  { margin: 4mm 6mm 0; font-size: var(--font-base); }
   .lab-title { text-align:center; font-weight: var(--th-weight);
-               font-size: var(--font-title); line-height:1.2; margin-bottom:5mm; }
+               font-size: var(--font-title); line-height:1; margin-bottom:2mm; }
 
   .lab-table{
-    width:100%; border-collapse:collapse; table-layout: fixed;  /* фиксированная раскладка */
+    width:100%; border-collapse:collapse; table-layout: fixed;
   }
   .lab-table th, .lab-table td{
     border:1px solid #000;
-    padding: 1.6mm 1.2mm;               /* было ~2mm */
+    padding: 1mm;
     vertical-align: top;
   }
   .lab-table th{
     text-align:center;
-    font-weight: var(--th-weight);      /* легче чем 700 */
-    font-size: 8pt;
-    line-height: 1.15;                  /* компактнее */
+    font-weight: var(--th-weight;
+    font-size: 7pt;
+    line-height: 1;
     word-break: break-word;
     hyphens: auto;
   }
 
-  .row{ height: 11mm; }                 /* было 12mm */
+  .row{ height: 4mm; }
 </style>
 
 <div class="lab-wrap lab-page">

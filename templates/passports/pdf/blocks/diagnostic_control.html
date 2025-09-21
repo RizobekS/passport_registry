@@ -1,26 +1,19 @@
 {# templates/passports/pdf/blocks/page_diagnostic_control.html #}
 <style>
-  /* Чуть меньше поля на этой странице */
-  @page diag { margin: 10mm 10mm 14mm 10mm; }
-  .diag-page { page: diag; }
 
-  .dc-wrap  { margin: 4mm 6mm 0; font-size: var(--font-base); }
-  .dc-title { text-align:center; font-weight: var(--th-weight);
-              font-size: var(--font-title); line-height:1.2; margin-bottom: 5mm; }
+  .dc-wrap{ margin:4mm 6mm 0; font-size:var(--font-base); }
+  .dc-title{ text-align:center; font-weight:var(--th-weight); font-size:var(--font-title); line-height:1; margin-bottom:2mm; }
 
-  .dc-table { width:100%; border-collapse: collapse; table-layout: fixed; }
-  .dc-table th, .dc-table td { border:1px solid #000; padding: 1.6mm 1.2mm; vertical-align: top; }
-  .dc-table th { text-align:center; font-weight: var(--th-weight);
-                 font-size: 8pt; line-height: 1.15;
-                 word-break: break-word; hyphens: auto; }
+  .dc-table{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .dc-table th,.dc-table td{ border:1px solid #000; padding:1mm .9mm; vertical-align:top; }
+  .dc-table th{ text-align:center; font-weight:var(--th-weight); font-size:6pt; line-height:1; word-break:break-word; hyphens:auto; }
 
-  .c-date   { text-align:center; }
-  .c-urine, .c-blood, .c-others { text-align:center; }
-  .row { height: 11mm; }
-  .chk { font-size: 12pt; line-height: 1; }
+  /* 6 колонок = 100% */
+  .c-date{ text-align:center; } .c-urine,.c-blood,.c-others{ text-align:center; }
+  .row{ height:4mm; } .chk{ font-size:6pt; line-height:1; }
 </style>
 
-<div class="dc-wrap diag-page">
+<div class="dc-wrap">
   <div class="dc-title">
     Диагностик текширишлар ўтказилганлиги тўғрисида маълумотлар<br>
     Данные о проведении диагностических исследований<br>

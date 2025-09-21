@@ -4,149 +4,120 @@
 <head>
 <meta charset="utf-8">
 <style>
+  /* A5 портрет по умолчанию */
   @page {
-    size: A4;
-    margin: 12mm 12mm 16mm 12mm;
-    background: url("{% static_file 'img/watermark-hefu2.png' %}") center 55% / 70% no-repeat;
+    size: A5;
+    margin: 5mm 10mm 10mm 9mm;
   }
 
-  @font-face{
-    font-family: 'DejaVuSansPassport';
-    src: url("{% static_file 'fonts/DejaVuSans.ttf' %}") format('truetype');
-    font-weight: 400; font-style: normal;
+  /* A5 альбом для «тяжёлых» страниц */
+  @page a5land {
+    size: A5 landscape;
+    margin: 8mm 8mm 10mm 8mm;
   }
-  @font-face{
-    font-family: 'DejaVuSansPassport';
-    src: url("{% static_file 'fonts/DejaVuSans-Bold.ttf' %}") format('truetype');
-    font-weight: 700; font-style: normal;
-  }
+  .a5-land { page: a5land; }
+  .a5-land::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("{% static_file 'img/watermark-hefu2.png' %}");
+        background-size: cover; /* Adjust as needed */
+        background-repeat: no-repeat;
+        opacity: 0.3; /* Set desired opacity (0.0 to 1.0) */
+        z-index: -1; /* Place behind the content */
+    }
+
+  /* встраиваемые шрифты */
+  @font-face{ font-family:'DejaVuSansPassport'; src:url("{% static_file 'fonts/DejaVuSans.ttf' %}") format('truetype'); font-weight:400; font-style:normal; }
+  @font-face{ font-family:'DejaVuSansPassport'; src:url("{% static_file 'fonts/DejaVuSans-Bold.ttf' %}") format('truetype'); font-weight:700; font-style:normal; }
 
   :root{
-    /* централизованно управляем кеглем */
-    --font-base: 10.5pt;      /* было 11pt */
-    --font-title: 13pt;       /* заголовки таблиц/страниц */
-    --th-weight: 600;         /* чуть легче чем 700 */
+    /* глобальные «ручки» под A5 */
+    --font-base: 6pt;
+    --font-title: 10pt;
+    --th-weight: 600;
+    --cell-pad-v: 1mm;
+    --cell-pad-h: 0.7mm;
   }
 
-  body{
-    font-family: 'DejaVuSansPassport', 'DejaVu Sans', Arial, sans-serif;
-    color:#111;
-    font-size: var(--font-base);
-    font-weight: 400;         /* страхуемся от «жирности по умолчанию» */
+  body{ font-family:'DejaVuSansPassport','DejaVu Sans',Arial,sans-serif; color:#111; font-size:var(--font-base); font-weight:400; }
+
+  /* разрывы страниц */
+  .page{ break-after: page; page-break-after: always; }
+  .page::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("{% static_file 'img/watermark-hefu2.png' %}");
+        background-size: contain;
+        background-repeat: no-repeat;
+        opacity: 0.3;
+        z-index: -1;
+    }
+
+  .page-start{ break-before: page; page-break-before: always; }
+
+  /* обложка */
+  .page-cover{ page: cover; }
+  .cover-bg{
+    position:relative; width:148mm; height:210mm;      /* A5 портрет */
+    background:#fff url("{% static_file 'passports/img/cover-bg.png' %}") center/cover no-repeat;
   }
 
-  .page { break-after: page; page-break-after: always; }
-  .page-start { break-before: page; page-break-before: always; }
-
-  .page-cover { page: cover; }
-  .cover-bg {
-    position: relative; width: 210mm; height: 297mm;
-    background: #fff url("{% static_file 'passports/img/cover-bg.png' %}") center/cover no-repeat;
-  }
-
-  .text-center { text-align: center; }
-  .p2-wrap { margin-top: 8mm; font-size: calc(var(--font-base) + 1pt); line-height: 1.35; }
-  .p2-block { margin-bottom: 7mm; }
+  .text-center{ text-align:center; }
+  .p2-wrap{ margin-top:6mm; font-size:calc(var(--font-base) + .4pt); line-height:1.32; }
+  .p2-block{ margin-bottom:5mm; }
 </style>
 </head>
 <body>
 
-  <!-- Стр.1: обложка -->
   <section class="page-cover">
     <div class="cover-bg">
       {% include 'passports/pdf/blocks/1cover_text.html' %}
     </div>
   </section>
 
-  <!-- Стр.2: текстовая -->
-  <section class="page">
-    {% include 'passports/pdf/blocks/2static_info.html' %}
-  </section>
+  <section class="page">{% include 'passports/pdf/blocks/2static_info.html' %}</section>
 
-  <!-- Стр.3: Information about horse -->
-  <section class="page">
-    {% include 'passports/pdf/blocks/3info.html' %}
-  </section>
-
-  <!-- Стр.4: схема -->
-  <section class="page">
-    {% include 'passports/pdf/blocks/4diagram.html' %}
-  </section>
-
-  <!-- Стр.5: Фотографии лошади -->
-  <section class="page">
-    {% include 'passports/pdf/blocks/5photos.html' %}
-  </section>
-
-  <section class="page">
-    {% include 'passports/pdf/blocks/6marks.html' %}
-  </section>
-
-  <section class="page">
-    {% include 'passports/pdf/blocks/7measurements.html' %}
-  </section>
+  <!-- дальше тяжелые страницы переведены в альбом A5 -->
+  <section class="page a5-land">{% include 'passports/pdf/blocks/3info.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/4diagram.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/5photos.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/6marks.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/7measurements.html' %}</section>
 
   {% for rows in vacc_other_pages %}
-  <section class="page">
-    {% include 'passports/pdf/blocks/vaccinations.html' with rows=rows %}
-  </section>
+    <section class="page a5-land">{% include 'passports/pdf/blocks/vaccinations.html' with rows=rows %}</section>
   {% endfor %}
 
-  {# Лабораторные исследования — 16 страниц #}
   {% for rows in lab_pages %}
-    <section class="page">
-      {% include 'passports/pdf/blocks/lab_tests.html' with rows=rows %}
-    </section>
+    <section class="page a5-land">{% include 'passports/pdf/blocks/lab_tests.html' with rows=rows %}</section>
   {% endfor %}
 
-  {# Диагностик текширишлар / Diagnostic control — 5 страниц #}
   {% for rows in diag_pages %}
-    <section class="page">
-      {% include 'passports/pdf/blocks/diagnostic_control.html' with rows=rows %}
-    </section>
+    <section class="page a5-land">{% include 'passports/pdf/blocks/diagnostic_control.html' with rows=rows %}</section>
   {% endfor %}
 
-  {# Синовлар ва спорт ютуқлари / Sport achievements — 2 страницы #}
   {% for rows in ach_pages %}
-    <section class="page">
-      {% include 'passports/pdf/blocks/achievements.html' with rows=rows %}
-    </section>
+    <section class="page a5-land">{% include 'passports/pdf/blocks/achievements.html' with rows=rows %}</section>
   {% endfor %}
 
-  {# Exhibitions & demonstrations — 2 страницы #}
   {% for rows in exh_pages %}
-    <section class="page">
-      {% include 'passports/pdf/blocks/page_exhibitions.html' with rows=rows %}
-    </section>
+    <section class="page a5-land">{% include 'passports/pdf/blocks/page_exhibitions.html' with rows=rows %}</section>
   {% endfor %}
 
-  <!-- Стр.: Приплод -->
-  <section class="page">
-    {% include 'passports/pdf/blocks/page_offspring.html' %}
-  </section>
-
-  <!-- Стр.: Смена владельца -->
-  <section class="page">
-    {% include 'passports/pdf/blocks/page_ownership.html' %}
-  </section>
-
-  {# Родословная: 1) данные из БД; 2) статическая схема #}
-  <section class="page">
-    {% include 'passports/pdf/blocks/page_parentage.html' %}
-  </section>
-
-  <section class="page">
-    {% include 'passports/pdf/blocks/page_parentage_tree.html' %}
-  </section>
-
-  <section class="page">
-  {% include 'passports/pdf/blocks/page_chip.html' %}
-  </section>
-
-  {# ----- После него статический текст ----- #}
-  <section class="page">
-    {% include 'passports/pdf/blocks/last_static_text.html' %}
-  </section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_offspring.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_ownership.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_parentage.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_parentage_tree.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_chip.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/last_static_text.html' %}</section>
 
 </body>
 </html>

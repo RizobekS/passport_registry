@@ -2,12 +2,12 @@
 {% load pdf_utils %}
 
 <style>
-  .chip-wrap  { margin: 6mm 8mm 0; font-size: 11pt; }
-  .chip-title { text-align:center; font-weight:700; line-height:1.25; margin-bottom: 6mm; }
+  .chip-wrap  { margin: 6mm 8mm 0; font-size: 6pt; }
+  .chip-title { text-align:center; font-weight:700; font-size:10pt; line-height:1; margin-bottom: 4mm; }
 
   .chip-table { width:100%; border-collapse: collapse; }
-  .chip-table th, .chip-table td { border:1px solid #000; padding:2mm 1.5mm; vertical-align: middle; }
-  .chip-table th { text-align:center; font-weight:700; font-size: 8pt; }
+  .chip-table th, .chip-table td { border:1px solid #000; padding:1mm; vertical-align: middle; }
+  .chip-table th { text-align:center; font-weight:700; font-size: 7pt; }
   .c-date { width: 28%; text-align:center; }
   .c-code { width: 36%; text-align:center; }
   .c-bar  { width: 36%; text-align:center; }
@@ -15,7 +15,7 @@
 
   .barcode img { height: 14mm; }
   .sign-line { margin-top: 8mm; border-top: 1px solid #000; width: 70%; }
-  .mt6 { margin-top: 6mm; }
+  .mt6 { margin-top: 4mm; }
 </style>
 
 <div class="chip-wrap">
@@ -64,9 +64,8 @@
   <div class="sign-line"></div>
 
   <div class="mt6">
-    Паспорт берилган сана:<br>
+    Паспорт берилган сана: {% if passport_issue_date %} {{ passport_issue_date|date:"d.m.Y" }}{% else %} ________________________________ {% endif %}<br>
     Дата выдачи паспорта:<br>
     <i>Date of issue of passport:</i>
-    {% if passport_issue_date %} {{ passport_issue_date|date:"d.m.Y" }}{% else %} ________________________________ {% endif %}
   </div>
 </div>

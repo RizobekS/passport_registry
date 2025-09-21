@@ -1,41 +1,28 @@
 {# templates/passports/pdf/blocks/page6_marks.html #}
 
 <style>
-  /* МЕНЬШИЕ поля только для этой страницы */
-  @page marks { margin: 10mm 10mm 14mm 10mm; }
-  .marks-page { page: marks; }
 
-  .p6-wrap { margin: 6mm 8mm 0; font-size: 11pt; }
+  .p6-wrap{font-size:8pt; }
+  .p6-title{ text-align:center; font-weight:700; line-height:1; margin-bottom:1mm; font-size:10pt; }
 
-  .p6-title {
-    text-align:center; font-weight:700;
-    line-height:1.2; margin-bottom:4mm; font-size: 12pt;
-  }
+  .marks-table{ width:100%; border-collapse:collapse; table-layout:fixed; font-size:6pt; }
+  .marks-table td{ border:1px solid #000; padding:1mm 1mm; vertical-align:top; }
+  .marks-label{ width:40%; }
+  .marks-val{ height:9mm; }
 
-  /* Верхняя таблица примет — компактнее */
-  .marks-table { width:100%; border-collapse:collapse; }
-  .marks-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align:top; }
-  .marks-label { width:33%; }
-  .marks-val   { height: 11mm; }  /* было ~16mm */
+  .bottom-grid{ width:100%; border-collapse:separate; border-spacing:1mm 0; margin-top:2mm; font-size:6pt; }
+  .left-cell{ width:58%; vertical-align:top; }
+  .right-cell{ width:42%; vertical-align:top; }
 
-  /* Нижний блок — меньше отступы/интервалы */
-  .bottom-grid { width:100%; border-collapse:separate; border-spacing: 4mm 0; margin-top: 6mm; }
-  .left-cell   { width:58%; vertical-align:top; }
-  .right-cell  { width:42%; vertical-align:top; }
+  .owner-table{ width:100%; border-collapse:collapse; table-layout:fixed; }
+  .owner-table td{ border:1px solid #000; padding:1mm; vertical-align:top; }
+  .owner-head td{ font-weight:700; text-align:center; font-size:6pt; }
 
-  .owner-table { width:100%; border-collapse:collapse; }
-  .owner-table td { border:1px solid #000; padding: 2mm 1.5mm; vertical-align:top; }
-  .owner-head td { font-weight:700; text-align:center; font-size: 8pt; }
-
-  .sign-box {
-    border:1px solid #000; border-radius:6mm; padding:5mm 6mm;
-    font-size: 11pt; line-height:1.25;
-  }
-  .sign-quote { margin-bottom:5mm; }
-  .underline { margin-top:6mm; border-top:1px solid #000; height:0; }
+  .sign-box{ border:1px solid #000; border-radius:4mm; padding:4mm 5mm; font-size:6pt; line-height:1; }
+  .sign-quote{ margin-bottom:4mm; }
+  .underline{ margin-top:4mm; border-top:1px solid #000; height:0; }
 </style>
-
-<div class="p6-wrap marks-page">
+<div class="p6-wrap">
 
   <div class="p6-title">
     Белгиларнинг ёзма ифодаланиши<br>

@@ -1,14 +1,14 @@
 {# templates/passports/pdf/blocks/page_parentage.html #}
 {% load static %}
 <style>
-  .par-wrap  { margin: 6mm 12mm 0; font-size: 11pt; }
-  .par-title { text-align:center; font-weight:700; font-size: 14pt; margin-bottom: 6mm; }
+  .par-wrap { margin: 6mm 12mm 0; font-size: 8pt;}
+  .par-title { text-align:center; font-weight:700; font-size: 10pt; margin-bottom: 2mm; }
 
-  .par-row      { display:flex; gap:6mm; align-items:flex-end; margin: 4mm 0; }
-  .par-row .lab { min-width: 52mm; }
-  .par-row .val { flex: 1 1 auto; border-bottom: 1px solid #000; min-height: 6mm; }
+  .par-row { display:flex; gap:6mm; align-items:flex-end; margin: 4mm 0; }
+  .par-row .lab { min-width: 48mm; }
+  .par-row .val { flex: 1 1 auto; border-bottom: 1px solid #000; min-height: 4mm; }
 
-  .par-cols { display:grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 8mm; }
+  .par-cols { display:grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 2mm; }
   .par-hr   { border-top:1px solid #000; margin: 6mm 0; }
 
   .muted { opacity:.95; }
