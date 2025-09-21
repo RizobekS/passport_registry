@@ -6,149 +6,7 @@
 
 {% endblock %}
 {% block layout %}
-<style>
-  /* Размер страницы и поля */
-  @page {
-    size: A4;
-    margin: 12mm 12mm 16mm 12mm;
-    @bottom-center {
-      content: "Стр. " counter(page) " из " counter(pages);
-      font-size: 9pt;
-      color: #444;
-      border-top: 0.5pt solid #999;
-      padding-top: 3mm;
-    }
-  }
 
-  /* Шрифты: DejaVu Sans покрывает кириллицу и узбекский (латиница) */
-  body {
-    font-family: "DejaVu Sans", Arial, sans-serif;
-    color: #111;
-    line-height: 1.3;
-    font-size: 10.5pt;
-    word-break: break-word;
-  }
-
-  /* ФОН ЧЕРЕЗ IMG */
-  .bg-img {
-    position:absolute; left:0; top:0;
-    width: 210mm; height: 297mm;
-    object-fit: cover;
-    z-index: 0;
-  }
-
-  h1, h2, h3 { margin: 0 0 6mm 0; text-align: center; }
-  .muted { color:#555; }
-
-  /* Таблица-паспорт (устойчивая верстка) */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;     /* чтобы ничего не «ехало» */
-  }
-  .table th, .table td {
-    border: 0.6pt solid #333;
-    vertical-align: top;
-    padding: 2.5mm;
-  }
-  .table .w-label { width: 48mm; }
-  .table td { white-space: pre-wrap; } /* многоязычные подписи */
-  .kv { margin-top: 1.5mm; font-size: 9pt; color:#444 }
-
-  /* Грид для блока кодов */
-  .row { display: flex; gap: 8mm; align-items: flex-start; margin: 4mm 0 6mm 0; }
-  .col { flex: 1; }
-  .qr    { width: 36mm; height: auto; display:block; }
-  .barcode { width: 70mm; height: auto; display:block; }
-
-  /* Разделитель между логическими секциями */
-  .section { margin: 6mm 0; }
-  .page-break { page-break-before: always; }
-
-  /* Мелкие хелперы */
-  .center { text-align:center; }
-
-  .title{ text-align:center; margin:0 0 2mm 0; }
-  .tri{ display:block; text-align:center; }
-
-  .parentage { margin-top:10mm; }
-  .pgrid { width:100%; border-collapse:collapse; table-layout:fixed; }
-  .pgrid td { border-bottom:0.6pt solid #333; padding:1.6mm 0; vertical-align:bottom; font-size:10.5pt; }
-  .lab { width:28%; color:#333; }
-  .val { width:72%; padding-left:2mm; }
-  .thin { border-bottom:0.4pt solid #999; }
-
-  .sport-table{ width:100%; border-collapse:collapse; table-layout:fixed; margin-top:3mm; }
-  .sport-table th,.sport-table td{ border:0.6pt solid #333; vertical-align:top; padding:2mm; line-height:1.25; font-size:10.5pt; }
-
-  .row-fill{ height:14mm; }
-  .lined{
-    min-height:12mm;
-    background-image:linear-gradient(to bottom, transparent 92%, #bbb 92%, #bbb 94%, transparent 94%);
-    background-size:100% 6mm;
-    padding:1mm 1.25mm;
-  }
-
-  .exh-table{ width:100%; border-collapse:collapse; table-layout:fixed; margin-top:3mm; }
-  .exh-table th,.exh-table td{ border:0.6pt solid #333; vertical-align:top; padding:2mm; line-height:1.25; font-size:10.5pt; }
-  .c-year{ width:14%; } .c-place{ width:36%; } .c-info{ width:50%; }
-
-  .offs-table{ width:100%; border-collapse:collapse; table-layout:fixed; margin-top:3mm; }
-  .offs-table th,.offs-table td{ border:0.6pt solid #333; vertical-align:top; padding:2mm; line-height:1.25; font-size:10.5pt; }
-
-  /* ширины колонок, близкие к бланку */
-  .c-no{ width:7%; }
-  .c-par-name{ width:23%; }
-  .c-par-breed{ width:20%; }
-  .c-colour{ width:12%; }
-  .c-sex{ width:10%; }
-  .c-brand{ width:13%; }
-  .c-birth{ width:15%; }
-
-  .small{ font-size:9pt; }
-
-  .chip-table{ width:100%; border-collapse:collapse; table-layout:fixed; margin-top:3mm; }
-  .chip-table th,.chip-table td{ border:0.6pt solid #333; vertical-align:top; padding:2mm; line-height:1.25; font-size:10.5pt; }
-  .c-date{ width:18%; } .c-chip{ width:32%; } .c-bar{ width:50%; }
-
-  .barcode { height:14mm; max-width:100%; display:block; }
-  .row-fill{ height:16mm; }
-  .lined{
-    min-height:14mm;
-    background-image:linear-gradient(to bottom, transparent 92%, #bbb 92%, #bbb 94%, transparent 94%);
-    background-size:100% 7mm; padding:1mm 1.25mm;
-  }
-
-  .signbox { margin-top:8mm; font-size:10.5pt; }
-  .line { border-bottom:0.6pt solid #333; display:inline-block; width:85%; vertical-align:bottom; }
-
-  /* Контейнер для водяного знака */
-  .wm-host { position: relative; }
-
-  /* Диагональный watermark «Аннулировано» */
-  .wm-revoked{
-    position: absolute!important;
-    left: 50%; top: 50%!important;
-    transform: translate(-50%, -50%) rotate(-28deg)!important;
-    font-size: 86px!important;
-    font-weight: 800!important;
-    text-transform: uppercase!important;
-    letter-spacing: 2px!important;
-    color: #b30000!important;
-    opacity: .22!important;
-    white-space: nowrap!important;
-    z-index: 1000!important;
-    pointer-events: none!important;
-    user-select: none!important;
-    mix-blend-mode: multiply!important; /* аккуратнее на тёмных фонах */
-  }
-  @media (max-width: 576px){
-    .wm-revoked{ font-size: 38px!important; }
-  }
-  @media print{
-    .wm-revoked{ opacity: .28!important; }
-  }
-</style>
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h4 class="mb-0">Паспорт № {{ p.number }}</h4>
@@ -171,10 +29,11 @@
           <h6 class="text-muted">Данные лошади</h6>
           <hr>
           <div class="row mb-3">
-            <div class="col-sm-6"><strong>Кличка:</strong> {{ p.horse.name }}</div>
-            <div class="col-sm-6"><strong>Порода:</strong> {{ p.horse.breed.name }}</div>
-            <div class="col-sm-6"><strong>Масть:</strong> {{ p.horse.color.name }}</div>
-            <div class="col-sm-6"><strong>Дата рождения:</strong> {{ p.horse.birth_date|date:'d.m.Y' }}</div>
+            <div class="col-sm-6 mb-1"><strong>Кличка:</strong> {{ p.horse.name }}</div>
+            <div class="col-sm-6 mb-1"><strong>Порода:</strong> {{ p.horse.breed.name }}</div>
+            <div class="col-sm-6 mb-1"><strong>Масть:</strong> {{ p.horse.color.name }}</div>
+            <div class="col-sm-6 mb-1"><strong>Дата рождения:</strong> {{ p.horse.birth_date|date:'d.m.Y' }}</div>
+            <div class="col-sm-6 mb-1"><strong>Владелец:</strong> {{ p.horse.owner_current }}</div>
           </div>
           <div class="row">
             <div class="col-12">
@@ -199,9 +58,9 @@
             </div>
           </div>
 
-          <h6 class="text-muted">Лабораторные исследования</h6>
+          <h6 class="text-muted mt-5">Лабораторные исследования</h6>
           <div class="mb-4 table-responsive">
-            <table class="table table-sm">
+            <table class="table table-sm table-bordered">
               <thead>
                 <tr>
                   <th>Дата</th>
@@ -227,9 +86,9 @@
           </div>
 
           {# Отдельная таблица: Вакцинация #}
-          <h6 class="text-muted">Вакцинация</h6>
+          <h6 class="text-muted mt-5">Вакцинация</h6>
           <div class="mb-4 table-responsive">
-            <table class="table table-sm">
+            <table class="table table-sm table-bordered">
               <thead>
                 <tr>
                   <th>Дата</th>
