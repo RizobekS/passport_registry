@@ -393,7 +393,7 @@ def render_passport_pdf(passport):
     if len(filled) < ROWS_PER_PAGE:
         filled += [None] * (ROWS_PER_PAGE - len(filled))
     empty_page = [None] * ROWS_PER_PAGE
-    vacc_other_pages = [filled] + [empty_page for _ in range(8)]  # 1 + 8 = 9 страниц
+    vacc_other_pages = [filled] + [empty_page for _ in range(11)]  # 1 + 11 = 12 страниц
 
     LAB_ROWS_PER_PAGE = 7
     filled_labs = _lab_tests_first_page(passport)[:LAB_ROWS_PER_PAGE]
