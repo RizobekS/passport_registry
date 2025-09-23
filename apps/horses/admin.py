@@ -87,13 +87,19 @@ class HorseAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        HorseMeasurementsInline,   # ← удобно редактировать на карточке лошади
-        OffspringInline,           # ← новая вкладка «Родословная»
+        HorseMeasurementsInline,  # ← удобно редактировать на карточке лошади
+        OffspringInline,  # ← новая вкладка «Родословная»
         IdentificationEventInline,
         OwnershipInline,
         VaccinationInline,
         LabTestInline,
     ]
+
+    class Media:
+        js = (
+            "https://unpkg.com/html5-qrcode/html5-qrcode.min.js",
+            "js/microchip_scanner.js",
+        )
 
 
 # Если хочешь оставить отдельные административные страницы — можно и так:
