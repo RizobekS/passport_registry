@@ -65,8 +65,13 @@ class Color(models.Model):
     def __str__(self): return self.name
 
 class Vaccine(models.Model):
-    name = models.CharField("Наименование", max_length=160)
-    manufacturer = models.CharField("Производитель", max_length=160, blank=True)
+    name = models.CharField("Наименование вакцины", max_length=160)
+    number = models.CharField("Номер вакцины", max_length=60)
+    registration_number = models.CharField("Регистрации вакцины", max_length=100)
+    manufacture_date = models.DateField("Дата изготовления вакцины")
+    batch_number = models.CharField("Номер серии", max_length=60)
+    manufacturer_address = models.CharField("Адрес производителя", max_length=255)
+
     class Meta:
         unique_together = ("name", "manufacturer")
         verbose_name = "Вакцина"
