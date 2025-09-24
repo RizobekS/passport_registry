@@ -79,10 +79,10 @@ class Vaccine(models.Model):
     def __str__(self): return f"{self.name} ({self.manufacturer})" if self.manufacturer else self.name
 
 class LabTestType(models.Model):
-    name = models.CharField("Тип теста", max_length=160, unique=True)
+    name = models.CharField("Вид исследования", max_length=160, unique=True)
     class Meta:
-        verbose_name = "Тип лабораторного теста"
-        verbose_name_plural = "Типы лабораторных тестов"
+        verbose_name = "Вид исследования"
+        verbose_name_plural = "Вид исследования"
     def __str__(self): return self.name
 
 
