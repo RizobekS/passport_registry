@@ -95,11 +95,11 @@ class HorseMeasurements(models.Model):
 class DiagnosticCheck(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name='diagnostics')
     date = models.DateField("Дата (число/месяц/год)", null=True)
-    veterinarian = models.ForeignKey(Veterinarian, verbose_name="Ветеринарный врач", on_delete=models.DO_NOTHING, related_name='diagnostics')
     place_event = models.CharField("Место проведения соревнования", max_length=500, null=True, blank=True)
     urine = models.CharField("Моча", max_length=100, null=True, blank=True)
     blood = models.CharField("Кровь", max_length=100, null=True, blank=True)
     others = models.CharField("Другие", max_length=100, null=True, blank=True)
+    veterinarian = models.ForeignKey(Veterinarian, verbose_name="Ветеринарный врач", on_delete=models.DO_NOTHING, related_name='diagnostics')
 
     class Meta:
         verbose_name = "Диагностическое исследование"
