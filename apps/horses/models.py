@@ -39,8 +39,8 @@ class Horse(models.Model):
     created_at = models.DateTimeField("Создано", auto_now_add=True)
 
     class Meta:
-        verbose_name = "Лошадь"
-        verbose_name_plural = "Лошади"
+        verbose_name = "Регистрация лошадей"
+        verbose_name_plural = "Регистрация лошадей"
 
     def __str__(self): return f"{self.name} [{self.registry_no}]"
 
@@ -85,8 +85,8 @@ class HorseMeasurements(models.Model):
     address_stable = models.TextField("Адрес конюшни",max_length=255,blank=True)
 
     class Meta:
-        verbose_name = "Промеры лошади"
-        verbose_name_plural = "Промеры лошадей"
+        verbose_name = "Описание примет лошадей"
+        verbose_name_plural = "Описание примет лошадей"
 
     def __str__(self):
         return f"Промеры: {self.horse}"
