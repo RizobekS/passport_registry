@@ -2,6 +2,29 @@ from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import F
 
+#Mamlakat uchun model qushildi 
+class Country(models.Model):
+    name = models.CharField("Название страны", max_length=120, unique=True)
+    code = models.CharField(
+        "Цифровой код (ISO 3166-1 numeric)",
+        max_length=3,
+        unique=True,
+        help_text="Цифровой код страны, напр.: 860 (UZB), 643 (RUS), 398 (KAZ)",
+        null=True,
+        db_index=True
+    )
+
+    def save(self, *args, **kwargs):
+        # нормализуем код к верхнему регистру
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Страна"
+        verbose_name_plural = "Страна"
+        ordering = ["name"]
+
+    def __str__(self): return self.name
+
 
 class Region(models.Model):
     name = models.CharField("Название", max_length=120, unique=True)
