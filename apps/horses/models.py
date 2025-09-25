@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from apps.common.models import Breed, Color, Region
+from apps.common.models import Breed, Color, Region,Country
 from apps.parties.models import Owner, Veterinarian
 from apps.common.utils import make_horse_registry_no
 
@@ -20,6 +20,7 @@ class Horse(models.Model):
     birth_date = models.DateField("Дата рождения")
     breed = models.ForeignKey(Breed, verbose_name="Порода", on_delete=models.PROTECT)
     color = models.ForeignKey(Color, verbose_name="Масть", on_delete=models.PROTECT)
+    country_of_birth = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True, blank=True)
     place_of_birth = models.ForeignKey(Region, verbose_name="Место рождения (регион)", on_delete=models.SET_NULL, null=True, blank=True)
     microchip = models.CharField("Микрочип", max_length=15, unique=True, validators=[MICROCHIP_VALIDATOR])
     brand_mark = models.CharField("Клеймо/тавро", max_length=64, blank=True)
