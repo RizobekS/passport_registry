@@ -2,6 +2,29 @@ from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import F
 
+#Mamlakat uchun model qushildi 
+class Country(models.Model):
+    name = models.CharField("Название страны", max_length=120, unique=True)
+    code = models.CharField(
+        "Цифровой код (ISO 3166-1 numeric)",
+        max_length=3,
+        unique=True,
+        help_text="Цифровой код страны, напр.: 860 (UZB), 643 (RUS), 398 (KAZ)",
+        null=True,
+        db_index=True
+    )
+
+    def save(self, *args, **kwargs):
+        # нормализуем код к верхнему регистру
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "Страна"
+        verbose_name_plural = "Страна"
+        ordering = ["name"]
+
+    def __str__(self): return self.name
+
 
 class Region(models.Model):
     name = models.CharField("Название", max_length=120, unique=True)
@@ -65,8 +88,13 @@ class Color(models.Model):
     def __str__(self): return self.name
 
 class Vaccine(models.Model):
-    name = models.CharField("Наименование", max_length=160)
-    manufacturer = models.CharField("Производитель", max_length=160, blank=True)
+    name = models.CharField("Наименование вакцины", max_length=160)
+    number = models.CharField("Номер вакцины", max_length=60)
+    registration_number = models.CharField("Регистрации вакцины", max_length=100)
+    manufacture_date = models.DateField("Дата изготовления вакцины")
+    batch_number = models.CharField("Номер серии", max_length=60)
+    manufacturer_address = models.CharField("Адрес производителя", max_length=255)
+
     class Meta:
         unique_together = ("name", "manufacturer")
         verbose_name = "Вакцина"
@@ -74,10 +102,10 @@ class Vaccine(models.Model):
     def __str__(self): return f"{self.name} ({self.manufacturer})" if self.manufacturer else self.name
 
 class LabTestType(models.Model):
-    name = models.CharField("Тип теста", max_length=160, unique=True)
+    name = models.CharField("Вид исследования", max_length=160, unique=True)
     class Meta:
-        verbose_name = "Тип лабораторного теста"
-        verbose_name_plural = "Типы лабораторных тестов"
+        verbose_name = "Вид исследования"
+        verbose_name_plural = "Вид исследования"
     def __str__(self): return self.name
 
 
