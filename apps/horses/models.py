@@ -26,16 +26,16 @@ class Horse(models.Model):
     brand_mark = models.CharField("Клеймо/тавро", max_length=64, blank=True)
     dna_no = models.CharField("днк номер", max_length=64, blank=True)
     owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, blank=True, on_delete=models.SET_NULL, related_name="horses")
+    # Bu nega kerak edi 
+    # ident_notes = models.TextField("Особые приметы", blank=True)
 
-    ident_notes = models.TextField("Особые приметы", blank=True)
-
-    photo_right_side = models.ImageField("Фото: правая сторона", upload_to="horses/", blank=True)
-    photo_left_side = models.ImageField("Фото: левая сторона", upload_to="horses/", blank=True)
-    photo_upper_eye_level = models.ImageField("Фото: уровень выше глаз", upload_to="horses/", blank=True)
+    photo_right_side = models.ImageField("Фото: Правая боковая сторона", upload_to="horses/", blank=True)
+    photo_left_side = models.ImageField("Фото: Левая боковая сторона", upload_to="horses/", blank=True)
+    photo_upper_eye_level = models.ImageField("Фото: Верхний уровень глаз", upload_to="horses/", blank=True)
     photo_muzzle = models.ImageField("Фото: морда (крупно)", upload_to="horses/", blank=True)
-    photo_neck_lower_view = models.ImageField("Фото: шея (снизу)", upload_to="horses/", blank=True)
-    photo_front_view_forelegs = models.ImageField("Фото: передние и задние ноги (спереди)", upload_to="horses/", blank=True)
-    photo_hind_view_hind_legs = models.ImageField("Фото: задние и передние ноги (сзади)", upload_to="horses/", blank=True)
+    photo_neck_lower_view = models.ImageField("Фото: Нижний вид шеи", upload_to="horses/", blank=True)
+    photo_front_view_forelegs = models.ImageField("Фото: Вид ног спереди (Левый и Правый)", upload_to="horses/", blank=True)
+    photo_hind_view_hind_legs = models.ImageField("Фото: Вид ног с зада (Левый и Правый)", upload_to="horses/", blank=True)
 
     created_at = models.DateTimeField("Создано", auto_now_add=True)
 
