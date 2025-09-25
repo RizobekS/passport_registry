@@ -1,5 +1,7 @@
+from decimal import Decimal
+
 from django.db import models
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from apps.common.models import Breed, Color, Region, Country
 from apps.parties.models import Owner, Veterinarian
 from apps.common.utils import make_horse_registry_no
@@ -159,3 +161,99 @@ class Offspring(models.Model):
     def __str__(self):
         r = dict(self.Relation.choices).get(self.relation, self.relation)
         return f"{r}: {self.name_klichka or '—'} ({self.horse})"
+
+
+class HorseBonitation(models.Model):
+    """
+    Бонитировка/характеристика лошади за конкретный период (I/II/III).
+    Числовые промеры храним в см, оценки (score) — целые 1..10.
+    """
+    class Period(models.IntegerChoices):
+        I = 1, "I"
+        II = 2, "II"
+        III = 3, "III"
+
+    horse = models.ForeignKey(
+        Horse, verbose_name="Лошадь",
+        on_delete=models.CASCADE, related_name="bonitations"
+    )
+    period = models.PositiveSmallIntegerField(
+        "Период", choices=Period.choices, db_index=True
+    )
+
+    # --- Промеры (таблица «Ўлчамлари / Промеры / Measure»)
+    age_years = models.PositiveSmallIntegerField("Возраст, лет", null=True, blank=True)
+    height_withers_cm = models.PositiveSmallIntegerField(
+        "Высота в холке",validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+    )
+    torso_oblique_length_cm = models.PositiveSmallIntegerField(
+        "Косая длина туловища", validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+    )
+    chest_girth_cm = models.PositiveSmallIntegerField(
+        "Обхват груди", validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+    )
+    metacarpus_girth_cm = models.PositiveSmallIntegerField(
+        "Обхват пясти", validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+    )
+
+    # --- Показатели (баллы 1..10)
+    origin_score = models.PositiveSmallIntegerField(
+        "Происхождение (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+    typicality_score = models.PositiveSmallIntegerField(
+        "Типичность (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+    measure_score = models.PositiveSmallIntegerField(
+        "Промеры (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+    exteriors_score = models.PositiveSmallIntegerField(
+        "Экстерьер (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+    capacity_score = models.PositiveSmallIntegerField(
+        "Работоспособность/способности (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+    quality_of_breed_score = models.PositiveSmallIntegerField(
+        "Качество потомства (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+    class_score = models.PositiveSmallIntegerField(
+        "Класс (балл)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+
+    # Итоговая отметка «Бонитировка баллари / Bonitation mark»
+    bonitation_mark = models.PositiveSmallIntegerField(
+        "Итоговая оценка (1..10)", validators=[MinValueValidator(1), MaxValueValidator(10)],
+        null=True, blank=True
+    )
+
+    note = models.CharField("Примечание", max_length=255, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Характеристика лошади (бонитировка)"
+        verbose_name_plural = "Характеристики лошадей (бонитировки)"
+        unique_together = (("horse", "period"),)
+        indexes = [
+            models.Index(fields=["horse", "period"]),
+        ]
+        ordering = ["-period"]
+
+    def __str__(self):
+        return f"{self.horse}"
+
+    @property
+    def average_score(self) -> Decimal | None:
+        """Средний балл по заполненным показателям (без итоговой)."""
+        vals = [
+            self.origin_score, self.typicality_score, self.measure_score,
+            self.exteriors_score, self.capacity_score,
+            self.quality_of_breed_score, self.class_score,
+        ]
+        nums = [Decimal(v) for v in vals if isinstance(v, int)]
+        return (sum(nums) / len(nums)) if nums else None

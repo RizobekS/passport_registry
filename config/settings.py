@@ -212,7 +212,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "Дашборд", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"app": "passports"},  # пункт «Паспорта» (все модели app)
-        {"model": "passports.Passport"},
+        {"model": "horses.Horse"},
         {"name": "Реестр (список)", "url": "passports:list", "new_window": False},
         # Пример внешней ссылки:
         # {"name": "Документация", "url": "https://docs.yoursite.tld", "new_window": True},

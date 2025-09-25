@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (
     Horse, IdentificationEvent, Ownership,
     HorseMeasurements, DiagnosticCheck,
-    SportAchievement, ExhibitionEntry, Offspring
+    SportAchievement, ExhibitionEntry, Offspring, HorseBonitation
 )
 from apps.vet.models import Vaccination, LabTest
 
@@ -44,6 +44,21 @@ class OffspringInline(admin.TabularInline):
     )
     autocomplete_fields = ()
     show_change_link = True
+
+
+class HorseBonitationInline(admin.TabularInline):
+    model = HorseBonitation
+    extra = 0
+    classes = ("tab", "tab-bonitation")
+    fields = (
+        "period",
+        "age_years", "height_withers_cm", "torso_oblique_length_cm",
+        "chest_girth_cm", "metacarpus_girth_cm",
+        "origin_score", "typicality_score", "measure_score",
+        "exteriors_score", "capacity_score", "quality_of_breed_score",
+        "class_score", "bonitation_mark", "note",
+    )
+    ordering = ("-period",)
 
 
 class HorseMeasurementsInline(admin.StackedInline):
@@ -87,8 +102,9 @@ class HorseAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        HorseMeasurementsInline,  # ← удобно редактировать на карточке лошади
-        OffspringInline,  # ← новая вкладка «Родословная»
+        HorseMeasurementsInline,
+        HorseBonitationInline,
+        OffspringInline,
         IdentificationEventInline,
         OwnershipInline,
         VaccinationInline,
