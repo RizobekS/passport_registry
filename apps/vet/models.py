@@ -7,7 +7,7 @@ class Vaccination(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="vaccinations")
     date = models.DateField("Дата вакцинации")
     vaccine = models.ForeignKey(Vaccine, verbose_name="Наименование вакцина", on_delete=models.PROTECT)
-    # batch_no = models.CharField("Серия/партия", max_length=64, blank=True)
+    vaccine_for_grip = models.BooleanField("Вакцина для гриппа", null=True, default=False)
     veterinarian = models.ForeignKey(Veterinarian, verbose_name="Ф.И.О. ветеринарного врача", on_delete=models.SET_NULL, null=True, blank=True)
     place = models.CharField("Страна", max_length=160, blank=True)
 
@@ -22,10 +22,8 @@ class LabTest(models.Model):
     name_of_disease = models.CharField("Название болезни", max_length=120, blank=True)
     result = models.CharField("Результат исследования", max_length=120)
     address_lab = models.CharField("Наименование и адрес лаборатории", max_length=80, blank=True)
-    # lab_name = models.CharField("Название болезни", max_length=64, blank=True)
-    # document = models.FileField("Документ", upload_to="lab_docs/", blank=True)
     veterinarian = models.ForeignKey(Veterinarian, verbose_name="Ф.И.О. ветеринарного врача", on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
-        verbose_name = "Лабораторных исследований"
-        verbose_name_plural = "Лабораторных исследований"
+        verbose_name = "Лабораторное исследование"
+        verbose_name_plural = "Лабораторные исследования"

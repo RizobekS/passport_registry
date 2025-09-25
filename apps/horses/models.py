@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from apps.common.models import Breed, Color, Region,Country
+from apps.common.models import Breed, Color, Region, Country
 from apps.parties.models import Owner, Veterinarian
 from apps.common.utils import make_horse_registry_no
 
@@ -26,8 +26,7 @@ class Horse(models.Model):
     brand_mark = models.CharField("Клеймо/тавро", max_length=64, blank=True)
     dna_no = models.CharField("днк номер", max_length=64, blank=True)
     owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, blank=True, on_delete=models.SET_NULL, related_name="horses")
-    # Bu nega kerak edi 
-    # ident_notes = models.TextField("Особые приметы", blank=True)
+    ident_notes = models.TextField("Особые приметы", blank=True)
 
     photo_right_side = models.ImageField("Фото: Правая боковая сторона", upload_to="horses/", blank=True)
     photo_left_side = models.ImageField("Фото: Левая боковая сторона", upload_to="horses/", blank=True)
@@ -40,7 +39,7 @@ class Horse(models.Model):
     created_at = models.DateTimeField("Создано", auto_now_add=True)
 
     class Meta:
-        verbose_name = "Регистрация лошадей"
+        verbose_name = "Регистрация лошади"
         verbose_name_plural = "Регистрация лошадей"
 
     def __str__(self): return f"{self.name} [{self.registry_no}]"

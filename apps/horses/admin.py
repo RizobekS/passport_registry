@@ -102,8 +102,6 @@ class HorseAdmin(admin.ModelAdmin):
         )
 
 
-# Если хочешь оставить отдельные административные страницы — можно и так:
-
 @admin.register(HorseMeasurements)
 class HorseMeasurementsAdmin(admin.ModelAdmin):
     list_display = ("horse", "head", "left_foreleg", "right_foreleg", "left_hindleg", "right_hindleg")

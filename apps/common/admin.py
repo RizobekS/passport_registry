@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Region, Breed, Color, Vaccine, LabTestType, NumberSequence, District
+from .models import Region, Breed, Color, Vaccine, LabTestType, NumberSequence, District, Country
 
 
 class DistrictInline(admin.TabularInline):
@@ -14,6 +14,11 @@ class RegionAdmin(admin.ModelAdmin):
     search_fields = ("name", "code")
     inlines = (DistrictInline, )
 
+@admin.register(Country)
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ("name",)
+    search_fields = ("name",)
+
 
 @admin.register(Breed)
 class BreedAdmin(admin.ModelAdmin):
@@ -27,8 +32,8 @@ class ColorAdmin(admin.ModelAdmin):
 
 @admin.register(Vaccine)
 class VaccineAdmin(admin.ModelAdmin):
-    list_display = ("name", "manufacturer")
-    search_fields = ("name", "manufacturer")
+    list_display = ("name", "number", "manufacture_date", "manufacturer_address")
+    search_fields = ("name", "number", "registration_number")
 
 
 @admin.register(LabTestType)
