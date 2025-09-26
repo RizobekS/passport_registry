@@ -100,7 +100,11 @@ class Passport(models.Model):
 
     # --- QR PNG: кодируем public_url; при наличии old_passport_number рисуем подпись (НОВЫЙ номер) ---
     def _build_qr_png(self) -> bytes:
-        qr = qrcode.QRCode(version=None, box_size=10, border=4)
+        # ---- 1) QR по публичной ссылке с уменьшенной quiet zone ----
+        box_size = int(getattr(settings, "QR_BOX_SIZE", 10))  # размер модуля
+        border = int(getattr(settings, "QR_BORDER", 1))  # quiet zone в модулях (реком. 1..2)
+
+        qr = qrcode.QRCode(version=None, box_size=box_size, border=border)
         qr.add_data(self.public_url)
         qr.make(fit=True)
         qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
@@ -111,10 +115,15 @@ class Passport(models.Model):
             qr_img.save(buf, format="PNG")
             return buf.getvalue()
 
+        # ---- 2) Вертикальная подпись с НОВЫМ номером, с минимальными паддингами ----
         text = (self.number or "").strip()
-        pad = 7
-        max_strip_w = int(qr_w * 0.45)
-        max_rot_h = qr_h - 2 * pad
+        pad_x_left = int(getattr(settings, "QR_TEXT_PAD_X_LEFT", 2))
+        pad_x_right = int(getattr(settings, "QR_TEXT_PAD_X_RIGHT", 0))
+        pad_y = int(getattr(settings, "QR_TEXT_PAD_Y", 2))
+        strip_max_ratio = float(getattr(settings, "QR_TEXT_STRIP_MAX", 0.22))
+
+        max_strip_w = max(1, int(qr_w * strip_max_ratio))
+        max_rot_h = max(1, qr_h - 2 * pad_y)
 
         font_path = getattr(settings, "QR_TEXT_FONT_PATH", None)
 
@@ -129,7 +138,6 @@ class Passport(models.Model):
         size = int(qr_h * 0.16)
         font = load_font(size)
 
-        # ВРЕМЕННЫЙ холст для измерений
         tmp = PILImage.new("RGB", (1, 1), "white")
         draw = ImageDraw.Draw(tmp)
 
@@ -141,21 +149,24 @@ class Passport(models.Model):
                 return draw.textsize(text, font=f)
 
         tw, th = text_wh(font)
-        while ((tw + 2 * pad) > max_rot_h or (th + 2 * pad) > max_strip_w) and size > 10:
+        while ((tw + 2 * pad_y) > max_rot_h or (th + pad_x_left + pad_x_right) > max_strip_w) and size > 9:
             size -= 1
             font = load_font(size)
             tw, th = text_wh(font)
 
-        # Рисуем горизонтально, потом поворачиваем
-        text_img = PILImage.new("RGBA", (tw + 2 * pad, th + 2 * pad), (255, 255, 255, 0))
+        text_img = PILImage.new("RGBA", (tw + pad_x_left + pad_x_right, th + 2 * pad_y), (255, 255, 255, 0))
         tdraw = ImageDraw.Draw(text_img)
-        tdraw.text((pad, pad), text, fill=(0, 0, 0, 255), font=font)
+        tdraw.text((pad_x_left, pad_y), text, fill=(0, 0, 0, 255), font=font)
 
-        rotate_deg = int(getattr(settings, "QR_TEXT_ROTATE", 90))  # 90 — снизу-вверх; 270 — сверху-вниз
+        rotate_deg = int(getattr(settings, "QR_TEXT_ROTATE", 90))  # 90 — снизу вверх; 270 — сверху вниз
         text_rot = text_img.rotate(rotate_deg, expand=True, resample=PILImage.BICUBIC)
 
-        strip_w = text_rot.width
-        strip_h = text_rot.height
+        # ---- 3) AUTO-TRIM: убираем прозрачные поля после поворота ----
+        bbox = text_rot.getbbox()  # RGBA: обрежет по ненулевому альфа/цвету
+        if bbox:
+            text_rot = text_rot.crop(bbox)
+
+        strip_w, strip_h = text_rot.width, text_rot.height
 
         canvas = PILImage.new("RGB", (strip_w + qr_w, qr_h), "white")
         y0 = max(0, (qr_h - strip_h) // 2)

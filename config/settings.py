@@ -177,6 +177,12 @@ BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "http://127.0.0.1:8000")
 
 QR_TEXT_FONT_PATH = BASE_DIR / "static" / "fonts" / "DejaVuSans.ttf"
+QR_BORDER = 2
+QR_BOX_SIZE = 10
+QR_TEXT_PAD_X_LEFT = 4
+QR_TEXT_PAD_X_RIGHT = 0
+QR_TEXT_PAD_Y = 2
+QR_TEXT_STRIP_MAX = 0.20
 QR_TEXT_ROTATE = 270
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

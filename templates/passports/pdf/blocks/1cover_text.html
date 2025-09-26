@@ -46,7 +46,7 @@
   </div>
   <div style="margin: 2mm auto; display:flex; flex-direction:column; align-items:center;">
     <div>
-      <strong>Паспорт рақами: {{passport.number}}</strong><br>Номер паспорта:<br>Passport Number:
+      <strong>Паспорт рақами: {% if passport.old_passport_number %} {{ passport.old_passport_number }}{% else %}{{passport.number}} {% endif %}</strong><br>Номер паспорта:<br>Passport Number:
     </div>
   </div>
   <div class="text-center" style="font-size:8pt; margin-top:8mm;">
