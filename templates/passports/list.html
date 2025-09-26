@@ -15,6 +15,10 @@
       {{ filter.form.status|add_class:"form-select" }}
     </div>
     <div class="col-md-4">
+      <label class="form-label">{{ filter.form.passport_kind.label }}</label>
+      {{ filter.form.passport_kind|add_class:"form-select" }}
+    </div>
+    <div class="col-md-4">
       <label class="form-label">{{ filter.form.breed.label }}</label>
       {{ filter.form.breed|add_class:"form-select" }}
     </div>
@@ -47,6 +51,7 @@
         <thead>
           <tr>
             <th>№ паспорта</th>
+            <th>Тип паспорта</th>
             <th>Кличка лошади</th>
             <th>Порода</th>
             <th>Регион</th>
@@ -60,11 +65,18 @@
         {% for p in items %}
         <tr>
           <td>{{ p.number }}</td>
+          <td>
+            {% if p.old_passport_number %}
+              <span class="badge bg-label-warning text-wrap">Действующий паспорт старого формата</span>
+            {% else %}
+              <span class="badge bg-label-success">Паспорт нового формата</span>
+            {% endif %}
+          </td>
           <td>{{ p.horse.name }}</td>
           <td class="text-wrap">{{ p.horse.breed.name }}</td>
           <td>{{ p.horse.place_of_birth.name }}</td>
           <td><span class="badge bg-label-{% if p.status == 'ISSUED' or p.status == 'REISSUED' %}success {% elif p.status == 'DRAFT' %}warning {% else %}danger {% endif %}">{{ p.get_status_display }}</span></td>
-          <td>{{ p.horse.owner_current }}</td>
+          <td class="text-wrap">{{ p.horse.owner_current }}</td>
           <td>{{ p.issue_date|date:'d.m.Y' }}</td>
           <td class="text-end">
             <a class="btn btn-sm btn-outline-primary" href="{% url 'passports:public' p.number %}" target="_blank">Открыть</a>

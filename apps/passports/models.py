@@ -2,7 +2,7 @@ import io, uuid
 from django.db import models
 from django.conf import settings
 from django.core.files.base import ContentFile
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image as PILImage, ImageDraw, ImageFont
 import barcode, qrcode
 from barcode.writer import ImageWriter
 
@@ -51,6 +51,14 @@ class Passport(models.Model):
             models.Index(fields=["old_passport_number"]),
         ]
 
+    @property
+    def is_active(self) -> bool:
+        return self.status in (self.Status.ISSUED, self.Status.REISSUED)
+
+    @property
+    def has_old(self) -> bool:
+        return bool((self.old_passport_number or "").strip())
+
     # ---- Автонумерация и barcode ----
     def _detect_region_code(self) -> str:
         owner = getattr(self.horse, "owner_current", None)
@@ -92,66 +100,67 @@ class Passport(models.Model):
 
     # --- QR PNG: кодируем public_url; при наличии old_passport_number рисуем подпись (НОВЫЙ номер) ---
     def _build_qr_png(self) -> bytes:
-        # QR по публичной ссылке (новый номер)
         qr = qrcode.QRCode(version=None, box_size=10, border=4)
         qr.add_data(self.public_url)
         qr.make(fit=True)
         qr_img = qr.make_image(fill_color="black", back_color="white").convert("RGB")
+        qr_w, qr_h = qr_img.size
 
-        # Если паспорт старый → делаем подпись с НОВЫМ номером
-        if not self.old_passport_number:
+        if not (self.is_active and self.has_old):
             buf = io.BytesIO()
             qr_img.save(buf, format="PNG")
             return buf.getvalue()
 
         text = (self.number or "").strip()
-        qr_w, qr_h = qr_img.size
-        pad = 12
-        strip_h = int(qr_h * 0.22)
+        pad = 7
+        max_strip_w = int(qr_w * 0.45)
+        max_rot_h = qr_h - 2 * pad
 
-        canvas = Image.new("RGB", (qr_w, qr_h + strip_h), "white")
-        canvas.paste(qr_img, (0, 0))
-        draw = ImageDraw.Draw(canvas)
-
-        # Шрифт
-        font = None
         font_path = getattr(settings, "QR_TEXT_FONT_PATH", None)
-        if font_path:
-            try:
-                font = ImageFont.truetype(font_path, size=int(strip_h * 0.5))
-            except Exception:
-                font = None
-        if font is None:
-            try:
-                font = ImageFont.truetype("DejaVuSans.ttf", size=int(strip_h * 0.5))
-            except Exception:
-                font = ImageFont.load_default()
 
-        def measure(f):
+        def load_font(sz: int):
+            try:
+                if font_path:
+                    return ImageFont.truetype(str(font_path), size=sz)
+                return ImageFont.truetype("DejaVuSans.ttf", size=sz)
+            except Exception:
+                return ImageFont.load_default()
+
+        size = int(qr_h * 0.16)
+        font = load_font(size)
+
+        # ВРЕМЕННЫЙ холст для измерений
+        tmp = PILImage.new("RGB", (1, 1), "white")
+        draw = ImageDraw.Draw(tmp)
+
+        def text_wh(f):
             try:
                 bbox = draw.textbbox((0, 0), text, font=f)
-                return bbox[2]-bbox[0], bbox[3]-bbox[1]
+                return bbox[2] - bbox[0], bbox[3] - bbox[1]
             except AttributeError:
                 return draw.textsize(text, font=f)
 
-        # Уменьшаем размер, если не влезает
-        if isinstance(font, ImageFont.FreeTypeFont):
-            size = font.size
-            tw, th = measure(font)
-            while tw > (qr_w - 2*pad) and size > 10:
-                size -= 1
-                try:
-                    font = ImageFont.truetype(font_path or "DejaVuSans.ttf", size=size)
-                except Exception:
-                    font = ImageFont.load_default()
-                    break
-                tw, th = measure(font)
-        else:
-            tw, th = measure(font)
+        tw, th = text_wh(font)
+        while ((tw + 2 * pad) > max_rot_h or (th + 2 * pad) > max_strip_w) and size > 10:
+            size -= 1
+            font = load_font(size)
+            tw, th = text_wh(font)
 
-        x = (qr_w - tw) // 2
-        y = qr_h + (strip_h - th) // 2
-        draw.text((x, y), text, fill="black", font=font)
+        # Рисуем горизонтально, потом поворачиваем
+        text_img = PILImage.new("RGBA", (tw + 2 * pad, th + 2 * pad), (255, 255, 255, 0))
+        tdraw = ImageDraw.Draw(text_img)
+        tdraw.text((pad, pad), text, fill=(0, 0, 0, 255), font=font)
+
+        rotate_deg = int(getattr(settings, "QR_TEXT_ROTATE", 90))  # 90 — снизу-вверх; 270 — сверху-вниз
+        text_rot = text_img.rotate(rotate_deg, expand=True, resample=PILImage.BICUBIC)
+
+        strip_w = text_rot.width
+        strip_h = text_rot.height
+
+        canvas = PILImage.new("RGB", (strip_w + qr_w, qr_h), "white")
+        y0 = max(0, (qr_h - strip_h) // 2)
+        canvas.paste(text_rot.convert("RGB"), (0, y0))
+        canvas.paste(qr_img, (strip_w, 0))
 
         buf = io.BytesIO()
         canvas.save(buf, format="PNG")
