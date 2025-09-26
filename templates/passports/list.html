@@ -67,7 +67,7 @@
           <td>{{ p.horse.owner_current }}</td>
           <td>{{ p.issue_date|date:'d.m.Y' }}</td>
           <td class="text-end">
-            <a class="btn btn-sm btn-outline-primary" href="{% url 'passports:public' p.qr_public_id %}" target="_blank">Открыть</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'passports:public' p.number %}" target="_blank">Открыть</a>
             {% if p.pdf_file %}
             <a class="btn btn-sm btn-outline-secondary" href="{{ p.pdf_file.url }}" target="_blank">PDF</a>
             {% else %}

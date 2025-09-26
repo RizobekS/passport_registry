@@ -8,17 +8,22 @@
 {% endblock %}
 {% block layout %}
 
-<div class="container-xxl flex-grow-1 container-p-y">
+<div class="container flex-grow-1 container-p-y">
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h4 class="mb-0">Паспорт № {{ p.number }}</h4>
     <div>
+      {% if p.old_passport_number and p.qr_image %}
+        <a class="btn btn-outline-primary" href="{{ p.qr_image.url }}" target="_blank" rel="noopener">
+          QR (PNG)
+        </a>
+      {% endif %}
       {% if p.pdf_file %}
       <a class="btn btn-outline-secondary" href="{{ p.pdf_file.url }}" target="_blank">PDF</a>
       {% endif %}
     </div>
   </div>
   <div class="row g-4">
-    <div class="col-lg-8">
+    <div class="col-12">
       <div class="card h-100 wm-host">
         <div class="card-body">
 

@@ -176,6 +176,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 BASE_URL = os.environ.get("BASE_URL", default="http://127.0.0.1:8000")
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "http://127.0.0.1:8000")
 
+QR_TEXT_FONT_PATH = BASE_DIR / "static" / "fonts" / "DejaVuSans.ttf"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

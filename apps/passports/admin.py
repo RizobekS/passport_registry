@@ -5,24 +5,24 @@ from .services import render_passport_pdf
 
 @admin.register(Passport)
 class PassportAdmin(admin.ModelAdmin):
-    list_display = ("number", "horse", "status", "issue_date", "version", "created_at")
+    list_display = ("number", "old_passport_number", "horse", "status", "version", "issue_date", "created_at")
     list_filter = ("status", "issue_date", "version")
-    search_fields = ("number", "horse__name", "horse__registry_no", "horse__microchip")
+    search_fields = ("number", "old_passport_number", "horse__name", "horse__registry_no", "horse__microchip")
     readonly_fields = (
         "barcode_value",
         "number", "qr_public_id", "created_at",
         "barcode_image", "qr_image", "pdf_file",
-        "version",
+        "version", "public_link",
     )
 
     fieldsets = (
         ("Паспорт", {
             "classes": ("tab", "tab-main"),
-            "fields": ("number", "horse", "status", "version", "issue_date"),
+            "fields": ("number", "old_passport_number", "horse", "status", "version", "issue_date"),
         }),
         ("Коды", {
             "classes": ("tab", "tab-codes"),
-            "fields": ("barcode_value", "barcode_image", "qr_public_id", "qr_image"),
+            "fields": ("barcode_value", "barcode_image", "qr_public_id", "qr_image", "public_link"),
             "description": "Штрих-код и QR генерируются автоматически при выпуске.",
         }),
         ("Файл", {
@@ -34,6 +34,11 @@ class PassportAdmin(admin.ModelAdmin):
             "fields": ("revoked_reason", "created_at"),
         }),
     )
+
+    def public_link(self, obj):
+        return obj.public_url if obj and obj.number else ""
+
+    public_link.short_description = "Публичная ссылка"
 
     actions = ["issue_passport", "revoke_passport", "reissue_passport"]
 
