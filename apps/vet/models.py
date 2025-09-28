@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from apps.common.models import Vaccine, LabTestType
 from apps.horses.models import Horse
@@ -15,6 +16,31 @@ class Vaccination(models.Model):
     class Meta:
         verbose_name = "Отметки о вакцинации лошади"
         verbose_name_plural = "Отметки о вакцинации лошади"
+
+    def __str__(self):
+        return f"{self.date:%d.%m.%Y} — {self.horse} — {self.vaccine}"
+
+    def clean(self):
+        super().clean()
+        # Требуем выбор Да/Нет в самой записи
+        if self.vaccine_for_grip is None:
+            raise ValidationError({"vaccine_for_grip": "Укажите: вакцина для гриппа (Да/Нет)."})
+
+        # Требуем, чтобы в справочнике Vaccine тоже было задано Да/Нет
+        if self.vaccine_id and self.vaccine.vaccine_for_grip is None:
+            raise ValidationError({"vaccine": "В выбранной вакцине не указано поле «для гриппа». Заполните справочник."})
+
+        # Если оба заданы — значения должны совпадать
+        if self.vaccine_id and self.vaccine.vaccine_for_grip is not None:
+            if bool(self.vaccine.vaccine_for_grip) != bool(self.vaccine_for_grip):
+                raise ValidationError({
+                    "vaccine_for_grip": "Значение «для гриппа» должно совпадать со значением у выбранной вакцины.",
+                    "vaccine": "Выбранная вакцина имеет другое значение «для гриппа».",
+                })
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  # обеспечивает правило и вне админки/форм
+        return super().save(*args, **kwargs)
 
 class LabTest(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="lab_tests")

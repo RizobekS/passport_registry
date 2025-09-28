@@ -25,10 +25,7 @@ class Horse(models.Model):
     country_of_birth = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True, blank=True)
     place_of_birth = models.ForeignKey(Region, verbose_name="Место рождения (регион)", on_delete=models.SET_NULL, null=True, blank=True)
     microchip = models.CharField("Микрочип", max_length=15, unique=True, validators=[MICROCHIP_VALIDATOR])
-    brand_mark = models.CharField("Клеймо/тавро", max_length=64, blank=True)
-    dna_no = models.CharField("днк номер", max_length=64, blank=True)
     owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, blank=True, on_delete=models.SET_NULL, related_name="horses")
-    ident_notes = models.TextField("Особые приметы", blank=True)
 
     photo_right_side = models.ImageField("Фото: Правая боковая сторона", upload_to="horses/", blank=True)
     photo_left_side = models.ImageField("Фото: Левая боковая сторона", upload_to="horses/", blank=True)
@@ -131,36 +128,21 @@ class ExhibitionEntry(models.Model):
 
 
 class Offspring(models.Model):
-    class Relation(models.TextChoices):
-        SIRE = "SIRE", "Отец"
-        DAM  = "DAM",  "Мать"
-        OTHER = "OTHER", "Иное (родословная)"
-
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="offspring")
-    relation = models.CharField("Роль", max_length=10, choices=Relation.choices, default=Relation.OTHER, db_index=True)
-
-    place_birth = models.CharField("Место рождения", max_length=120, blank=True)
-    name_klichka = models.CharField("Кличка", max_length=120, blank=True)
-    colour_horse = models.CharField("Масть", max_length=50, blank=True)
-    brand_no = models.CharField("Тавро №", max_length=50, blank=True)
-    shb_no = models.CharField("ГПК №", max_length=50, blank=True)
-    reg_number = models.CharField("Регистрационный номер", max_length=50, blank=True)
-    breed = models.CharField("Порода", max_length=100, blank=True)
-    date_birth = models.DateField("Дата рождения", blank=True, null=True)
-    sex = models.CharField("Пол", max_length=20, blank=True)
-    immunity_exp_number = models.CharField("№ экспертизы иммунитета ", max_length=100, blank=True)
-    immunity_exp_date = models.DateField("Дата экспертизы иммунитета ", blank=True, null=True)
+    brand_no = models.CharField("Тамга/Тавро №", max_length=50, blank=True)
+    shb_no = models.CharField("ДНК №", max_length=50, blank=True)
+    immunity_exp_number = models.CharField("№ экспертизы иммунитета", max_length=100, blank=True)
+    immunity_exp_date = models.DateField("Дата экспертизы иммунитета", blank=True, null=True)
 
     class Meta:
         verbose_name = "Родословная"
         verbose_name_plural = "Родословная"
         indexes = [
-            models.Index(fields=["horse", "relation"]),
+            models.Index(fields=["horse", "shb_no"]),
         ]
 
     def __str__(self):
-        r = dict(self.Relation.choices).get(self.relation, self.relation)
-        return f"{r}: {self.name_klichka or '—'} ({self.horse})"
+        return f"{self.horse} | {self.shb_no}"
 
 
 class HorseBonitation(models.Model):

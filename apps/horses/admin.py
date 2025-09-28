@@ -37,9 +37,7 @@ class OffspringInline(admin.TabularInline):
     extra = 0
     classes = ("tab", "tab-pedigree")
     fields = (
-        "relation", "name_klichka", "sex", "breed",
-        "date_birth", "place_birth",
-        "colour_horse", "brand_no", "shb_no", "reg_number",
+        "brand_no", "shb_no",
         "immunity_exp_number", "immunity_exp_date",
     )
     autocomplete_fields = ()
@@ -82,9 +80,7 @@ class HorseAdmin(admin.ModelAdmin):
             "fields": (
                 "registry_no", "name", "sex", "horse_type",
                 "birth_date", "breed", "color", "place_of_birth",
-                "microchip", "brand_mark", 'dna_no',
-                "owner_current",
-                "ident_notes",
+                "microchip", "owner_current",
             ),
         }),
         ("Фотографии", {
@@ -145,6 +141,6 @@ class ExhibitionEntryAdmin(admin.ModelAdmin):
 
 @admin.register(Offspring)
 class OffspringAdmin(admin.ModelAdmin):
-    list_display = ("horse", "relation", "name_klichka", "date_birth", "breed", "colour_horse")
-    list_filter = ("relation", "breed")
-    search_fields = ("horse__name", "name_klichka", "reg_number", "brand_no", "shb_no")
+    list_display = ("horse", "brand_no", "shb_no")
+    list_filter = ("brand_no", "shb_no")
+    search_fields = ("horse", "brand_no", "shb_no")
