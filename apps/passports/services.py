@@ -292,15 +292,15 @@ def _offspring_rows_for_passport(passport):
     sire_self_breed = getattr(horse.breed, "name", "") or str(horse.breed)
 
     rows = []
-    for o in qs:
-
-        birth_year = o.date_birth.year if o.date_birth else ""
-        rows.append({
-            "colour":     o.colour_horse or "",
-            "sex":        o.sex or "",
-            "brand":      o.brand_no or "",
-            "birth_year": birth_year,
-        })
+    # for o in qs:
+    #
+    #     birth_year = horse.birth_date.year if horse.birth_date else ""
+    #     rows.append({
+    #         "colour":     o.colour_horse or "",
+    #         "sex":        o.sex or "",
+    #         "brand":      o.brand_no or "",
+    #         "birth_year": birth_year,
+    #     })
     return rows
 
 def _ownership_rows_for_passport(passport):
