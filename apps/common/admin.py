@@ -32,7 +32,7 @@ class ColorAdmin(admin.ModelAdmin):
 
 @admin.register(Vaccine)
 class VaccineAdmin(admin.ModelAdmin):
-    list_display = ("name", "manufacture_date", "manufacturer_address")
+    list_display = ("name", "batch_number", "manufacture_date", "manufacturer_address")
     search_fields = ("name",)
 
 
