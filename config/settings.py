@@ -178,11 +178,25 @@ PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "http://127.0.0.1:8000")
 
 QR_TEXT_FONT_PATH = BASE_DIR / "static" / "fonts" / "DejaVuSans.ttf"
 QR_BORDER = 2
+QR_BORDER_LEFT = 1   # ← можно 0..2, чем меньше — тем ближе QR к подписи
+QR_BORDER_TOP = 2
+QR_BORDER_RIGHT = 2
+QR_BORDER_BOTTOM = 2
+
+# Размер модуля
 QR_BOX_SIZE = 10
-QR_TEXT_PAD_X_LEFT = 4
+
+# Паддинги текста и ленты
+QR_TEXT_PAD_X_LEFT = 1
 QR_TEXT_PAD_X_RIGHT = 0
 QR_TEXT_PAD_Y = 2
-QR_TEXT_STRIP_MAX = 0.20
+QR_TEXT_STRIP_MAX = 0.50
+
+# Внешний левый отступ ленты и зазор между лентой и QR
+QR_STRIP_LEFT_OUTER_PAD = 3
+QR_GAP_BETWEEN = 0
+
+# Поворот вертикальной подписи: 90 (снизу-вверх) или 270 (сверху-вниз)
 QR_TEXT_ROTATE = 270
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

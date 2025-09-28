@@ -76,8 +76,7 @@ class Color(models.Model):
 
 class Vaccine(models.Model):
     name = models.CharField("Наименование вакцины", max_length=160)
-    number = models.CharField("Номер вакцины", max_length=60, null=True)
-    registration_number = models.CharField("Регистрации вакцины", max_length=100, null=True)
+    registration_number = models.CharField("Номер регистрации вакцины", max_length=100, null=True)
     manufacture_date = models.DateField("Дата изготовления вакцины", null=True)
     batch_number = models.CharField("Номер серии", max_length=60, null=True)
     manufacturer_address = models.CharField("Адрес производителя", max_length=255, null=True)
@@ -85,7 +84,7 @@ class Vaccine(models.Model):
     class Meta:
         verbose_name = "Вакцина"
         verbose_name_plural = "Вакцины"
-    def __str__(self): return f"{self.name} ({self.number})" if self.number else self.name
+    def __str__(self): return f"{self.name} ({self.registration_number})" if self.registration_number else self.name
 
 class LabTestType(models.Model):
     name = models.CharField("Вид исследования", max_length=160, unique=True)

@@ -32,8 +32,8 @@ class ColorAdmin(admin.ModelAdmin):
 
 @admin.register(Vaccine)
 class VaccineAdmin(admin.ModelAdmin):
-    list_display = ("name", "number", "manufacture_date", "manufacturer_address")
-    search_fields = ("name", "number", "registration_number")
+    list_display = ("name", "registration_number", "manufacture_date", "manufacturer_address")
+    search_fields = ("name", "registration_number")
 
 
 @admin.register(LabTestType)
