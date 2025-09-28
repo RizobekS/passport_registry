@@ -4,7 +4,7 @@ from .models import Vaccination, LabTest
 
 @admin.register(Vaccination)
 class VaccinationAdmin(admin.ModelAdmin):
-    list_display = ("horse", "date", "vaccine", "veterinarian")
+    list_display = ("horse", "date", "vaccine", 'vaccine_for_grip', 'registration_number', "veterinarian")
     list_filter = ("vaccine", "date")
     search_fields = ("horse__name", "vaccine__name")
 

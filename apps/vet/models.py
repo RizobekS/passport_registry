@@ -7,6 +7,7 @@ class Vaccination(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="vaccinations")
     date = models.DateField("Дата вакцинации")
     vaccine = models.ForeignKey(Vaccine, verbose_name="Наименование вакцина", on_delete=models.PROTECT)
+    registration_number = models.CharField("Номер регистрации вакцины", max_length=100, null=True)
     vaccine_for_grip = models.BooleanField("Вакцина для гриппа", null=True, default=False)
     veterinarian = models.ForeignKey(Veterinarian, verbose_name="Ф.И.О. ветеринарного врача", on_delete=models.SET_NULL, null=True, blank=True)
     place = models.CharField("Страна", max_length=160, blank=True)
