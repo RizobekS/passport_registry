@@ -58,12 +58,26 @@ class Organization(models.Model):
     def __str__(self): return self.name
 
 class Veterinarian(models.Model):
-    person = models.OneToOneField(Person, verbose_name="Персона", on_delete=models.CASCADE)
-    license_no = models.CharField("Лицензия (№)", max_length=64)
+    last_name = models.CharField("Фамилия", max_length=120, null=True,)
+    first_name = models.CharField("Имя", max_length=120, null=True,)
+    middle_name = models.CharField("Отчество", max_length=120, null=True, blank=True)
+    org_name = models.CharField("Наименование организации", max_length=120, null=True, blank=True)
+    phone = models.CharField("Телефон", max_length=30, null=True, blank=True)
+    address = models.CharField("Адрес", max_length=255, null=True, blank=True)
+    region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True)
+    district = models.ForeignKey(District, on_delete=models.PROTECT, verbose_name="Район", null=True)
+    license_no = models.CharField("Лицензия (№)", null=True, max_length=64)
+
     class Meta:
         verbose_name = "Ветеринарный врач"
         verbose_name_plural = "Ветеринарные врачи"
-    def __str__(self): return f"{self.person} (лиц. {self.license_no})"
+
+    def __str__(self): return f"{self.last_name} {self.first_name} - (лиц. {self.license_no})"
+
+    def clean(self):
+        super().clean()
+        if self.district and self.district.region_id != self.region_id:
+            raise ValidationError({"district": "Выбранный район не относится к указанному региону."})
 
 class Owner(models.Model):
     # Владелец может быть физлицом или организацией

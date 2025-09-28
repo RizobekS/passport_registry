@@ -18,8 +18,8 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(Veterinarian)
 class VeterinarianAdmin(admin.ModelAdmin):
-    list_display = ("person", "license_no")
-    search_fields = ("person__last_name", "person__first_name", "license_no")
+    list_display = ("last_name", 'first_name', 'org_name', "license_no")
+    search_fields = ("last_name", "first_name", "org_name", "license_no")
 
 
 @admin.register(Owner)
