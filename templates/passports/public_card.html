@@ -108,7 +108,7 @@
                   <tr>
                     <td>{{ v.date|date:'d.m.Y' }}</td>
                     <td>{{ v.vaccine.name }}</td>
-                    <td>{{ v.batch_no|default:"—" }}</td>
+                    <td>{{ v.vaccine.batch_number|default:"—" }}</td>
                     <td>{{ v.veterinarian }}</td>
                   </tr>
                 {% empty %}
