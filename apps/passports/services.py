@@ -290,22 +290,12 @@ def _offspring_rows_for_passport(passport):
     sire_self_name  = horse.name
     dam_self_name   = horse.name
     sire_self_breed = getattr(horse.breed, "name", "") or str(horse.breed)
-    dam_self_breed  = sire_self_breed
 
     rows = []
     for o in qs:
-        relation = (o.relation or "").upper()
-        sire_name  = sire_self_name  if relation == "SIRE" else ""
-        dam_name   = dam_self_name   if relation == "DAM"  else ""
-        sire_breed = sire_self_breed if relation == "SIRE" else ""
-        dam_breed  = dam_self_breed  if relation == "DAM"  else ""
 
         birth_year = o.date_birth.year if o.date_birth else ""
         rows.append({
-            "sire_name":  sire_name,
-            "dam_name":   dam_name,
-            "sire_breed": sire_breed or "",
-            "dam_breed":  dam_breed or "",
             "colour":     o.colour_horse or "",
             "sex":        o.sex or "",
             "brand":      o.brand_no or "",

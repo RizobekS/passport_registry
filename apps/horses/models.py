@@ -14,7 +14,7 @@ class Horse(models.Model):
         ("SERVICE", "Служебная"),
         ("EXPO", "Выставочная"),
     ]
-    registry_no = models.CharField("Реестровый номер (Генерируется автоматически)", max_length=32, unique=True, blank=True)
+    registry_no = models.CharField("№ Регистрации", max_length=32, unique=True, blank=True)
     name = models.CharField("Кличка", max_length=120)
     sex = models.CharField("Пол", max_length=1, choices=[('M','Жеребец'),('F','Кобыла')])
     horse_type = models.CharField("Тип лошади", max_length=10, choices=HORSE_TYPE_CHOICES, default="SPORT",
