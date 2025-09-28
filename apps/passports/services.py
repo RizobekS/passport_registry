@@ -95,24 +95,25 @@ def _paginate_fixed(items, page_size: int, pages: int):
 
 def _vaccinations_other_first_page(passport):
     """
-    Возвращает ровно page_size записей для 1-й страницы (остальное выводим пустым).
-    Маппинг полей под шаблон page_vaccinations_other.html
+    Ровно page_size записей для 1-й страницы «Прочие вакцинации».
+    Под ваши модели:
+      Vaccination: date, registration_number, vaccine(FK), veterinarian(FK)
+      Vaccine: name, manufacture_date, batch_number, manufacturer_address
     """
     horse = passport.horse
-    qs = horse.vaccinations.select_related("vaccine", "veterinarian").order_by("date")  # модель Vaccination
+    qs = horse.vaccinations.select_related("vaccine", "veterinarian").order_by("date")
     rows = []
-
     for rec in qs:
         vac = rec.vaccine
         vet = rec.veterinarian
         rows.append({
             "date": rec.date,
             "vaccine_name": getattr(vac, "name", "") or "",
-            "reg_no": getattr(vac, "registration_number", "") or getattr(vac, "reg_no", "") or "",
-            "manufactured": getattr(vac, "manufactured_date", None) or getattr(vac, "manufactured", None),
-            "batch": getattr(rec, "batch_no", "") or getattr(rec, "series", "") or "",
-            "mfr_address": getattr(vac, "manufacturer_address", "") or getattr(vac, "mfr_address", "") or "",
-            "country": getattr(vac, "country_name", "") or getattr(vac, "country", "") or "",
+            "reg_no": rec.registration_number or "",                           # ← из Vaccination
+            "manufactured": getattr(vac, "manufacture_date", None),            # ← из Vaccine
+            "batch": getattr(vac, "batch_number", "") or "",                   # ← из Vaccine
+            "mfr_address": getattr(vac, "manufacturer_address", "") or "",     # ← из Vaccine
+            "country": "",                                                     # в моделях нет страны
             "vet_full": (getattr(vet, "full_name", None) or (str(vet) if vet else "")),
         })
     return rows
@@ -174,29 +175,28 @@ def _sample_flags(sample_str: str | None):
 
 def _diag_controls_first_page(passport):
     """
-    Берём диагностические/допинг-исследования лошади для этой таблицы.
-    Ожидаемые поля записи: date, place, sample, veterinarian(full_name).
+    Таблица «Диагностические/допинг-исследования».
+    Модели сейчас: DiagnosticCheck (related_name='diagnostics')
+      поля: date, place_event, urine, blood, others, veterinarian
+    В шаблон отдаём:
+      {date, place, urine(bool), blood(bool), other(text), vet_full}
     """
     horse = passport.horse
-    # поправь related_name при необходимости
-    qs = getattr(horse, "diagnostic_controls", None)
-    if not hasattr(qs, "all"):
-        qs = getattr(horse, "doping_controls", None)  # запасной вариант
+    qs = getattr(horse, "diagnostics", None)
     if hasattr(qs, "select_related"):
         qs = qs.select_related("veterinarian").order_by("date")
     else:
-        qs = []
+        return []
 
     rows = []
     for rec in qs:
-        flags = _sample_flags(getattr(rec, "sample", None))
         vet = getattr(rec, "veterinarian", None)
         rows.append({
             "date": getattr(rec, "date", None),
-            "place": getattr(rec, "place", "") or getattr(rec, "location", "") or "",
-            "urine": flags["urine"],
-            "blood": flags["blood"],
-            "other": flags["other_text"],
+            "place": getattr(rec, "place_event", "") or "",
+            "urine": bool(getattr(rec, "urine", None)),     # чекбоксы — True/False
+            "blood": bool(getattr(rec, "blood", None)),
+            "other": getattr(rec, "others", "") or "",
             "vet_full": (getattr(vet, "full_name", None) or (str(vet) if vet else "")),
         })
     return rows
@@ -284,7 +284,7 @@ def _offspring_rows_for_passport(passport):
       - если OTHER           -> оба родителя пусто (данных нет)
     """
     horse = passport.horse
-    qs = horse.offspring.all().order_by('-date_birth', '-id')
+    qs = horse.offspring.all().order_by('-id')
 
     sire_self_name  = horse.name
     dam_self_name   = horse.name
@@ -330,24 +330,30 @@ def _ownership_rows_for_passport(passport):
     return rows
 
 def _parentage_ctx(passport):
-    """Данные для страницы 'Насл-насаби/Родословная/Parentage'."""
+    """Данные для страницы 'Насл-насаби / Родословная / Parentage' под текущие модели."""
     h = passport.horse
     place = getattr(h.place_of_birth, "name", "") if getattr(h, "place_of_birth", None) else ""
     sex_display = h.get_sex_display() if hasattr(h, "get_sex_display") else (h.sex or "")
+
+    # В ваших моделях Offspring — список; возьмём первую запись, если есть
+    o = None
+    try:
+        o = h.offspring.first()
+    except Exception:
+        o = None
+
     return {
         "place_of_birth": place,
         "name": h.name,
-        "brand": h.brand_mark or "",
+        "brand": getattr(o, "brand_no", "") if o else "",
         "colour": getattr(h.color, "name", "") or (str(h.color) if getattr(h, "color", None) else ""),
         "breed": getattr(h.breed, "name", "") or (str(h.breed) if getattr(h, "breed", None) else ""),
-        "birth_date": h.birth_date,
+        "birth_date": getattr(h, "birth_date", None),
         "sex": sex_display,
-        # то, чего нет в моделях — оставляем пустым; при появлении полей просто подставим:
-        "dna_no": h.dna_no,          # ДНК №
-        "shb_no": "",          # ГПК / SHB №
-        "reg_no": passport.number or h.registry_no or "",  # Регистрационный номер
-        "immunity_no": "",
-        "immunity_date": None,
+        "dna_no": getattr(o, "shb_no", "") if o else "",                           # ДНК № / SHB №
+        "reg_no": passport.number or h.registry_no or "",                          # Рег. номер
+        "immunity_no": getattr(o, "immunity_exp_number", "") if o else "",
+        "immunity_date": getattr(o, "immunity_exp_date", None) if o else None,
     }
 
 def _chip_rows_for_passport(passport, rows_per_page=5):
