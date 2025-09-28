@@ -135,9 +135,10 @@ def _lab_tests_first_page(passport):
     rows = []
     for rec in qs:
         # Наименование и адрес лаборатории -> одна строка
-        lab = ", ".join(
-            [p.strip() for p in [(rec.lab_name or ""), (rec.address_name or "")] if p]
-        )
+        if rec.address_lab:
+            lab = rec.address_lab
+        else:
+            lab = ""
 
         # Тип теста из справочника (если нет .name — упадём на __str__)
         if rec.test_type:
