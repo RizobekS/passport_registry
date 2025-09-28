@@ -89,11 +89,12 @@ class Color(models.Model):
 
 class Vaccine(models.Model):
     name = models.CharField("Наименование вакцины", max_length=160)
-    number = models.CharField("Номер вакцины", max_length=60)
-    registration_number = models.CharField("Регистрации вакцины", max_length=100)
+    registration_number = models.CharField("Номер регистрации вакцины", max_length=60)
     manufacture_date = models.DateField("Дата изготовления вакцины")
     batch_number = models.CharField("Номер серии", max_length=60)
     manufacturer_address = models.CharField("Адрес производителя", max_length=255)
+    # registration_number = models.CharField("Регистрации вакцины", max_length=100)
+      
 
     class Meta:
         unique_together = ("name", "manufacturer")
