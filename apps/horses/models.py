@@ -157,6 +157,15 @@ class Offspring(models.Model):
             models.Index(fields=["horse", "relation"]),
         ]
 
+class ChangeOwnership(models.Model):
+    horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name='diagnostics')
+    date_sale = models.DateField("Дата (число/месяц/год)", null=True)
+    name_owner = models.CharField("Ф.И.О владельца ", max_length=500, null=True, blank=True)
+    address_owner = models.CharField("Адрес владельца ", max_length=500, null=True, blank=True)
+    class Meta:
+        verbose_name = "Сведения о смене владельца"
+        verbose_name_plural = "Сведения о смене владельца"
+
     def __str__(self):
         r = dict(self.Relation.choices).get(self.relation, self.relation)
         return f"{r}: {self.name_klichka or '—'} ({self.horse})"
