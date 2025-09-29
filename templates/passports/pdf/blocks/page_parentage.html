@@ -1,92 +1,109 @@
 {# templates/passports/pdf/blocks/page_parentage.html #}
-{% load static %}
 <style>
-  .par-wrap { margin: 6mm 12mm 0; font-size: 8pt;}
-  .par-title { text-align:center; font-weight:700; font-size: 10pt; margin-bottom: 2mm; }
+  .par-wrap { margin: 8mm 12mm 0; font-size: 8pt; line-height: 1.18; }
+  .par-title { text-align:center; font-weight:700; font-size: 12pt; margin-bottom: 4mm; }
 
-  .par-row { display:flex; gap:6mm; align-items:flex-end; margin: 4mm 0; }
-  .par-row .lab { min-width: 48mm; }
-  .par-row .val { flex: 1 1 auto; border-bottom: 1px solid #000; min-height: 4mm; }
+  .hr { border-top:1px solid #000; margin: 3.2mm 0 4.2mm; }
 
-  .par-cols { display:grid; grid-template-columns: 1fr 1fr; gap: 10mm; margin-top: 2mm; }
-  .par-hr   { border-top:1px solid #000; margin: 6mm 0; }
+  /* сетка: две колонки как в макете */
+  .cols { display:grid; grid-template-columns: 1fr 1fr; column-gap: 18mm; row-gap: 2.4mm; }
 
+  /* строка-пара: слева подписи (узкие), справа — значение на «линии» */
+  .pair { display:flex; align-items:flex-end; gap: 4mm; margin: 2.6mm 0; }
+  .pair .lab { min-width: 36mm; }
+  .pair .lab b { font-weight:700; }
   .muted { opacity:.95; }
+
+  /* линия с продолжением вправо как в образце */
+  .line { display:flex; align-items:flex-end; width:100%; }
+  .val { display:inline-block; font-weight:700; white-space:nowrap; border-bottom:1px solid #000; padding:0 .8mm .1mm; }
+  .tail { flex:1; border-bottom:1px solid #000; }
+
+  .nowrap { white-space:nowrap; }
+
+  /* первая строка (Place of birth) — полная ширина */
+  .row-full { display:flex; align-items:flex-end; gap: 8mm; }
+  .row-full .lab { min-width: 36mm; }
+  .row-full .fill { flex:1; border-bottom:1px solid #000; height:3.8mm; }
 </style>
 
 <div class="par-wrap">
   <div class="par-title">Насл-насаби/Родословная/Parentage</div>
 
-  {# 1) Место рождения — во всю ширину #}
-  <div class="par-row">
+  {# 1) Место рождения #}
+  <div class="row-full">
     <div class="lab">Туғилган жойи<br>Место рождения<br><span class="muted">Place of birth</span></div>
-    <div class="val">{{ parentage.place_of_birth }}</div>
+    <div class="line" style="flex:1">
+      <span class="val">{{ parentage.place_of_birth }}</span><span class="tail"></span>
+    </div>
   </div>
 
-  <div class="par-hr"></div>
+  <div class="hr"></div>
 
-  {# 2) Две колонки характеристик #}
-  <div class="par-cols">
+  {# 2) Две колонки #}
+  <div class="cols">
     <div>
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Лакаби<br>Кличка<br><span class="muted">Name</span></div>
-        <div class="val"><b>{{ parentage.name }}</b></div>
+        <div class="line"><span class="val">{{ parentage.name }}</span><span class="tail"></span></div>
       </div>
 
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Тамға<br>Тавро<br><span class="muted">Brand</span></div>
-        <div class="val">{{ parentage.brand }}</div>
+        <div class="line"><span class="val">{{ parentage.brand }}</span><span class="tail"></span></div>
       </div>
 
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Зоти<br>Порода<br><span class="muted">Breed</span></div>
-        <div class="val"><b>{{ parentage.breed }}</b></div>
+        <div class="line"><span class="val">{{ parentage.breed }}</span><span class="tail"></span></div>
       </div>
 
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Жинси<br>Пол<br><span class="muted">Sex</span></div>
-        <div class="val"><b>{{ parentage.sex }}</b></div>
+        <div class="line"><span class="val">{{ parentage.sex }}</span><span class="tail"></span></div>
       </div>
     </div>
 
     <div>
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Туси<br>Масть<br><span class="muted">Colour</span></div>
-        <div class="val"><b>{{ parentage.colour }}</b></div>
+        <div class="line"><span class="val">{{ parentage.colour }}</span><span class="tail"></span></div>
       </div>
 
-      <div class="par-row">
-        <div class="lab">ДНК №</div>
-        <div class="val">{{ parentage.dna_no }}</div>
+      {# ДНК № / ГПК № / SHB № — одно и то же: печатаем один номер #}
+      <div class="pair">
+        <div class="lab">ДНК №<br>ГПК №<br><span class="muted">SHB №</span></div>
+        <div class="line">
+          <span class="val">
+            {{ parentage.dna_no }}
+          </span><span class="tail"></span>
+        </div>
       </div>
 
-      <div class="par-row">
-        <div class="lab">ГПК №<br><span class="muted">SHB №</span></div>
-        <div class="val">{{ parentage.shb_no }}</div>
-      </div>
-
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Қайд этиш рақами:<br>Регистрационный номер:<br><span class="muted">Registration Number</span></div>
-        <div class="val"><b>{{ parentage.reg_no }}</b></div>
+        <div class="line"><span class="val nowrap">{{ parentage.reg_no }}</span><span class="tail"></span></div>
       </div>
     </div>
   </div>
 
-  <div class="par-hr"></div>
+  <div class="hr"></div>
 
-  <div class="par-cols">
+  <div class="cols">
     <div>
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Туғилган санаси<br>Дата рождения<br><span class="muted">Date of birth</span></div>
-        <div class="val"><b>{{ parentage.birth_date|date:"d.m.Y" }}</b></div>
+        <div class="line"><span class="val">{{ parentage.birth_date|date:"d.m.Y" }}</span><span class="tail"></span></div>
       </div>
     </div>
     <div>
-      <div class="par-row">
+      <div class="pair">
         <div class="lab">Иммунитет экспертизаси рақами, санаси<br>№ экспертизы иммунитета и дата<br><span class="muted">Immunity expertise №, date</span></div>
-        <div class="val">
-          {% if parentage.immunity_no %}{{ parentage.immunity_no }}{% endif %}
-          {% if parentage.immunity_date %} {{ parentage.immunity_date|date:"d.m.Y" }}{% endif %}
+        <div class="line">
+          <span class="val">
+            {% if parentage.immunity_no %}{{ parentage.immunity_no }}{% endif %} /
+            {% if parentage.immunity_date %}<span class="nowrap">{{ parentage.immunity_date|date:"d.m.Y" }}</span>{% endif %}
+          </span><span class="tail"></span>
         </div>
       </div>
     </div>

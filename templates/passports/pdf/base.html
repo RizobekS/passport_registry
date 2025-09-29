@@ -108,6 +108,11 @@
     <section class="page a5-land">{% include 'passports/pdf/blocks/vaccinations.html' with rows=rows %}</section>
   {% endfor %}
 
+  {# Equine influenza pages #}
+  {% for rows in vacc_flu_pages %}
+    <section class="page a5-land">{% include "passports/pdf/blocks/page_vaccinations_flu.html" with rows=rows %}</section>
+  {% endfor %}
+
   {% for rows in lab_pages %}
     <section class="page a5-land">{% include 'passports/pdf/blocks/lab_tests.html' with rows=rows %}</section>
   {% endfor %}

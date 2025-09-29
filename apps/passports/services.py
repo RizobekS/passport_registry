@@ -5,6 +5,7 @@ from weasyprint import HTML
 from pathlib import Path
 from django.core.files.base import File
 from datetime import date
+from apps.horses.models import Horse, Offspring, HorseBonitation
 
 def _fmt_region(r):
     return getattr(r, "name", "") if r else ""
@@ -13,26 +14,26 @@ def _fmt_district(d):
     # В District обычно есть name/number — берём name если есть
     return getattr(d, "name", "") if d else ""
 
-def _owner_full_address(owner) -> str:
-    """
-    Owner -> Person | Organization: берём ФИО/название и адрес с регионом/районом, если заданы.
-    """
+def _owner_full_address(owner):
     if not owner:
         return ""
-    # Организация?
-    org = getattr(owner, "organization", None)
-    if org:
-        parts = [org.name, org.address, _fmt_district(getattr(org, "district", None)), _fmt_region(getattr(org, "region", None))]
-        return ", ".join([p for p in parts if p])
-
-    # Физлицо?
-    person = getattr(owner, "person", None)
-    if person:
-        fio = " ".join([person.last_name, person.first_name, (person.middle_name or "")]).strip()
-        parts = [fio, person.address, _fmt_district(getattr(person, "district", None)), _fmt_region(getattr(person, "region", None))]
-        return ", ".join([p for p in parts if p])
-
-    return ""
+    # имя
+    for attr in ("full_name", "display_name", "name"):
+        v = getattr(owner, attr, None)
+        if v:
+            owner_name = str(v)
+            break
+    else:
+        owner_name = str(owner)
+    # адрес
+    for attr in ("address", "full_address", "registration_address"):
+        v = getattr(owner, attr, None)
+        if v:
+            addr = str(v)
+            break
+    else:
+        addr = ""
+    return f"{owner_name}\n{addr}".strip()
 
 def _marks_from_models(horse):
     """
@@ -93,27 +94,29 @@ def _paginate_fixed(items, page_size: int, pages: int):
         out.append(chunk)
     return out
 
-def _vaccinations_other_first_page(passport):
+def _vaccination_rows(passport, influenza: bool):
     """
-    Ровно page_size записей для 1-й страницы «Прочие вакцинации».
-    Под ваши модели:
-      Vaccination: date, registration_number, vaccine(FK), veterinarian(FK)
-      Vaccine: name, manufacture_date, batch_number, manufacturer_address
+    Собирает строки вакцинаций для таблицы.
+    influenza=True  -> только «для гриппа»
+    influenza=False -> все остальные (в т.ч. старые записи с None)
     """
     horse = passport.horse
     qs = horse.vaccinations.select_related("vaccine", "veterinarian").order_by("date")
     rows = []
     for rec in qs:
+        is_flu = bool(rec.vaccine_for_grip)  # None -> False
+        if is_flu != influenza:
+            continue
         vac = rec.vaccine
         vet = rec.veterinarian
         rows.append({
             "date": rec.date,
             "vaccine_name": getattr(vac, "name", "") or "",
-            "reg_no": rec.registration_number or "",                           # ← из Vaccination
-            "manufactured": getattr(vac, "manufacture_date", None),            # ← из Vaccine
-            "batch": getattr(vac, "batch_number", "") or "",                   # ← из Vaccine
-            "mfr_address": getattr(vac, "manufacturer_address", "") or "",     # ← из Vaccine
-            "country": "",                                                     # в моделях нет страны
+            "reg_no": rec.registration_number or "",
+            "manufactured": getattr(vac, "manufacture_date", None),
+            "batch": getattr(vac, "batch_number", "") or "",
+            "mfr_address": getattr(vac, "manufacturer_address", "") or "",
+            "country": rec.place or "",
             "vet_full": (getattr(vet, "full_name", None) or (str(vet) if vet else "")),
         })
     return rows
@@ -278,74 +281,69 @@ def _exhibitions_first_page(passport):
 
 def _offspring_rows_for_passport(passport):
     """
-    Готовит строки для таблицы 'Приплод' под макет:
-      {sire_name, dam_name, sire_breed, dam_breed, colour, sex, brand, birth_year}
-      - если relation == SIRE -> отец = текущая лошадь, мать пусто
-      - если relation == DAM  -> мать  = текущая лошадь, отец пусто
-      - если OTHER           -> оба родителя пусто (данных нет)
+    Ранее формировала таблицу 'Приплод' (дети лошади).
+    Текущая модель Offspring хранит реквизиты самой лошади (brand/shb/immunity),
+    поэтому заполнять нечем — возвращаем пустой список.
+    Шаблон/пагинация должны добить пустыми строками как обычно.
     """
-    horse = passport.horse
-    qs = horse.offspring.all().order_by('-id')
-
-    sire_self_name  = horse.name
-    dam_self_name   = horse.name
-    sire_self_breed = getattr(horse.breed, "name", "") or str(horse.breed)
-
-    rows = []
-    # for o in qs:
-    #
-    #     birth_year = horse.birth_date.year if horse.birth_date else ""
-    #     rows.append({
-    #         "colour":     o.colour_horse or "",
-    #         "sex":        o.sex or "",
-    #         "brand":      o.brand_no or "",
-    #         "birth_year": birth_year,
-    #     })
-    return rows
+    return []
 
 def _ownership_rows_for_passport(passport):
     """
-    Возвращает список словарей для страницы 'Change of ownership':
-      {date, owner}
-    date  -> Ownership.start_date (дата продажи/перехода права к новому владельцу)
-    owner -> ФИО/название + адрес (читаем через _owner_full_address)
+    Возвращает строки для страницы 'Information on change of the ownership'.
+    Колонки: Date of sale | Name, address of the owner | (stamp/sign) — пусто.
+    Логика: дата продажи = начало владения новым владельцем (Ownership.start_date).
     """
     horse = passport.horse
-    qs = horse.ownerships.select_related("owner").order_by("start_date")
+    qs = getattr(horse, "ownerships", None)
+    if not hasattr(qs, "select_related"):
+        return []
+
+    qs = qs.select_related("owner").order_by("start_date")
     rows = []
     for rec in qs:
         rows.append({
-            "date": rec.start_date,
-            "owner": _owner_full_address(rec.owner),
+            "date": getattr(rec, "start_date", None),
+            "owner": _owner_full_address(getattr(rec, "owner", None)),
+            "federation_cell": "",  # поле под печать/подпись — оставляем пустым
         })
     return rows
 
 def _parentage_ctx(passport):
-    """Данные для страницы 'Насл-насаби / Родословная / Parentage' под текущие модели."""
+    """
+    Данные для страницы 'Родословная/Parentage'.
+    brand_no/shb_no/иммунитет берём из Offspring (первая запись по лошади).
+    Остальное — из Horse.
+    """
     h = passport.horse
-    place = getattr(h.place_of_birth, "name", "") if getattr(h, "place_of_birth", None) else ""
-    sex_display = h.get_sex_display() if hasattr(h, "get_sex_display") else (h.sex or "")
+    place = ""
+    pob = getattr(h, "place_of_birth", None)
+    if pob:
+        place = getattr(pob, "name", "") or str(pob)
 
-    # В ваших моделях Offspring — список; возьмём первую запись, если есть
+    sex_display = h.get_sex_display() if hasattr(h, "get_sex_display") else getattr(h, "sex", "")
+
+    # новая модель Offspring хранит реквизиты лошади
     o = None
     try:
-        o = h.offspring.first()
+        o = Offspring.objects.filter(horse=h).order_by("-immunity_exp_date", "-id").first()
     except Exception:
         o = None
 
     return {
         "place_of_birth": place,
-        "name": h.name,
+        "name": getattr(h, "name", ""),
         "brand": getattr(o, "brand_no", "") if o else "",
-        "colour": getattr(h.color, "name", "") or (str(h.color) if getattr(h, "color", None) else ""),
-        "breed": getattr(h.breed, "name", "") or (str(h.breed) if getattr(h, "breed", None) else ""),
+        "colour": getattr(getattr(h, "color", None), "name", "") or (str(getattr(h, "color", None)) if getattr(h, "color", None) else ""),
+        "breed": getattr(getattr(h, "breed", None), "name", "") or (str(getattr(h, "breed", None)) if getattr(h, "breed", None) else ""),
         "birth_date": getattr(h, "birth_date", None),
         "sex": sex_display,
-        "dna_no": getattr(o, "shb_no", "") if o else "",                           # ДНК № / SHB №
-        "reg_no": passport.number or h.registry_no or "",                          # Рег. номер
+        "dna_no": getattr(o, "shb_no", "") if o else "",  # ДНК №
+        "reg_no": passport.number or getattr(h, "registry_no", "") or "",
         "immunity_no": getattr(o, "immunity_exp_number", "") if o else "",
         "immunity_date": getattr(o, "immunity_exp_date", None) if o else None,
     }
+
 
 def _chip_rows_for_passport(passport, rows_per_page=5):
     """
@@ -380,17 +378,55 @@ def _chip_rows_for_passport(passport, rows_per_page=5):
 
     return rows
 
+def _bonitation_ctx(passport):
+    """
+    Собирает оценки по периодам I/II/III из HorseBonitation.
+    Возвращает словарь: {"I": {...}, "II": {...}, "III": {...}}.
+    Любые поля, которых нет в модели, пропускаются.
+    """
+    horse = passport.horse
+    data = {"I": {}, "II": {}, "III": {}}
+    try:
+        qs = horse.bonitations.all()
+    except Exception:
+        return data
+
+    for b in qs:
+        key = {1: "I", 2: "II", 3: "III"}.get(getattr(b, "period", None))
+        if not key:
+            continue
+        # аккуратно подставляем, если есть такие поля
+        data[key] = {
+            # «промеры» — если сохранились как баллы
+            "age_years":               getattr(b, "age_years", None),
+            "height_withers_cm":       getattr(b, "height_withers_cm", None),
+            "torso_oblique_length_cm": getattr(b, "torso_oblique_length_cm", None),
+            "chest_girth_cm":          getattr(b, "chest_girth_cm", None),
+            "metacarpus_girth_cm":     getattr(b, "metacarpus_girth_cm", None),
+            # «показатели» (баллы)
+            "origin_score":            getattr(b, "origin_score", None),
+            "typicality_score":        getattr(b, "typicality_score", None),
+            "measure_score":           getattr(b, "measure_score", None),
+            "exteriors_score":         getattr(b, "exteriors_score", None),
+            "capacity_score":          getattr(b, "capacity_score", None),
+            "quality_of_breed_score":  getattr(b, "quality_of_breed_score", None),
+            "class_score":             getattr(b, "class_score", None),
+            "bonitation_mark":         getattr(b, "bonitation_mark", None),
+            "note":                    getattr(b, "note", ""),
+        }
+    return data
+
+
 def render_passport_pdf(passport):
     horse = passport.horse
     marks = _marks_from_models(horse)
     ctx_parentage = _parentage_ctx(passport)
 
-    ROWS_PER_PAGE = 6
-    filled = _vaccinations_other_first_page(passport)[:ROWS_PER_PAGE]
-    if len(filled) < ROWS_PER_PAGE:
-        filled += [None] * (ROWS_PER_PAGE - len(filled))
-    empty_page = [None] * ROWS_PER_PAGE
-    vacc_other_pages = [filled] + [empty_page for _ in range(11)]  # 1 + 11 = 12 страниц
+    VACC_ROWS_PER_PAGE = 6
+    other_rows = _vaccination_rows(passport, influenza=False)
+    vacc_other_pages = _paginate_fixed(other_rows, VACC_ROWS_PER_PAGE, pages=7)
+    flu_rows = _vaccination_rows(passport, influenza=True)
+    vacc_flu_pages = _paginate_fixed(flu_rows, VACC_ROWS_PER_PAGE, pages=7)
 
     LAB_ROWS_PER_PAGE = 7
     filled_labs = _lab_tests_first_page(passport)[:LAB_ROWS_PER_PAGE]
@@ -441,7 +477,7 @@ def render_passport_pdf(passport):
     # Дата выдачи паспорта (если поле есть). Иначе оставим пусто (линия для ручной записи).
     issue_date = getattr(passport, "issue_date", None)
 
-
+    bon = _bonitation_ctx(passport)
 
     ctx = {
         "passport": passport,
@@ -451,6 +487,7 @@ def render_passport_pdf(passport):
         "owner_full_address": _owner_full_address(getattr(horse, "owner_current", None)),
         "stable_address": marks.get("stable_address") or "",
         "vacc_other_pages": vacc_other_pages,
+        "vacc_flu_pages": vacc_flu_pages,
         "lab_pages": lab_pages,
         "diag_pages": diag_pages,
         "ach_pages": ach_pages,
@@ -462,6 +499,7 @@ def render_passport_pdf(passport):
         "chip_barcode_image": chip_barcode_image,
         "chip_main_code": chip_main_code,
         "passport_issue_date": issue_date,
+        "bon": bon,
     }
     html = get_template("passports/pdf/base.html").render(ctx)  # один потоковый HTML
     out_dir = Path(settings.MEDIA_ROOT) / "passports"
