@@ -1,4 +1,6 @@
 import django_filters as df
+from django.db.models import Q
+
 from .models import Passport
 from apps.common.models import Breed, Region
 from apps.parties.models import Organization
@@ -19,6 +21,11 @@ class PassportFilter(df.FilterSet):
         label="Тип владельца",
         choices=OWNER_KIND_CHOICES,
         method="filter_owner_kind",
+    )
+    passport_kind = df.ChoiceFilter(
+        label="Тип паспорта",
+        choices=(("", "Все"), ("import", "Паспорт старого формата"), ("new", "Паспорт нового формата")),
+        method="filter_passport_kind"
     )
 
     def filter_owner_kind(self, qs, name, value):
@@ -41,6 +48,13 @@ class PassportFilter(df.FilterSet):
             )
         return qs
 
+    def filter_passport_kind(self, qs, name, value):
+        if value == "import":
+            return qs.filter(old_passport_number__isnull=False).exclude(old_passport_number__exact="")
+        if value == "new":
+            return qs.filter(Q(old_passport_number__isnull=True) | Q(old_passport_number__exact=""))
+        return qs
+
     class Meta:
         model = Passport
-        fields = ["status", "year", "breed", "region", "microchip", "owner_kind"]
+        fields = ["status", "year", "breed", "region", "microchip", "owner_kind", "passport_kind"]

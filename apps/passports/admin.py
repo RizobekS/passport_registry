@@ -1,28 +1,48 @@
 from django.contrib import admin, messages
+from django.db.models import Q
 from django.utils.timezone import now
 from .models import Passport
 from .services import render_passport_pdf
+from django.contrib.admin import SimpleListFilter
+
+
+class ImportedFilter(SimpleListFilter):
+    title = "Тип паспорта"
+    parameter_name = "imported"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("1", "Старые (импорт)"),
+            ("0", "Новые"),
+        )
+
+    def queryset(self, request, qs):
+        if self.value() == "1":
+            return qs.filter(old_passport_number__isnull=False).exclude(old_passport_number__exact="")
+        if self.value() == "0":
+            return qs.filter(Q(old_passport_number__isnull=True) | Q(old_passport_number__exact=""))
+        return qs
 
 @admin.register(Passport)
 class PassportAdmin(admin.ModelAdmin):
-    list_display = ("number", "horse", "status", "issue_date", "version", "created_at")
-    list_filter = ("status", "issue_date", "version")
-    search_fields = ("number", "horse__name", "horse__registry_no", "horse__microchip")
+    list_display = ("number", "old_passport_number", "horse", "status", "version", "imported_badge", "active_badge", "issue_date", "created_at")
+    list_filter = ("status", "issue_date", "version", ImportedFilter)
+    search_fields = ("number", "old_passport_number", "horse__name", "horse__registry_no", "horse__microchip")
     readonly_fields = (
         "barcode_value",
         "number", "qr_public_id", "created_at",
         "barcode_image", "qr_image", "pdf_file",
-        "version",
+        "version", "public_link",
     )
 
     fieldsets = (
         ("Паспорт", {
             "classes": ("tab", "tab-main"),
-            "fields": ("number", "horse", "status", "version", "issue_date"),
+            "fields": ("number", "old_passport_number", "horse", "status", "version", "issue_date"),
         }),
         ("Коды", {
             "classes": ("tab", "tab-codes"),
-            "fields": ("barcode_value", "barcode_image", "qr_public_id", "qr_image"),
+            "fields": ("barcode_value", "barcode_image", "qr_public_id", "qr_image", "public_link"),
             "description": "Штрих-код и QR генерируются автоматически при выпуске.",
         }),
         ("Файл", {
@@ -34,6 +54,21 @@ class PassportAdmin(admin.ModelAdmin):
             "fields": ("revoked_reason", "created_at"),
         }),
     )
+
+    def imported_badge(self, obj):
+        return "Старый (импорт)" if obj.has_old else "Новый"
+
+    imported_badge.short_description = "Тип"
+
+    def active_badge(self, obj):
+        return "Действующий" if obj.is_active else "Неактивен"
+
+    active_badge.short_description = "Состояние"
+
+    def public_link(self, obj):
+        return obj.public_url if obj and obj.number else ""
+
+    public_link.short_description = "Публичная ссылка"
 
     actions = ["issue_passport", "revoke_passport", "reissue_passport"]
 

@@ -61,8 +61,8 @@
           <tr class="row">
             <td class="c-date">{{ r.date|date:"d.m.Y" }}</td>
             <td class="c-place">{{ r.place }}</td>
-            <td class="c-urine">{% if r.urine %}<span class="chk">✓</span>{% endif %}</td>
-            <td class="c-blood">{% if r.blood %}<span class="chk">✓</span>{% endif %}</td>
+            <td class="c-urine">{% if r.urine %}<span class="chk">r.urine ✓</span>{% endif %}</td>
+            <td class="c-blood">{% if r.blood %}<span class="chk">r.blood ✓</span>{% endif %}</td>
             <td class="c-others">{% if r.others %}{{ r.others }}{% endif %}</td>
             <td class="c-vet">{{ r.vet_full }}</td>
           </tr>

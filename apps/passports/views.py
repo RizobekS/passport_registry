@@ -185,18 +185,15 @@ class RegistryDashboardView(TemplateView):
         return TemplateLayout().init(ctx)
 
 
-def public_passport(request, qr_id):
-    public_base_url = PUBLIC_BASE_URL
-    allowed = [Passport.Status.ISSUED, Passport.Status.REISSUED, Passport.Status.REVOKED]
+def public_passport(request, number: str):
     p = get_object_or_404(
-        Passport.objects.select_related('horse', 'horse__breed', 'horse__color', 'horse__place_of_birth')
-        .prefetch_related(
-            Prefetch('horse__vaccinations',
-                     queryset=Vaccination.objects.select_related('vaccine', 'veterinarian__person').order_by('-date')),
-            Prefetch('horse__lab_tests',
-                     queryset=LabTest.objects.select_related('test_type', 'veterinarian__person').order_by('-date')),
+        Passport.objects.select_related(
+            "horse", "horse__breed", "horse__color", "horse__place_of_birth"
+        ).prefetch_related(
+            Prefetch("horse__vaccinations", queryset=Vaccination.objects.order_by("-date")),
+            Prefetch("horse__lab_tests", queryset=LabTest.objects.order_by("-date")),
         ),
-        qr_public_id=qr_id,
-        status__in=allowed
+        number=number,
+        status__in=[Passport.Status.ISSUED, Passport.Status.REISSUED, Passport.Status.REVOKED],
     )
-    return render(request, 'passports/public_card.html', {'p': p, 'public_base_url': public_base_url})
+    return render(request, "passports/public_card.html", {"p": p})

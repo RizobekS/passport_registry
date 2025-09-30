@@ -1,0 +1,74 @@
+{# templates/passports/pdf/blocks/page_vaccinations_flu.html #}
+<style>
+  .vacc-wrap { margin: 6mm 8mm 0; font-size: 6pt; }
+  .vacc-title { text-align:center; font-weight:700; font-size: 10pt; line-height:1; margin-bottom: 2mm; }
+  .vacc-table { width:100%; border-collapse: collapse; }
+  .vacc-table th, .vacc-table td { border: 1px solid #000; padding: 1mm; vertical-align: top; }
+  .vacc-table th { text-align: center; font-weight: var(--th-weight); font-size: 7pt; }
+  .col-date    { width: 18%; }
+  .col-name    { width: 28%; }
+  .col-manuf   { width: 30%; }
+  .col-country { width: 8%;  text-align:center; }
+  .col-vet     { width: 16%; }
+  .row { height: 4mm; }
+</style>
+
+<div class="vacc-wrap">
+  <div class="vacc-title">
+    Отни эмлаш (вакцинация қилиш) тўғрисида белгилар (“От гриппи"га қарши”)<br>
+    Отметки о вакцинации лошади (против “Гриппа лошадей”)<br>
+    Vaccination record (Equine influenza only)
+  </div>
+
+  <table class="vacc-table">
+    <thead>
+      <tr>
+        <th class="col-date">
+          Эмланган санаси (кун, ой, йил)<br>
+          Дата вакцинации (число, месяц, год)<br>
+          <i>Date of vaccination (day, month, year)</i>
+        </th>
+        <th class="col-name">
+          Эмланманинг номи ва эмланмани қайд этилган рақами<br>
+          Наименование вакцины и номер регистрации вакцины<br>
+          <i>Name of vaccine &amp; registration number</i>
+        </th>
+        <th class="col-manuf">
+          Эмланманинг тайёрланган санаси, серия рақами, ишлаб чиқарувчининг манзили<br>
+          Дата изготовления вакцины, номер серии, адрес производителя<br>
+          <i>Date of manufacture, batch number, manufacturer’s address</i>
+        </th>
+        <th class="col-country">
+          Мамлакат<br>Страна<br><i>Country</i>
+        </th>
+        <th class="col-vet">
+          Ветеринария врачининг Ф.И.Ш., имзоси, муҳри<br>
+          Ф.И.О. ветеринарного врача, подпись, печать<br>
+          <i>Name, signature and stamp of official veterinarian</i>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in rows %}
+        {% if v %}
+          <tr class="row">
+            <td class="col-date">{{ v.date|date:"d.m.Y" }}</td>
+            <td class="col-name">
+              {{ v.vaccine_name }}
+              {% if v.reg_no %} ({{ v.reg_no }}){% endif %}
+            </td>
+            <td class="col-manuf">
+              {% if v.manufactured %}{{ v.manufactured|date:"d.m.Y" }}{% endif %}
+              {% if v.batch %} / {{ v.batch }}{% endif %}
+              {% if v.mfr_address %} / {{ v.mfr_address }}{% endif %}
+            </td>
+            <td class="col-country">{{ v.country }}</td>
+            <td class="col-vet">{{ v.vet_full }}</td>
+          </tr>
+        {% else %}
+          <tr class="row"><td></td><td></td><td></td><td></td><td></td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

@@ -15,29 +15,33 @@
       {{ filter.form.status|add_class:"form-select" }}
     </div>
     <div class="col-md-4">
+      <label class="form-label">{{ filter.form.passport_kind.label }}</label>
+      {{ filter.form.passport_kind|add_class:"form-select" }}
+    </div>
+    <div class="col-md-4">
       <label class="form-label">{{ filter.form.breed.label }}</label>
       {{ filter.form.breed|add_class:"form-select" }}
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label class="form-label">{{ filter.form.region.label }}</label>
       {{ filter.form.region|add_class:"form-select" }}
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label class="form-label">{{ filter.form.owner_kind.label }}</label>
       {{ filter.form.owner_kind|add_class:"form-select" }}
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label class="form-label">{{ filter.form.year.label }}</label>
       {{ filter.form.year|add_class:"form-control" }}
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label class="form-label">{{ filter.form.microchip.label }}</label>
       {{ filter.form.microchip|add_class:"form-control" }}
     </div>
   </div>
   <div class="mt-3 d-flex gap-2">
     <button class="btn btn-primary"><i class="ti ti-filter me-1"></i> Фильтр</button>
-    <a href="?" class="btn btn-outline-secondary"><i class="ti ti-refresh me-1"></i> Сброс</a>
+    <a href="?" class="btn btn-outline-danger"><i class="ti ti-refresh me-1"></i> Сброс</a>
   </div>
 </form>
 
@@ -47,6 +51,7 @@
         <thead>
           <tr>
             <th>№ паспорта</th>
+            <th>Тип паспорта</th>
             <th>Кличка лошади</th>
             <th>Порода</th>
             <th>Регион</th>
@@ -60,14 +65,21 @@
         {% for p in items %}
         <tr>
           <td>{{ p.number }}</td>
+          <td>
+            {% if p.old_passport_number %}
+              <span class="badge bg-label-warning text-wrap">Действующий паспорт старого формата</span>
+            {% else %}
+              <span class="badge bg-label-success">Паспорт нового формата</span>
+            {% endif %}
+          </td>
           <td>{{ p.horse.name }}</td>
           <td class="text-wrap">{{ p.horse.breed.name }}</td>
           <td>{{ p.horse.place_of_birth.name }}</td>
           <td><span class="badge bg-label-{% if p.status == 'ISSUED' or p.status == 'REISSUED' %}success {% elif p.status == 'DRAFT' %}warning {% else %}danger {% endif %}">{{ p.get_status_display }}</span></td>
-          <td>{{ p.horse.owner_current }}</td>
+          <td class="text-wrap">{{ p.horse.owner_current }}</td>
           <td>{{ p.issue_date|date:'d.m.Y' }}</td>
           <td class="text-end">
-            <a class="btn btn-sm btn-outline-primary" href="{% url 'passports:public' p.qr_public_id %}" target="_blank">Открыть</a>
+            <a class="btn btn-sm btn-outline-primary" href="{% url 'passports:public' p.number %}" target="_blank">Открыть</a>
             {% if p.pdf_file %}
             <a class="btn btn-sm btn-outline-secondary" href="{{ p.pdf_file.url }}" target="_blank">PDF</a>
             {% else %}

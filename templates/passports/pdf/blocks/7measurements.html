@@ -1,5 +1,4 @@
 {# templates/passports/pdf/blocks/page7_characteristics.html #}
-
 <style>
   .p7-wrap{ margin:5mm 6mm 0; font-size:6pt; }
   .p7-title{ text-align:center; font-weight:700; line-height:1; margin-bottom:2mm; font-size:10pt; }
@@ -23,6 +22,7 @@
     Characteristics of horse
   </div>
 
+  {% with I=bon.I II=bon.II III=bon.III %}
   <table class="p7-table">
     <thead>
       <tr>
@@ -41,56 +41,93 @@
       </tr>
     </thead>
     <tbody>
-      <!-- Ряд 1 -->
+      <!-- 1. Age / Origin -->
       <tr class="h-row">
         <td class="t-left">Ёши<br>Возраст<br>Age</td>
-        <td></td><td></td><td></td>
+        <td class="t-center">{{ I.age_years|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.age_years|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.age_years|default_if_none:'' }}</td>
+
         <td class="t-left">Насл-набасби<br>Происхождение<br>Origin</td>
-        <td></td><td></td><td></td>
-      </tr>
-      <!-- Ряд 2 -->
-      <tr class="h-row">
-        <td class="t-left">Қаричғай баландлиги, см.<br>Высота в холке, см.<br>Height from withers, sm.</td>
-        <td></td><td></td><td></td>
-        <td class="t-left">Типичлиги<br>Типичность<br>Typicality</td>
-        <td></td><td></td><td></td>
-      </tr>
-      <!-- Ряд 3 -->
-      <tr class="h-row">
-        <td class="t-left">Тананинг қис узунлиги, см.<br>Косая длина туловища, см.<br>Oblique length of torso, sm.</td>
-        <td></td><td></td><td></td>
-        <td class="t-left">Ўлчамлари<br>Промеры<br>Measure</td>
-        <td></td><td></td><td></td>
-      </tr>
-      <!-- Ряд 4 -->
-      <tr class="h-row">
-        <td class="t-left">Кўкрак айланаси, см.<br>Обхват груди, см.<br>Chest girth, sm.</td>
-        <td></td><td></td><td></td>
-        <td class="t-left">Ташқи тузилиши<br>Экстерьер<br>Exteriors</td>
-        <td></td><td></td><td></td>
-      </tr>
-      <!-- Ряд 5 -->
-      <tr class="h-row">
-        <td class="t-left">Қафт айланаси, см.<br>Обхват пясти, см.<br>Metacarpus girth, sm.</td>
-        <td></td><td></td><td></td>
-        <td class="t-left">Ишчанлик қобилияти<br>Работоспособность<br>Capacity</td>
-        <td></td><td></td><td></td>
-      </tr>
-      <!-- Ряд 6 -->
-      <tr class="h-row">
-        <td class="t-left"></td>
-        <td></td><td></td><td></td>
-        <td class="t-left">Авлодининг сифати<br>Качество потомства<br>Quality of breed</td>
-        <td></td><td></td><td></td>
-      </tr>
-      <!-- Ряд 7 -->
-      <tr class="h-row">
-        <td class="t-left"></td>
-        <td></td><td></td><td></td>
-        <td class="t-left">Синфи<br>Класс<br>Class</td>
-        <td></td><td></td><td></td>
+        <td class="t-center">{{ I.origin_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.origin_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.origin_score|default_if_none:'' }}</td>
       </tr>
 
+      <!-- 2. Height at withers / Typicality -->
+      <tr class="h-row">
+        <td class="t-left">Қаричғай баландлиги, см.<br>Высота в холке, см.<br>Height from withers, sm.</td>
+        <td class="t-center">{{ I.height_withers_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.height_withers_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.height_withers_cm|default_if_none:'' }}</td>
+
+        <td class="t-left">Типичлиги<br>Типичность<br>Typicality</td>
+        <td class="t-center">{{ I.typicality_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.typicality_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.typicality_score|default_if_none:'' }}</td>
+      </tr>
+
+      <!-- 3. Oblique length of torso / Measure (score) -->
+      <tr class="h-row">
+        <td class="t-left">Тананинг қис узунлиги, см.<br>Косая длина туловища, см.<br>Oblique length of torso, sm.</td>
+        <td class="t-center">{{ I.torso_oblique_length_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.torso_oblique_length_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.torso_oblique_length_cm|default_if_none:'' }}</td>
+
+        <td class="t-left">Ўлчамлари<br>Промеры<br>Measure</td>
+        <td class="t-center">{{ I.measure_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.measure_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.measure_score|default_if_none:'' }}</td>
+      </tr>
+
+      <!-- 4. Chest girth / Exteriors -->
+      <tr class="h-row">
+        <td class="t-left">Кўкрак айланаси, см.<br>Обхват груди, см.<br>Chest girth, sm.</td>
+        <td class="t-center">{{ I.chest_girth_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.chest_girth_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.chest_girth_cm|default_if_none:'' }}</td>
+
+        <td class="t-left">Ташқи тузилиши<br>Экстерьер<br>Exteriors</td>
+        <td class="t-center">{{ I.exteriors_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.exteriors_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.exteriors_score|default_if_none:'' }}</td>
+      </tr>
+
+      <!-- 5. Metacarpus girth / Capacity -->
+      <tr class="h-row">
+        <td class="t-left">Қафт айланаси, см.<br>Обхват пясти, см.<br>Metacarpus girth, sm.</td>
+        <td class="t-center">{{ I.metacarpus_girth_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.metacarpus_girth_cm|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.metacarpus_girth_cm|default_if_none:'' }}</td>
+
+        <td class="t-left">Ишчанлик қобилияти<br>Работоспособность<br>Capacity</td>
+        <td class="t-center">{{ I.capacity_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.capacity_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.capacity_score|default_if_none:'' }}</td>
+      </tr>
+
+      <!-- 6. (empty measure) / Quality of breed -->
+      <tr class="h-row">
+        <td class="t-left"></td>
+        <td></td><td></td><td></td>
+
+        <td class="t-left">Авлодининг сифати<br>Качество потомства<br>Quality of breed</td>
+        <td class="t-center">{{ I.quality_of_breed_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.quality_of_breed_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.quality_of_breed_score|default_if_none:'' }}</td>
+      </tr>
+
+      <!-- 7. (empty measure) / Class -->
+      <tr class="h-row">
+        <td class="t-left"></td>
+        <td></td><td></td><td></td>
+
+        <td class="t-left">Синфи<br>Класс<br>Class</td>
+        <td class="t-center">{{ I.class_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ II.class_score|default_if_none:'' }}</td>
+        <td class="t-center">{{ III.class_score|default_if_none:'' }}</td>
+      </tr>
     </tbody>
   </table>
+  {% endwith %}
 </div>

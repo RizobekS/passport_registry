@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (
     Horse, IdentificationEvent, Ownership,
     HorseMeasurements, DiagnosticCheck,
-    SportAchievement, ExhibitionEntry, Offspring
+    SportAchievement, ExhibitionEntry, Offspring, HorseBonitation
 )
 from apps.vet.models import Vaccination, LabTest
 
@@ -37,13 +37,26 @@ class OffspringInline(admin.TabularInline):
     extra = 0
     classes = ("tab", "tab-pedigree")
     fields = (
-        "relation", "name_klichka", "sex", "breed",
-        "date_birth", "place_birth",
-        "colour_horse", "brand_no", "shb_no", "reg_number",
+        "brand_no", "shb_no",
         "immunity_exp_number", "immunity_exp_date",
     )
     autocomplete_fields = ()
     show_change_link = True
+
+
+class HorseBonitationInline(admin.TabularInline):
+    model = HorseBonitation
+    extra = 0
+    classes = ("tab", "tab-bonitation")
+    fields = (
+        "period",
+        "age_years", "height_withers_cm", "torso_oblique_length_cm",
+        "chest_girth_cm", "metacarpus_girth_cm",
+        "origin_score", "typicality_score", "measure_score",
+        "exteriors_score", "capacity_score", "quality_of_breed_score",
+        "class_score", "bonitation_mark", "note",
+    )
+    ordering = ("-period",)
 
 
 class HorseMeasurementsInline(admin.StackedInline):
@@ -67,9 +80,7 @@ class HorseAdmin(admin.ModelAdmin):
             "fields": (
                 "registry_no", "name", "sex", "horse_type",
                 "birth_date", "breed", "color", "place_of_birth",
-                "microchip", "brand_mark", 'dna_no',
-                "owner_current",
-                "ident_notes",
+                "microchip", "owner_current",
             ),
         }),
         ("Фотографии", {
@@ -87,8 +98,9 @@ class HorseAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        HorseMeasurementsInline,  # ← удобно редактировать на карточке лошади
-        OffspringInline,  # ← новая вкладка «Родословная»
+        HorseMeasurementsInline,
+        HorseBonitationInline,
+        OffspringInline,
         IdentificationEventInline,
         OwnershipInline,
         VaccinationInline,
@@ -101,8 +113,6 @@ class HorseAdmin(admin.ModelAdmin):
             "js/microchip_scanner.js",
         )
 
-
-# Если хочешь оставить отдельные административные страницы — можно и так:
 
 @admin.register(HorseMeasurements)
 class HorseMeasurementsAdmin(admin.ModelAdmin):
@@ -131,6 +141,6 @@ class ExhibitionEntryAdmin(admin.ModelAdmin):
 
 @admin.register(Offspring)
 class OffspringAdmin(admin.ModelAdmin):
-    list_display = ("horse", "relation", "name_klichka", "date_birth", "breed", "colour_horse")
-    list_filter = ("relation", "breed")
-    search_fields = ("horse__name", "name_klichka", "reg_number", "brand_no", "shb_no")
+    list_display = ("horse", "brand_no", "shb_no")
+    list_filter = ("brand_no", "shb_no")
+    search_fields = ("horse", "brand_no", "shb_no")

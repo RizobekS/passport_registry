@@ -111,28 +111,33 @@
 <section class="page a5-land">{% include 'passports/pdf/blocks/vaccinations.html' with rows=rows %}</section>
 {% endfor %}
 
-{% for rows in lab_pages %}
-<section class="page a5-land">{% include 'passports/pdf/blocks/lab_tests.html' with rows=rows %}</section>
-{% endfor %}
+  {# Equine influenza pages #}
+  {% for rows in vacc_flu_pages %}
+    <section class="page a5-land">{% include "passports/pdf/blocks/page_vaccinations_flu.html" with rows=rows %}</section>
+  {% endfor %}
 
-{% for rows in diag_pages %}
-<section class="page a5-land">{% include 'passports/pdf/blocks/diagnostic_control.html' with rows=rows %}</section>
-{% endfor %}
+  {% for rows in lab_pages %}
+    <section class="page a5-land">{% include 'passports/pdf/blocks/lab_tests.html' with rows=rows %}</section>
+  {% endfor %}
 
-{% for rows in ach_pages %}
-<section class="page a5-land">{% include 'passports/pdf/blocks/achievements.html' with rows=rows %}</section>
-{% endfor %}
+  {% for rows in diag_pages %}
+    <section class="page a5-land">{% include 'passports/pdf/blocks/diagnostic_control.html' with rows=rows %}</section>
+  {% endfor %}
 
-{% for rows in exh_pages %}
-<section class="page a5-land">{% include 'passports/pdf/blocks/page_exhibitions.html' with rows=rows %}</section>
-{% endfor %}
+  {% for rows in ach_pages %}
+    <section class="page a5-land">{% include 'passports/pdf/blocks/achievements.html' with rows=rows %}</section>
+  {% endfor %}
 
-<section class="page a5-land">{% include 'passports/pdf/blocks/page_offspring.html' %}</section>
-<section class="page a5-land">{% include 'passports/pdf/blocks/page_ownership.html' %}</section>
-<section class="page a5-land">{% include 'passports/pdf/blocks/page_parentage.html' %}</section>
-<section class="page a5-land">{% include 'passports/pdf/blocks/page_parentage_tree.html' %}</section>
-<section class="page a5-land">{% include 'passports/pdf/blocks/page_chip.html' %}</section>
-<section class="page a5-land">{% include 'passports/pdf/blocks/last_static_text.html' %}</section>
+  {% for rows in exh_pages %}
+    <section class="page a5-land">{% include 'passports/pdf/blocks/page_exhibitions.html' with rows=rows %}</section>
+  {% endfor %}
+
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_offspring.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_ownership.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_parentage.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_parentage_tree.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/page_chip.html' %}</section>
+  <section class="page a5-land">{% include 'passports/pdf/blocks/last_static_text.html' %}</section>
 
 </body>
 </html>
