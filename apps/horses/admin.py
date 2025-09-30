@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import (
     Horse, IdentificationEvent, Ownership,
     HorseMeasurements, DiagnosticCheck,
-    SportAchievement, ExhibitionEntry, Offspring, HorseBonitation
+    SportAchievement, ExhibitionEntry, Offspring, HorseBonitation, RealOffspringNode, RealOffspring
 )
 from apps.vet.models import Vaccination, LabTest
 
@@ -144,3 +144,16 @@ class OffspringAdmin(admin.ModelAdmin):
     list_display = ("horse", "brand_no", "shb_no")
     list_filter = ("brand_no", "shb_no")
     search_fields = ("horse", "brand_no", "shb_no")
+
+
+class RealOffspringNodeInline(admin.TabularInline):
+    model = RealOffspringNode
+    extra = 14  # чтобы было место под все 14 сразу
+    fields = ("relation", "name", "brand_no", "breed")
+    ordering = ("relation",)
+
+@admin.register(RealOffspring)
+class RealOffspringAdmin(admin.ModelAdmin):
+    list_display = ("horse", "created_at")
+    autocomplete_fields = ("horse",)
+    inlines = [RealOffspringNodeInline]

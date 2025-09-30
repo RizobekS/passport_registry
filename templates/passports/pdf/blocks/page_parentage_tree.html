@@ -1,11 +1,125 @@
-{# templates/passports/pdf/blocks/page_parentage_tree.html #}
+{# templates/passports/pdf/blocks/page_parentage_tree_svg.html #}
 {% load static pdf_utils %}
 <style>
-  /* По этой странице можно дать чуть меньше поля, чтобы картинка входила полностью */
+  /* чуть больше полезной высоты страницы */
+  @page a5land { margin: 4mm 6mm 6mm 6mm; }
+
   .tree-wrap { margin: 0; }
-  .tree-img  { width: 100%; height: auto; display: block; }
+  .tree-svg  { width: 100%; height: auto; display: block; }
+  .node text { font-family: "Times New Roman","DejaVu Serif",serif; font-size: 22px; fill:#000; }
+  .node .nm  { font-weight: 700; }
 </style>
 
 <div class="tree-wrap">
-  <img class="tree-img" src="{% static_file 'report/passport_17.png' %}" alt="Pedigree diagram">
+  <svg class="tree-svg"
+       viewBox="0 0 3508 2480"
+       xmlns="http://www.w3.org/2000/svg"
+       preserveAspectRatio="xMidYMid meet">
+
+    {# >>> ВАЖНО: всё кладём внутрь одной группы и масштабируем <<< #}
+    {# SCALE = 1.12 (увеличить на 12%). Сдвиг держит картинку по центру. #}
+    {# tx = -(SCALE-1) * 3508 / 2  =>  -210.48  (~ -210)               #}
+    {# ty = -(SCALE-1) * 2480 / 2  =>  -148.80 (~ -149)               #}
+    <g transform="translate(-210,-149) scale(1.20)">
+
+      <!-- фон-схема 1:1 в тех же координатах -->
+      <image href="{% static_file 'report/sxemaNasl.svg' %}" x="0" y="0" width="3508" height="2480" />
+
+      {# дальше — твои <g class="node"> ... </g> как есть, без textLength #}
+      {# === САМА ЛОШАДЬ === #}
+      <g class="node">
+        <text class="nm" x="655" y="1073">{{ pedigree.self.name }}</text>
+        <text x="670" y="1101">{{ pedigree.self.brand }}</text>
+        <text x="649" y="1124">{{ pedigree.self.breed }}</text>
+      </g>
+
+      {# === РОДИТЕЛИ === #}
+      <g class="node">
+        <text class="nm" x="1292" y="733">{{ pedigree.by_key.DAM.name }}</text>
+        <text x="1307" y="760">{{ pedigree.by_key.DAM.brand }}</text>
+        <text x="1287" y="783">{{ pedigree.by_key.DAM.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="1297" y="1404">{{ pedigree.by_key.SIRE.name }}</text>
+        <text x="1312" y="1431">{{ pedigree.by_key.SIRE.brand }}</text>
+        <text x="1291" y="1454">{{ pedigree.by_key.SIRE.breed }}</text>
+      </g>
+
+      {# === БАБУШКИ/ДЕДУШКИ === #}
+      <g class="node">
+        <text class="nm" x="1890" y="565">{{ pedigree.by_key.DAM_DAM.name }}</text>
+        <text x="1904" y="593">{{ pedigree.by_key.DAM_DAM.brand }}</text>
+        <text x="1884" y="616">{{ pedigree.by_key.DAM_DAM.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="1894" y="890">{{ pedigree.by_key.DAM_SIRE.name }}</text>
+        <text x="1908" y="917">{{ pedigree.by_key.DAM_SIRE.brand }}</text>
+        <text x="1888" y="940">{{ pedigree.by_key.DAM_SIRE.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="1901" y="1226">{{ pedigree.by_key.SIRE_DAM.name }}</text>
+        <text x="1915" y="1254">{{ pedigree.by_key.SIRE_DAM.brand }}</text>
+        <text x="1895" y="1277">{{ pedigree.by_key.SIRE_DAM.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="1909" y="1564">{{ pedigree.by_key.SIRE_SIRE.name }}</text>
+        <text x="1923" y="1591">{{ pedigree.by_key.SIRE_SIRE.brand }}</text>
+        <text x="1903" y="1614">{{ pedigree.by_key.SIRE_SIRE.breed }}</text>
+      </g>
+
+      {# === ПРА-ПРЕДКИ (8 правых блоков) === #}
+      <g class="node">
+        <text class="nm" x="2511" y="472">{{ pedigree.by_key.DAM_DAM_SIRE.name }}</text>
+        <text x="2525" y="500">{{ pedigree.by_key.DAM_DAM_SIRE.brand }}</text>
+        <text x="2505" y="523">{{ pedigree.by_key.DAM_DAM_SIRE.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2511" y="639">{{ pedigree.by_key.DAM_DAM_DAM.name }}</text>
+        <text x="2525" y="667">{{ pedigree.by_key.DAM_DAM_DAM.brand }}</text>
+        <text x="2505" y="690">{{ pedigree.by_key.DAM_DAM_DAM.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2516" y="806">{{ pedigree.by_key.DAM_SIRE_SIRE.name }}</text>
+        <text x="2530" y="834">{{ pedigree.by_key.DAM_SIRE_SIRE.brand }}</text>
+        <text x="2510" y="857">{{ pedigree.by_key.DAM_SIRE_SIRE.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2516" y="971">{{ pedigree.by_key.DAM_SIRE_DAM.name }}</text>
+        <text x="2530" y="999">{{ pedigree.by_key.DAM_SIRE_DAM.brand }}</text>
+        <text x="2510" y="1022">{{ pedigree.by_key.DAM_SIRE_DAM.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2519" y="1136">{{ pedigree.by_key.SIRE_DAM_SIRE.name }}</text>
+        <text x="2533" y="1164">{{ pedigree.by_key.SIRE_DAM_SIRE.brand }}</text>
+        <text x="2513" y="1187">{{ pedigree.by_key.SIRE_DAM_SIRE.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2519" y="1301">{{ pedigree.by_key.SIRE_DAM_DAM.name }}</text>
+        <text x="2533" y="1329">{{ pedigree.by_key.SIRE_DAM_DAM.brand }}</text>
+        <text x="2513" y="1352">{{ pedigree.by_key.SIRE_DAM_DAM.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2524" y="1473">{{ pedigree.by_key.SIRE_SIRE_SIRE.name }}</text>
+        <text x="2538" y="1501">{{ pedigree.by_key.SIRE_SIRE_SIRE.brand }}</text>
+        <text x="2518" y="1524">{{ pedigree.by_key.SIRE_SIRE_SIRE.breed }}</text>
+      </g>
+
+      <g class="node">
+        <text class="nm" x="2524" y="1644">{{ pedigree.by_key.SIRE_SIRE_DAM.name }}</text>
+        <text x="2538" y="1672">{{ pedigree.by_key.SIRE_SIRE_DAM.brand }}</text>
+        <text x="2518" y="1695">{{ pedigree.by_key.SIRE_SIRE_DAM.breed }}</text>
+      </g>
+
+    </g> <!-- /zoom group -->
+  </svg>
 </div>

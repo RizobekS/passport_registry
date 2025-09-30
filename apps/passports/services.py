@@ -5,7 +5,7 @@ from weasyprint import HTML
 from pathlib import Path
 from django.core.files.base import File
 from datetime import date
-from apps.horses.models import Horse, Offspring, HorseBonitation
+from apps.horses.models import Horse, Offspring, HorseBonitation, RealOffspring
 
 def _fmt_region(r):
     return getattr(r, "name", "") if r else ""
@@ -416,6 +416,48 @@ def _bonitation_ctx(passport):
         }
     return data
 
+def _pedigree_tree_ctx(passport):
+    """
+    Данные для страницы-схемы:
+      self: {name, brand, breed} берём из Horse/Offspring
+      nodes: 14 узлов в фиксированном порядке
+    """
+    h = passport.horse
+    pedigree, _ = RealOffspring.objects.get_or_create(horse=h)  # чтобы было что редактировать в админке
+
+    # из Horse
+    name = getattr(h, "name", "") or ""
+    breed_obj = getattr(h, "breed", None)
+    breed = (getattr(breed_obj, "name", None) or str(breed_obj or ""))
+
+    # номер тавро у вас хранится в Offspring (родословная самой лошади)
+    brand = ""
+    try:
+        off = h.offspring.order_by("-id").first()
+        if off and off.brand_no:
+            brand = off.brand_no
+    except Exception:
+        pass
+
+    self_block = {"name": name, "brand": brand, "breed": breed}
+
+    order = [
+        "SIRE", "DAM",
+        "SIRE_SIRE", "SIRE_DAM", "DAM_SIRE", "DAM_DAM",
+        "SIRE_SIRE_SIRE", "SIRE_SIRE_DAM", "SIRE_DAM_SIRE", "SIRE_DAM_DAM",
+        "DAM_SIRE_SIRE", "DAM_SIRE_DAM", "DAM_DAM_SIRE", "DAM_DAM_DAM",
+    ]
+    by_key = {k: {"name":"", "brand":"", "breed":""} for k in order}
+    for n in pedigree.nodes.all():
+        if n.relation in by_key:
+            by_key[n.relation] = {
+                "name": n.name or "",
+                "brand": n.brand_no or "",
+                "breed": n.breed or "",
+            }
+    nodes = [by_key[k] for k in order]
+    return {"self": self_block, "nodes": nodes, "by_key": by_key}
+
 
 def render_passport_pdf(passport):
     horse = passport.horse
@@ -500,6 +542,7 @@ def render_passport_pdf(passport):
         "chip_main_code": chip_main_code,
         "passport_issue_date": issue_date,
         "bon": bon,
+        "pedigree": _pedigree_tree_ctx(passport),
     }
     html = get_template("passports/pdf/base.html").render(ctx)  # один потоковый HTML
     out_dir = Path(settings.MEDIA_ROOT) / "passports"

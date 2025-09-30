@@ -145,6 +145,94 @@ class Offspring(models.Model):
         return f"{self.horse} | {self.shb_no}"
 
 
+class RealOffspring(models.Model):
+    horse = models.OneToOneField(
+        "horses.Horse",
+        verbose_name="Лошадь",
+        on_delete=models.CASCADE,
+        related_name="pedigree",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Генеалогическое дерево (схема)"
+        verbose_name_plural = "Генеалогические деревья (схема)"
+
+    def __str__(self):
+        return f"Дерево предков: {self.horse}"
+
+
+class RealOffspringNode(models.Model):
+    """
+    Узел дерева: один из 14 предков.
+    Для простоты в каждой ноде те же три поля (кличка/тавро/порода).
+    """
+    class Relation(models.TextChoices):
+        # родители
+        SIRE = "SIRE", "Отец"
+        DAM  = "DAM",  "Мать"
+        # бабушки/дедушки
+        SIRE_SIRE = "SIRE_SIRE", "Отец отца"
+        SIRE_DAM  = "SIRE_DAM",  "Мать отца"
+        DAM_SIRE  = "DAM_SIRE",  "Отец матери"
+        DAM_DAM   = "DAM_DAM",   "Мать матери"
+        # пра-предки (8)
+        SIRE_SIRE_SIRE = "SIRE_SIRE_SIRE", "Отец отца отца"
+        SIRE_SIRE_DAM  = "SIRE_SIRE_DAM",  "Мать отца отца"
+        SIRE_DAM_SIRE  = "SIRE_DAM_SIRE",  "Отец матери отца"
+        SIRE_DAM_DAM   = "SIRE_DAM_DAM",   "Мать матери отца"
+        DAM_SIRE_SIRE  = "DAM_SIRE_SIRE",  "Отец отца матери"
+        DAM_SIRE_DAM   = "DAM_SIRE_DAM",   "Мать отца матери"
+        DAM_DAM_SIRE   = "DAM_DAM_SIRE",   "Отец матери матери"
+        DAM_DAM_DAM    = "DAM_DAM_DAM",    "Мать матери матери"
+
+    pedigree = models.ForeignKey(
+        RealOffspring,
+        verbose_name="Дерево",
+        on_delete=models.CASCADE,
+        related_name="nodes",
+    )
+    relation = models.CharField(
+        "Позиция на схеме",
+        max_length=32,
+        choices=Relation.choices,
+        db_index=True,
+    )
+    name = models.CharField("Кличка", max_length=120, blank=True)
+    brand_no = models.CharField("Тавро №", max_length=50, blank=True)
+    breed = models.CharField("Порода", max_length=120, blank=True)
+
+    class Meta:
+        verbose_name = "Узел дерева предков"
+        verbose_name_plural = "Узлы дерева предков"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["pedigree", "relation"],
+                name="uniq_pedigree_relation",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.get_relation_display()}: {self.name or '—'}"
+
+    @property
+    def order_index(self) -> int:
+        """
+        Индекс для сортировки по схеме (2 + 4 + 8 = 14).
+        Можно использовать в шаблоне или сервисах.
+        """
+        order = [
+            "SIRE", "DAM",
+            "SIRE_SIRE", "SIRE_DAM", "DAM_SIRE", "DAM_DAM",
+            "SIRE_SIRE_SIRE", "SIRE_SIRE_DAM", "SIRE_DAM_SIRE", "SIRE_DAM_DAM",
+            "DAM_SIRE_SIRE", "DAM_SIRE_DAM", "DAM_DAM_SIRE", "DAM_DAM_DAM",
+        ]
+        try:
+            return order.index(self.relation)
+        except ValueError:
+            return 999
+
+
 class HorseBonitation(models.Model):
     """
     Бонитировка/характеристика лошади за конкретный период (I/II/III).
