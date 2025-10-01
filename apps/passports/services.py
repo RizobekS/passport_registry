@@ -281,12 +281,59 @@ def _exhibitions_first_page(passport):
 
 def _offspring_rows_for_passport(passport):
     """
-    Ранее формировала таблицу 'Приплод' (дети лошади).
-    Текущая модель Offspring хранит реквизиты самой лошади (brand/shb/immunity),
-    поэтому заполнять нечем — возвращаем пустой список.
-    Шаблон/пагинация должны добить пустыми строками как обычно.
+    Страница «Приплод» (табличка на 7 строк).
+    В первой строке показываем родителей текущей лошади и данные самой лошади:
+      sire_name/dam_name, sire_breed/dam_breed — из RealOffspringNode(SIRE/DAM)
+      colour/sex/brand/birth_year             — из Horse и Offspring(brand_no)
+    Остальные строки остаются пустыми (дополняются в render_passport_pdf).
     """
-    return []
+    h = passport.horse
+
+    # --- родители из схемы (RealOffspringNode) ---
+    sire_name = sire_breed = dam_name = dam_breed = ""
+    try:
+        pedigree = RealOffspring.objects.get(horse=h)
+        nodes = {n.relation: n for n in pedigree.nodes.all()}
+        sire = nodes.get("SIRE")
+        dam  = nodes.get("DAM")
+        if sire:
+            sire_name  = sire.name or ""
+            sire_breed = sire.breed or ""
+        if dam:
+            dam_name  = dam.name or ""
+            dam_breed = dam.breed or ""
+    except RealOffspring.DoesNotExist:
+        pass
+
+    # --- признаки самой лошади ---
+    # масть
+    colour_obj = getattr(h, "color", None)
+    colour = getattr(colour_obj, "name", None) or (str(colour_obj) if colour_obj else "")
+    # пол
+    sex = h.get_sex_display() if hasattr(h, "get_sex_display") else (h.sex or "")
+    # тавро № из вашей модели Offspring (там оно хранится для самой лошади)
+    brand = ""
+    try:
+        o = h.offspring.order_by("-id").first()
+        if o and o.brand_no:
+            brand = o.brand_no
+    except Exception:
+        pass
+    # год рождения
+    birth_year = h.birth_date.year if getattr(h, "birth_date", None) else ""
+
+    row = {
+        "sire_name":  sire_name,
+        "dam_name":   dam_name,
+        "sire_breed": sire_breed,
+        "dam_breed":  dam_breed,
+        "colour":     colour,
+        "sex":        sex,
+        "brand":      brand,
+        "birth_year": birth_year,
+    }
+
+    return [row]
 
 def _ownership_rows_for_passport(passport):
     """
