@@ -1,9 +1,12 @@
 # horses/admin.py
 from django.contrib import admin
+from django.templatetags.static import static
+from django.utils.html import format_html
+
 from .models import (
     Horse, IdentificationEvent, Ownership,
     HorseMeasurements, DiagnosticCheck,
-    SportAchievement, ExhibitionEntry, Offspring, HorseBonitation, RealOffspringNode, RealOffspring
+    SportAchievement, ExhibitionEntry, Offspring, HorseBonitation, RealOffspringNode, RealOffspring, HorseDiagram
 )
 from apps.vet.models import Vaccination, LabTest
 
@@ -67,6 +70,26 @@ class HorseMeasurementsInline(admin.StackedInline):
     classes = ("tab", "tab-measure")
 
 
+class HorseDiagramInline(admin.StackedInline):
+    model = HorseDiagram
+    extra = 0
+    can_delete = True
+    fields = ("original_image", "updated_image", "preview")
+    readonly_fields = ("preview",)
+
+    def preview(self, obj):
+        if obj and (obj.updated_image or obj.original_image):
+            url = obj.updated_image.url if obj.updated_image else obj.original_image.url
+        else:
+            url = static("report/passport_4.png")
+        return format_html(
+            '<div style="max-width:680px">'
+            '<img src="{}" style="width:100%;height:auto;border:1px solid #ddd;border-radius:6px" />'
+            "</div>", url
+        )
+    preview.short_description = "Предпросмотр (канвас)"
+
+
 @admin.register(Horse)
 class HorseAdmin(admin.ModelAdmin):
     list_display = ("name", "registry_no", "microchip", "breed", "color", "birth_date", "place_of_birth", "horse_type")
@@ -105,6 +128,7 @@ class HorseAdmin(admin.ModelAdmin):
         OwnershipInline,
         VaccinationInline,
         LabTestInline,
+        HorseDiagramInline,
     ]
 
     class Media:

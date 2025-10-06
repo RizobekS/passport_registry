@@ -82,6 +82,19 @@ def _diagram_label(age_years: float | None) -> str:
     else:
         return "3 — 7"  # по ТЗ — последний диапазон
 
+def _diagram_image_url(passport) -> str:
+    """
+    Возвращает URL изображения для страницы 'Diagram outline':
+    1) updated_image, 2) original_image, 3) fallback: static/passport_4.png
+    """
+    h = passport.horse
+    d = getattr(h, "diagram", None)
+    if d:
+        url = d.current_url()
+        if url:
+            return url
+    return static("report/passport_4.png")
+
 def _paginate_fixed(items, page_size: int, pages: int):
     """Разбивает items на pages страниц по page_size, дополняя None до полной страницы."""
     arr = list(items or [])
@@ -572,6 +585,7 @@ def render_passport_pdf(passport):
         "passport": passport,
         "horse": horse,
         "diagram_label": _diagram_label(_age_years(getattr(horse, "birth_date", None))),
+        "diagram_image": _diagram_image_url(passport),
         "marks": marks,
         "owner_full_address": _owner_full_address(getattr(horse, "owner_current", None)),
         "stable_address": marks.get("stable_address") or "",

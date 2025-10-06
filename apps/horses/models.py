@@ -50,6 +50,38 @@ class Horse(models.Model):
             self.registry_no = make_horse_registry_no(reg_code)
         super().save(*args, **kwargs)
 
+class HorseDiagram(models.Model):
+    """
+    Схема для страницы «График тасвири / Diagram outline».
+    Хранит исходное изображение и обновлённое (после отметок ветврача).
+    """
+    horse = models.OneToOneField(
+        Horse, on_delete=models.CASCADE, related_name="diagram",
+        verbose_name="Лошадь"
+    )
+    original_image = models.ImageField(
+        "Первичная схема (до правок)", upload_to="diagram/originals/", blank=True
+    )
+    updated_image = models.ImageField(
+        "Обновлённая схема (после правок)", upload_to="diagram/updated/", blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Схема отметок"
+        verbose_name_plural = "Схемы отметок"
+
+    def __str__(self):
+        return f"Схема: {self.horse}"
+
+    # Удобный выбор текущей картинки
+    def current_url(self) -> str:
+        if self.updated_image:
+            return self.updated_image.url
+        if self.original_image:
+            return self.original_image.url
+        return ""
+
 class IdentificationEvent(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="ident_events")
     date = models.DateField("Дата")
