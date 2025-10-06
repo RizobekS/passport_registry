@@ -1,6 +1,8 @@
 # services.py
 from django.template.loader import get_template
 from django.conf import settings
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
 from weasyprint import HTML
 from pathlib import Path
 from django.core.files.base import File
@@ -72,28 +74,39 @@ def _age_years(birth_date, ref=None):
     return months / 12.0
 
 def _diagram_label(age_years: float | None) -> str:
-    # Диапазоны по ТЗ (десятичная запятая для подписи)
-    if age_years is None:
+    """
+    Подпись-диапазон строго по ТЗ:
+      0–1,5  |  1,5–3  |  3–7
+    """
+    if age_years is None or age_years < 1.5:
         return "0 — 1,5"
-    if age_years < 1.5:
-        return "0 — 1,5"
-    elif age_years < 3:
+    if age_years < 3:
         return "1,5 — 3"
-    else:
-        return "3 — 7"  # по ТЗ — последний диапазон
+    return "3 — 7"
 
-def _diagram_image_url(passport) -> str:
+def _diagram_image_path(horse) -> str:
     """
-    Возвращает URL изображения для страницы 'Diagram outline':
-    1) updated_image, 2) original_image, 3) fallback: static/passport_4.png
+    Возвращаем ЛОКАЛЬНЫЙ путь к картинке схемы (а не URL), чтобы затем
+    в шаблоне отдать его через |file_uri для WeasyPrint.
+      1) если есть загруженная схема: horse.diagram.updated_image.path
+      2) иначе берём статику report/passport_4.png через finders
     """
-    h = passport.horse
-    d = getattr(h, "diagram", None)
-    if d:
-        url = d.current_url()
-        if url:
-            return url
-    return static("report/passport_4.png")
+    # 1) пользовательская схема из MEDIA
+    try:
+        d = getattr(horse, "diagram", None)
+        f = getattr(d, "updated_image", None)
+        if f:
+            return f
+    except Exception:
+        pass
+
+    # 2) fallback — статическая «заводская» схема
+    static_abs = finders.find("report/passport_4.png")
+    if static_abs:
+        return static_abs
+    # запасной вариант на случай отсутствия сборщика статики
+    return str(Path(settings.BASE_DIR) / "static" / "report" / "passport_4.png")
+
 
 def _paginate_fixed(items, page_size: int, pages: int):
     """Разбивает items на pages страниц по page_size, дополняя None до полной страницы."""
@@ -110,7 +123,7 @@ def _paginate_fixed(items, page_size: int, pages: int):
 def _vaccination_rows(passport, influenza: bool):
     """
     Собирает строки вакцинаций для таблицы.
-    influenza=True  -> только «для гриппа»
+    influenza=True-> только «для гриппа»
     influenza=False -> все остальные (в т.ч. старые записи с None)
     """
     horse = passport.horse
@@ -585,7 +598,7 @@ def render_passport_pdf(passport):
         "passport": passport,
         "horse": horse,
         "diagram_label": _diagram_label(_age_years(getattr(horse, "birth_date", None))),
-        "diagram_image": _diagram_image_url(passport),
+        "diagram_image_path": _diagram_image_path(passport.horse),
         "marks": marks,
         "owner_full_address": _owner_full_address(getattr(horse, "owner_current", None)),
         "stable_address": marks.get("stable_address") or "",

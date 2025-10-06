@@ -74,21 +74,22 @@ class HorseDiagramInline(admin.StackedInline):
     model = HorseDiagram
     extra = 0
     can_delete = True
-    fields = ("original_image", "updated_image", "preview")
-    readonly_fields = ("preview",)
+    fields = ("updated_image", "original_link", "preview")
+    readonly_fields = ("original_link", "preview")
+
+    def original_link(self, obj):
+        url = static("report/passport_4.png")
+        return format_html('<a href="{}" download>Скачать исходную схему</a>', url)
+    original_link.short_description = "Исходная схема"
 
     def preview(self, obj):
-        if obj and (obj.updated_image or obj.original_image):
-            url = obj.updated_image.url if obj.updated_image else obj.original_image.url
-        else:
-            url = static("report/passport_4.png")
+        url = obj.current_url if obj else static("report/passport_4.png")
         return format_html(
             '<div style="max-width:680px">'
             '<img src="{}" style="width:100%;height:auto;border:1px solid #ddd;border-radius:6px" />'
             "</div>", url
         )
-    preview.short_description = "Предпросмотр (канвас)"
-
+    preview.short_description = "Предпросмотр"
 
 @admin.register(Horse)
 class HorseAdmin(admin.ModelAdmin):

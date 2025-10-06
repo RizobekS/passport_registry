@@ -2,6 +2,8 @@ from decimal import Decimal
 
 from django.db import models
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+from django.templatetags.static import static
+
 from apps.common.models import Breed, Color, Region, Country
 from apps.parties.models import Owner, Veterinarian
 from apps.common.utils import make_horse_registry_no
@@ -53,15 +55,13 @@ class Horse(models.Model):
 class HorseDiagram(models.Model):
     """
     Схема для страницы «График тасвири / Diagram outline».
-    Хранит исходное изображение и обновлённое (после отметок ветврача).
+    В БД храним только обновлённую схему. Исходная – из статики.
     """
     horse = models.OneToOneField(
         Horse, on_delete=models.CASCADE, related_name="diagram",
         verbose_name="Лошадь"
     )
-    original_image = models.ImageField(
-        "Первичная схема (до правок)", upload_to="diagram/originals/", blank=True
-    )
+
     updated_image = models.ImageField(
         "Обновлённая схема (после правок)", upload_to="diagram/updated/", blank=True
     )
@@ -74,13 +74,15 @@ class HorseDiagram(models.Model):
     def __str__(self):
         return f"Схема: {self.horse}"
 
-    # Удобный выбор текущей картинки
+    # URL исходной схемы из статики
+    @property
+    def original_url(self) -> str:
+        return static("report/passport_4.png")
+
+    # «текущая» картинка для использования в шаблонах/превью
+    @property
     def current_url(self) -> str:
-        if self.updated_image:
-            return self.updated_image.url
-        if self.original_image:
-            return self.original_image.url
-        return ""
+        return self.updated_image.url if self.updated_image else self.original_url
 
 class IdentificationEvent(models.Model):
     horse = models.ForeignKey(Horse, verbose_name="Лошадь", on_delete=models.CASCADE, related_name="ident_events")

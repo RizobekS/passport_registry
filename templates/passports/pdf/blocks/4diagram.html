@@ -1,5 +1,5 @@
 {# templates/passports/pdf/blocks/4diagram.html #}
-{% load static pdf_utils %}
+{% load pdf_utils %}
 <style>
   .p4-wrap{ margin:6mm 6mm 0; text-align:center; }
   .p4-title{ font-weight:700; font-size:11pt; line-height:1.28; margin-bottom:2mm; }
@@ -7,9 +7,10 @@
 </style>
 
 <div class="p4-wrap">
-  <div class="p4-title">
-    График тасвири / Графическое изображение / Diagram outline
-    <br>({{ diagram_label }} ёш, возраст, Age)
-  </div>
-  <img src="{{ diagram_image }}" class="p4-img" alt="Diagram outline">
+  <div class="p4-title">График тасвири / Графическое изображение / Diagram outline<br>({{ diagram_label }} ёш, возраст, Age)</div>
+  {% if horse.diagram.updated_image %}
+  <img class="p4-img" src="{{ horse.diagram.updated_image|fileuri }}">
+  {% else %}
+  <img class="p4-img" src="{% static_file 'report/passport_4.png' %}">
+  {% endif %}
 </div>
