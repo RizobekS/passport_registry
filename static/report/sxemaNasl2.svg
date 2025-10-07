@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="3508" height="2480" viewBox="0 0 3508 2480">
+  <defs>
+    <clipPath id="clip0">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+    <clipPath id="clip-1">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+    <clipPath id="clip-2">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+    <clipPath id="clip-3">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+    <clipPath id="clip-4">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+    <clipPath id="clip-5">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+    <clipPath id="clip-6">
+      <rect x="537" y="74" width="69" height="253"/>
+    </clipPath>
+  </defs>
+  <rect x="551.861" y="1037.35" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style=""/>
+  <text x="571.861" y="1077.14" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px;">Лақаби:</text>
+  <line x1="649.313" y1="1076.56" x2="1018.81" y2="1075.35" stroke="#000" stroke-width="1.5" style=""/>
+  <text x="571.861" y="1105.14" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px;">Тамға №:</text>
+  <line x1="663.941" y1="1104.14" x2="1017.18" y2="1103.54" stroke="#000" stroke-width="1.5"/>
+  <text x="571.861" y="1133.14" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px;">Зоти:</text>
+  <line x1="643.661" y1="1127.14" x2="1020.99" y2="1127.14" stroke="#000" stroke-width="1.5" style=""/>
+  <text x="3348" y="2420" font-family="Times New Roman" font-size="28" text-anchor="end" style="white-space: pre;">42</text>
+  <g clip-path="url(#clip0)" transform="matrix(1.831787, 0, 0, 2.664067, 81.501375, 568.273873)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <g clip-path="url(#clip-1)" transform="matrix(1.28024, 0, 0, 1.367722, 1015.376053, 495.250496)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <g clip-path="url(#clip-2)" transform="matrix(1.373654, 0, 0, 1.379584, 970.770461, 1158.722796)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <g clip-path="url(#clip-3)" transform="matrix(1.37282, 0, 0, 0.646686, 1566.095604, 468.653999)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <g clip-path="url(#clip-4)" transform="matrix(1.496256, 0, 0, 0.646686, 1503.598289, 792.292065)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <g clip-path="url(#clip-5)" transform="matrix(1.496256, 0, 0, 0.646686, 1510.523216, 1129.422136)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <g clip-path="url(#clip-6)" transform="matrix(1.474519, 0, 0, 0.707408, 1528.553368, 1454.062278)" style="">
+    <path d="M0 0C17.6731 0 32 2.38777 32 5.33323L32 120.667C32 123.612 46.3269 126 64 126 46.3269 126 32 128.388 32 131.333L32 246.667C32 249.612 17.6731 252-4.01038e-15 252" stroke="#4472C4" stroke-width="0.833333" stroke-miterlimit="8" fill="none" fill-rule="evenodd" transform="matrix(-1 0 0 1 605.5 74.5)"/>
+  </g>
+  <text x="572.274" y="1157.86" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="644.075" y1="1153.66" x2="1021.4" y2="1153.66" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="1189.33" y="696.446" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="1209.33" y="736.236" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Он</text>
+  <line x1="1286.78" y1="735.657" x2="1656.28" y2="734.446" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1209.33" y="764.239" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="1301.41" y1="763.239" x2="1654.65" y2="762.636" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1209.33" y="792.239" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="1281.13" y1="786.239" x2="1658.45" y2="786.239" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1209.75" y="816.959" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="1281.55" y1="812.759" x2="1658.87" y2="812.759" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="1193.93" y="1366.86" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="1213.93" y="1406.65" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">От</text>
+  <line x1="1291.38" y1="1406.07" x2="1660.88" y2="1404.86" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1213.93" y="1434.65" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="1306.01" y1="1433.65" x2="1659.25" y2="1433.05" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1213.93" y="1462.65" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="1285.73" y1="1456.65" x2="1663.06" y2="1456.65" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1214.35" y="1487.37" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="1286.15" y1="1483.17" x2="1663.47" y2="1483.17" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="1787" y="528.762" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="1807" y="568.553" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОнОн</text>
+  <line x1="1884.45" y1="567.972" x2="2253.95" y2="566.762" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1807" y="596.553" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="1899.08" y1="595.553" x2="2252.32" y2="594.952" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1807" y="624.553" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="1878.8" y1="618.553" x2="2256.13" y2="618.553" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1807.41" y="649.272" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="1879.22" y1="645.072" x2="2256.54" y2="645.072" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="1790.99" y="852.379" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="1810.99" y="892.166" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОнОт</text>
+  <line x1="1888.44" y1="891.586" x2="2257.94" y2="890.376" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1810.99" y="920.166" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="1903.07" y1="919.166" x2="2256.31" y2="918.566" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1810.99" y="948.166" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="1882.79" y1="942.166" x2="2260.12" y2="942.166" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1811.4" y="972.886" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="1883.21" y1="968.686" x2="2260.53" y2="968.686" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="1798.28" y="1189.42" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="1818.28" y="1229.21" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОтОн:</text>
+  <line x1="1895.73" y1="1228.63" x2="2265.22" y2="1227.42" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1818.28" y="1257.21" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="1910.36" y1="1256.21" x2="2263.59" y2="1255.61" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1818.28" y="1285.21" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="1890.08" y1="1279.21" x2="2267.41" y2="1279.21" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1818.69" y="1309.93" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="1890.49" y1="1305.73" x2="2267.82" y2="1305.73" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="1806.56" y="1527.04" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="1826.56" y="1566.83" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОтОт:</text>
+  <line x1="1904.01" y1="1566.25" x2="2273.51" y2="1565.04" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1826.56" y="1594.83" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="1918.64" y1="1593.83" x2="2271.88" y2="1593.23" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1826.56" y="1622.83" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="1898.36" y1="1616.83" x2="2275.69" y2="1616.83" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="1826.97" y="1647.55" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="1898.78" y1="1643.35" x2="2276.1" y2="1643.35" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2421.23" y="1607.23" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2441.23" y="1647.02" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОтОтОт:</text>
+  <line x1="2518.68" y1="1646.44" x2="2888.18" y2="1645.23" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2441.23" y="1675.02" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2533.31" y1="1674.02" x2="2886.55" y2="1673.41" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2441.23" y="1703.02" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2513.03" y1="1697.02" x2="2890.36" y2="1697.02" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2441.64" y="1727.74" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2513.45" y1="1723.54" x2="2890.77" y2="1723.54" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2421.23" y="1436.14" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2441.23" y="1475.93" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОтОтОн:</text>
+  <line x1="2518.69" y1="1475.35" x2="2888.18" y2="1474.14" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2441.23" y="1503.93" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2533.31" y1="1502.93" x2="2886.55" y2="1502.33" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2441.23" y="1531.93" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2513.03" y1="1525.93" x2="2890.36" y2="1525.93" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2441.65" y="1556.65" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2513.45" y1="1552.45" x2="2890.77" y2="1552.45" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2416.23" y="1263.75" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2436.23" y="1303.54" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОтОнОт:</text>
+  <line x1="2513.69" y1="1302.96" x2="2883.19" y2="1301.75" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2436.23" y="1331.54" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2528.32" y1="1330.54" x2="2881.55" y2="1329.93" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2436.23" y="1359.54" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2508.03" y1="1353.54" x2="2885.36" y2="1353.54" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2436.65" y="1384.26" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2508.46" y1="1380.06" x2="2885.78" y2="1380.06" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2416.23" y="1098.66" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2436.23" y="1138.45" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОтОнОн:</text>
+  <line x1="2513.69" y1="1137.87" x2="2883.19" y2="1136.66" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2436.23" y="1166.45" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2528.32" y1="1165.45" x2="2881.55" y2="1164.85" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2436.23" y="1194.45" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2508.03" y1="1188.45" x2="2885.36" y2="1188.45" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2436.65" y="1219.17" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2508.46" y1="1214.97" x2="2885.78" y2="1214.97" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2413.02" y="934.573" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2433.02" y="974.363" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОнОтОт:</text>
+  <line x1="2510.47" y1="973.783" x2="2879.97" y2="972.573" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2433.02" y="1002.36" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2525.1" y1="1001.36" x2="2878.34" y2="1000.75" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2433.02" y="1030.36" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2504.82" y1="1024.36" x2="2882.15" y2="1024.36" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2433.43" y="1055.08" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2505.24" y1="1050.88" x2="2882.56" y2="1050.88" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2413.02" y="769.483" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2433.02" y="809.273" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;"> ОнОтОн:</text>
+  <line x1="2510.48" y1="808.693" x2="2879.97" y2="807.483" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2433.02" y="837.273" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2525.1" y1="836.273" x2="2878.34" y2="835.673" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2433.02" y="865.273" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2504.82" y1="859.273" x2="2882.15" y2="859.273" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2433.44" y="889.993" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2505.24" y1="885.793" x2="2882.56" y2="885.793" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2408.02" y="602.093" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2428.02" y="641.883" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОнОнОт:</text>
+  <line x1="2505.48" y1="641.303" x2="2874.98" y2="640.093" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2428.02" y="669.883" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2520.11" y1="668.883" x2="2873.34" y2="668.273" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2428.02" y="697.883" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2499.82" y1="691.883" x2="2877.15" y2="691.883" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2428.44" y="722.603" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2500.25" y1="718.403" x2="2877.57" y2="718.403" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <rect x="2408.02" y="435.003" rx="16" ry="16" width="520" height="144.215" fill="none" stroke="#000" stroke-width="2" style="stroke-width: 2;"/>
+  <text x="2428.02" y="474.793" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">ОнОнОн:</text>
+  <line x1="2505.48" y1="474.213" x2="2874.98" y2="473.003" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2428.02" y="502.793" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Тамға №:</text>
+  <line x1="2520.11" y1="501.793" x2="2873.34" y2="501.193" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2428.02" y="530.793" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Зоти:</text>
+  <line x1="2499.82" y1="524.793" x2="2877.15" y2="524.793" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+  <text x="2428.44" y="555.513" font-family="Times New Roman" font-size="22" text-anchor="start" style="white-space: pre; font-size: 22px; stroke-width: 1;">Синфи:</text>
+  <line x1="2500.25" y1="551.313" x2="2877.57" y2="551.313" stroke="#000" stroke-width="1.5" style="stroke-width: 1.5;"/>
+</svg>

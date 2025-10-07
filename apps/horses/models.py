@@ -27,7 +27,7 @@ class Horse(models.Model):
     country_of_birth = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True, blank=True)
     place_of_birth = models.ForeignKey(Region, verbose_name="Место рождения (регион)", on_delete=models.SET_NULL, null=True, blank=True)
     microchip = models.CharField("Микрочип", max_length=15, unique=True, validators=[MICROCHIP_VALIDATOR])
-    owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, blank=True, on_delete=models.SET_NULL, related_name="horses")
+    owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, on_delete=models.SET_NULL, related_name="horses")
 
     photo_right_side = models.ImageField("Фото: Правая боковая сторона", upload_to="horses/", blank=True)
     photo_left_side = models.ImageField("Фото: Левая боковая сторона", upload_to="horses/", blank=True)
@@ -288,16 +288,16 @@ class HorseBonitation(models.Model):
     # --- Промеры (таблица «Ўлчамлари / Промеры / Measure»)
     age_years = models.PositiveSmallIntegerField("Возраст, лет", null=True, blank=True)
     height_withers_cm = models.PositiveSmallIntegerField(
-        "Высота в холке",validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+        "Высота в холке",validators=[MinValueValidator(1), MaxValueValidator(999)], null=True, blank=True
     )
     torso_oblique_length_cm = models.PositiveSmallIntegerField(
-        "Косая длина туловища", validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+        "Косая длина туловища", validators=[MinValueValidator(1), MaxValueValidator(999)], null=True, blank=True
     )
     chest_girth_cm = models.PositiveSmallIntegerField(
-        "Обхват груди", validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+        "Обхват груди", validators=[MinValueValidator(1), MaxValueValidator(999)], null=True, blank=True
     )
     metacarpus_girth_cm = models.PositiveSmallIntegerField(
-        "Обхват пясти", validators=[MinValueValidator(1), MaxValueValidator(10)], null=True, blank=True
+        "Обхват пясти", validators=[MinValueValidator(1), MaxValueValidator(999)], null=True, blank=True
     )
 
     # --- Показатели (баллы 1..10)
