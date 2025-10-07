@@ -24,7 +24,7 @@
     <tr><td class="info-label">Туғилган жойи: <br> Место рождения: <br>Place of birth:</td><td class="info-value">{{ horse.place_of_birth }}</td></tr>
     <tr><td class="info-label">Паспорт рақами: <br>Номер паспорта: <br>Passport Number:</td><td class="info-value">{{ passport.number }}</td></tr>
     <tr><td class="info-label">Эгаси: <br> Владелец: <br>Owner:</td><td class="info-value">{{ horse.owner_current }}</td></tr>
-    <tr><td class="info-label">Мамлакат: <br> Страна: <br>Country:</td><td class="info-value">{{ horse.owner_current.address|default:"Ўзбекистон / Узбекистан / Uzbekistan" }}</td></tr>
+    <tr><td class="info-label">Мамлакат: <br> Страна: <br>Country:</td><td class="info-value">{{ horse.owner_current.region|default:"Ўзбекистон / Узбекистан / Uzbekistan" }}</td></tr>
     <tr>
       <td class="info-label">Микрочип рақами:<br>Номер микрочипа: <br>Micro chip number:</td>
       <td class="info-value">{{ passport.barcode_value }}</td>

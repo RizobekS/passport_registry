@@ -103,7 +103,7 @@ class HorseAdmin(admin.ModelAdmin):
             "classes": ("tab", "tab-main"),
             "fields": (
                 "registry_no", "name", "sex", "horse_type",
-                "birth_date", "breed", "color", "place_of_birth",
+                "birth_date", "breed", "color", "country_of_birth", "place_of_birth",
                 "microchip", "owner_current",
             ),
         }),

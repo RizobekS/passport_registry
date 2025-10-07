@@ -390,7 +390,7 @@ def _parentage_ctx(passport):
     """
     h = passport.horse
     place = ""
-    pob = getattr(h, "place_of_birth", None)
+    pob = getattr(h, "country_of_birth", None)
     if pob:
         place = getattr(pob, "name", "") or str(pob)
 
