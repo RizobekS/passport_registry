@@ -24,8 +24,8 @@ class Horse(models.Model):
     birth_date = models.DateField("Дата рождения")
     breed = models.ForeignKey(Breed, verbose_name="Порода", on_delete=models.PROTECT)
     color = models.ForeignKey(Color, verbose_name="Масть", on_delete=models.PROTECT)
-    country_of_birth = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True, blank=True)
-    place_of_birth = models.ForeignKey(Region, verbose_name="Место рождения (регион)", on_delete=models.SET_NULL, null=True, blank=True)
+    country_of_birth = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True)
+    place_of_birth = models.ForeignKey(Region, verbose_name="Место рождения (регион)", on_delete=models.SET_NULL, null=True)
     microchip = models.CharField("Микрочип", max_length=15, unique=True, validators=[MICROCHIP_VALIDATOR])
     owner_current = models.ForeignKey(Owner, verbose_name="Текущий владелец", null=True, on_delete=models.SET_NULL, related_name="horses")
 
