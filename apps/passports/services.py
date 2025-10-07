@@ -539,9 +539,9 @@ def render_passport_pdf(passport):
 
     VACC_ROWS_PER_PAGE = 6
     other_rows = _vaccination_rows(passport, influenza=False)
-    vacc_other_pages = _paginate_fixed(other_rows, VACC_ROWS_PER_PAGE, pages=7)
+    vacc_other_pages = _paginate_fixed(other_rows, VACC_ROWS_PER_PAGE, pages=8)
     flu_rows = _vaccination_rows(passport, influenza=True)
-    vacc_flu_pages = _paginate_fixed(flu_rows, VACC_ROWS_PER_PAGE, pages=7)
+    vacc_flu_pages = _paginate_fixed(flu_rows, VACC_ROWS_PER_PAGE, pages=8)
 
     LAB_ROWS_PER_PAGE = 7
     filled_labs = _lab_tests_first_page(passport)[:LAB_ROWS_PER_PAGE]
