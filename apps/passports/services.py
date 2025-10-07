@@ -50,7 +50,7 @@ def _marks_from_models(horse):
             "right_foreleg": meas.right_foreleg,
             "left_hindleg": meas.left_hindleg,
             "right_hindleg": meas.right_hindleg,
-            "extra": meas.extra_signs or horse.ident_notes,
+            "extra": meas.extra_signs or "",
             "stable_address": meas.address_stable or "",
         }
     # fallback
@@ -60,7 +60,7 @@ def _marks_from_models(horse):
         "right_foreleg": "",
         "left_hindleg": "",
         "right_hindleg": "",
-        "extra": getattr(horse, "ident_notes", ""),
+        "extra": "",
         "stable_address": "",
     }
 
