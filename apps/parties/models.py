@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from apps.common.models import Region, District
+from apps.common.models import Region, District, Country
+
 
 class Person(models.Model):
     last_name = models.CharField("Фамилия", max_length=120)
@@ -10,6 +11,7 @@ class Person(models.Model):
     inn = models.CharField("ИНН", max_length=20, blank=True)
     phone = models.CharField("Телефон", max_length=30, blank=True)
     address = models.CharField("Адрес", max_length=255, blank=True)
+    country = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True)
     region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True)
     district = models.ForeignKey(District, on_delete=models.PROTECT, verbose_name="Район", null=True)
 
@@ -35,6 +37,7 @@ class Organization(models.Model):
     inn = models.CharField("ИНН", max_length=20, blank=True)
     phone = models.CharField("Телефон", max_length=30, blank=True)
     address = models.CharField("Адрес", max_length=255, blank=True)
+    country = models.ForeignKey(Country, verbose_name="Страна", on_delete=models.SET_NULL, null=True)
     region = models.ForeignKey(Region, verbose_name="Регион", on_delete=models.SET_NULL, null=True)
     district = models.ForeignKey(District, on_delete=models.PROTECT, verbose_name="Район", null=True)
     org_type = models.CharField(

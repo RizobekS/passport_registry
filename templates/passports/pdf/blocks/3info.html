@@ -21,10 +21,16 @@
     <tr><td class="info-label">Зоти:<br>Порода: <br>Breed:</td><td class="info-value">{{ horse.breed }}</td></tr>
     <tr><td class="info-label">Туси:<br>Масть: <br>Colour:</td><td class="info-value">{{ horse.color }}</td></tr>
     <tr><td class="info-label">Жинси:<br> Пол: <br>Sex:</td><td class="info-value">{{ horse.get_sex_display }}</td></tr>
-    <tr><td class="info-label">Туғилган жойи: <br> Место рождения: <br>Place of birth:</td><td class="info-value">{{ horse.place_of_birth }}</td></tr>
+    <tr><td class="info-label">Туғилган жойи: <br> Место рождения: <br>Place of birth:</td><td class="info-value">{{ horse.country_of_birth }}</td></tr>
     <tr><td class="info-label">Паспорт рақами: <br>Номер паспорта: <br>Passport Number:</td><td class="info-value">{{ passport.number }}</td></tr>
-    <tr><td class="info-label">Эгаси: <br> Владелец: <br>Owner:</td><td class="info-value">{{ horse.owner_current }}</td></tr>
-    <tr><td class="info-label">Мамлакат: <br> Страна: <br>Country:</td><td class="info-value">{{ horse.owner_current.region|default:"Ўзбекистон / Узбекистан / Uzbekistan" }}</td></tr>
+    <tr>
+      <td class="info-label">Эгаси: <br> Владелец: <br>Owner:</td>
+      <td class="info-value">{{ owner_name }}</td>
+    </tr>
+    <tr>
+      <td class="info-label">Мамлакат: <br> Страна: <br>Country:</td>
+      <td class="info-value">{{ owner_country|default:"Ўзбекистон / Узбекистан / Uzbekistan" }}</td>
+    </tr>
     <tr>
       <td class="info-label">Микрочип рақами:<br>Номер микрочипа: <br>Micro chip number:</td>
       <td class="info-value">{{ passport.barcode_value }}</td>

@@ -4,14 +4,14 @@ from .models import Person, Organization, Veterinarian, Owner
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ("last_name", "first_name", "doc_no", "inn", "phone", "region")
+    list_display = ("last_name", "first_name", "inn", "phone", "country", "region")
     search_fields = ("last_name", "first_name", "doc_no", "inn", "phone")
     list_filter = ("region",)
 
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ("name", "org_type", "region", "inn", "phone")
+    list_display = ("name", "org_type", "country", "region", "inn", "phone")
     list_filter = ("org_type", "region")
     search_fields = ("name", "inn", "reg_no")
 

@@ -9,33 +9,53 @@ from django.core.files.base import File
 from datetime import date
 from apps.horses.models import Horse, Offspring, HorseBonitation, RealOffspring
 
+def _fmt_country(r):
+    return getattr(r, "name", "") if r else ""
+
 def _fmt_region(r):
     return getattr(r, "name", "") if r else ""
 
 def _fmt_district(d):
-    # В District обычно есть name/number — берём name если есть
     return getattr(d, "name", "") if d else ""
 
-def _owner_full_address(owner):
+def _owner_parts(owner):
+    """
+    Возвращает кортеж (owner_name, owner_region_district, owner_address)
+    с учётом того, что Owner -> Person | Organization.
+    """
     if not owner:
-        return ""
-    # имя
-    for attr in ("full_name", "display_name", "name"):
-        v = getattr(owner, attr, None)
-        if v:
-            owner_name = str(v)
-            break
-    else:
-        owner_name = str(owner)
-    # адрес
-    for attr in ("address", "full_address", "registration_address"):
-        v = getattr(owner, attr, None)
-        if v:
-            addr = str(v)
-            break
-    else:
-        addr = ""
-    return f"{owner_name}\n{addr}".strip()
+        return "", "", ""
+
+    # Person
+    p = getattr(owner, "person", None)
+    if p:
+        name = " ".join(x for x in [p.last_name, p.first_name, p.middle_name] if x).strip()
+        country = _fmt_country(getattr(p, "country", None))
+        region = _fmt_region(getattr(p, "region", None))
+        district = _fmt_district(getattr(p, "district", None))
+        region_district = ", ".join([x for x in [region, district] if x])
+        addr = getattr(p, "address", "") or ""
+        return name, country, region_district, addr
+
+    # Organization
+    o = getattr(owner, "organization", None)
+    if o:
+        name = (o.name or "").strip()
+        country = _fmt_country(getattr(p, "country", None))
+        region = _fmt_region(getattr(o, "region", None))
+        district = _fmt_district(getattr(o, "district", None))
+        region_district = ", ".join([x for x in [region, district] if x])
+        addr = getattr(o, "address", "") or ""
+        return name, country, region_district, addr
+
+    # fallback
+    return str(owner), "", ""
+
+def _owner_full_address(owner) -> str:
+    """Строка для блока «ФИО владельца и адрес» на стр. 6."""
+    name, country, region_district, addr = _owner_parts(owner)
+    parts = [name, country, region_district, addr]
+    return "\n".join([p for p in parts if p]).strip()
 
 def _marks_from_models(horse):
     """
@@ -534,6 +554,7 @@ def _pedigree_tree_ctx(passport):
 
 def render_passport_pdf(passport):
     horse = passport.horse
+    owner_name, owner_country, owner_region_district, owner_addr = _owner_parts(getattr(horse, "owner_current", None))
     marks = _marks_from_models(horse)
     ctx_parentage = _parentage_ctx(passport)
 
@@ -601,6 +622,10 @@ def render_passport_pdf(passport):
         "diagram_image_path": _diagram_image_path(passport.horse),
         "marks": marks,
         "owner_full_address": _owner_full_address(getattr(horse, "owner_current", None)),
+        "owner_name": owner_name,
+        "owner_region_district": owner_region_district,
+        "owner_country": owner_country,
+        "owner_address": owner_addr,
         "stable_address": marks.get("stable_address") or "",
         "vacc_other_pages": vacc_other_pages,
         "vacc_flu_pages": vacc_flu_pages,
