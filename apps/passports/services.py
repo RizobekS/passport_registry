@@ -24,7 +24,7 @@ def _owner_parts(owner):
     с учётом того, что Owner -> Person | Organization.
     """
     if not owner:
-        return "", "", ""
+        return "", "", "", ""
 
     # Person
     p = getattr(owner, "person", None)
@@ -49,7 +49,7 @@ def _owner_parts(owner):
         return name, country, region_district, addr
 
     # fallback
-    return str(owner), "", ""
+    return str(owner), "", "", ""
 
 def _owner_full_address(owner) -> str:
     """Строка для блока «ФИО владельца и адрес» на стр. 6."""
