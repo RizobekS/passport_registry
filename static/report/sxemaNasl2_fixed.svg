@@ -23,14 +23,14 @@
       <rect x="537" y="74" width="69" height="253" />
     </clipPath>
   <style>.node-box{fill:none;stroke:#000;stroke-width:2}
-    .node-label{font-family:'Times New Roman','DejaVu Serif',serif;font-size:22px;fill:#111}
+    .node-label{font-family:'DejaVuSansPassport',serif;font-size:16px;fill:#111}
     .node-line{stroke:#000;stroke-width:1.5;stroke-linecap:round}
-    .page-no{font-family:'Times New Roman','DejaVu Serif',serif;font-size:28px;fill:#111}
+    .page-no{font-family:'DejaVuSansPassport',serif;font-size:28px;fill:#111}
     .tree-link{stroke:#4472C4;stroke-width:0.833333;fill:none}</style></defs>
   <rect x="551.861" y="1037.35" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="571.861" y="1077.14" class="node-label">Лақаби / Кличка / Name</text>
   <line x1="796.861" y1="1081.14" x2="1051.861" y2="1081.14" class="node-line" />
-  <text x="571.861" y="1105.14" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="571.861" y="1105.14" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="796.861" y1="1109.14" x2="1051.861" y2="1109.14" class="node-line" />
   <text x="571.861" y="1133.14" class="node-label">Зоти / Порода / Breed</text>
   <line x1="796.861" y1="1137.14" x2="1051.861" y2="1137.14" class="node-line" />
@@ -61,7 +61,7 @@
   <rect x="1189.33" y="696.446" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="1209.33" y="736.236" class="node-label">Он</text>
   <line x1="1434.33" y1="740.236" x2="1689.33" y2="740.236" class="node-line" />
-  <text x="1209.33" y="764.239" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="1209.33" y="764.239" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="1434.33" y1="768.239" x2="1689.33" y2="768.239" class="node-line" />
   <text x="1209.33" y="792.239" class="node-label">Зоти / Порода / Breed</text>
   <line x1="1434.33" y1="796.239" x2="1689.33" y2="796.239" class="node-line" />
@@ -70,7 +70,7 @@
   <rect x="1193.93" y="1366.86" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="1213.93" y="1406.65" class="node-label">От</text>
   <line x1="1438.93" y1="1410.65" x2="1693.93" y2="1410.65" class="node-line" />
-  <text x="1213.93" y="1434.65" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="1213.93" y="1434.65" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="1438.93" y1="1438.65" x2="1693.93" y2="1438.65" class="node-line" />
   <text x="1213.93" y="1462.65" class="node-label">Зоти / Порода / Breed</text>
   <line x1="1438.93" y1="1466.65" x2="1693.93" y2="1466.65" class="node-line" />
@@ -79,7 +79,7 @@
   <rect x="1787" y="528.762" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="1807" y="568.553" class="node-label">ОнОн</text>
   <line x1="2032" y1="572.553" x2="2287" y2="572.553" class="node-line" />
-  <text x="1807" y="596.553" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="1807" y="596.553" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2032" y1="600.553" x2="2287" y2="600.553" class="node-line" />
   <text x="1807" y="624.553" class="node-label">ЗЗоти / Порода / Breed</text>
   <line x1="2032" y1="628.553" x2="2287" y2="628.553" class="node-line" />
@@ -88,7 +88,7 @@
   <rect x="1790.99" y="852.379" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="1810.99" y="892.166" class="node-label">ОнОт</text>
   <line x1="2035.99" y1="896.166" x2="2290.99" y2="896.166" class="node-line" />
-  <text x="1810.99" y="920.166" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="1810.99" y="920.166" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2035.99" y1="924.166" x2="2290.99" y2="924.166" class="node-line" />
   <text x="1810.99" y="948.166" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2035.99" y1="952.166" x2="2290.99" y2="952.166" class="node-line" />
@@ -97,7 +97,7 @@
   <rect x="1798.28" y="1189.42" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="1818.28" y="1229.21" class="node-label">ОтОн:</text>
   <line x1="2043.28" y1="1233.21" x2="2298.28" y2="1233.21" class="node-line" />
-  <text x="1818.28" y="1257.21" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="1818.28" y="1257.21" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2043.28" y1="1261.21" x2="2298.28" y2="1261.21" class="node-line" />
   <text x="1818.28" y="1285.21" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2043.28" y1="1289.21" x2="2298.28" y2="1289.21" class="node-line" />
@@ -106,7 +106,7 @@
   <rect x="1806.56" y="1527.04" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="1826.56" y="1566.83" class="node-label">ОтОт:</text>
   <line x1="2051.56" y1="1570.83" x2="2306.56" y2="1570.83" class="node-line" />
-  <text x="1826.56" y="1594.83" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="1826.56" y="1594.83" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2051.56" y1="1598.83" x2="2306.56" y2="1598.83" class="node-line" />
   <text x="1826.56" y="1622.83" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2051.56" y1="1626.83" x2="2306.56" y2="1626.83" class="node-line" />
@@ -115,7 +115,7 @@
   <rect x="2421.23" y="1607.23" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2441.23" y="1647.02" class="node-label">ОтОтОт:</text>
   <line x1="2666.23" y1="1651.02" x2="2921.23" y2="1651.02" class="node-line" />
-  <text x="2441.23" y="1675.02" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2441.23" y="1675.02" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2666.23" y1="1679.02" x2="2921.23" y2="1679.02" class="node-line" />
   <text x="2441.23" y="1703.02" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2666.23" y1="1707.02" x2="2921.23" y2="1707.02" class="node-line" />
@@ -124,7 +124,7 @@
   <rect x="2421.23" y="1436.14" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2441.23" y="1475.93" class="node-label">ОтОтОн:</text>
   <line x1="2666.23" y1="1479.93" x2="2921.23" y2="1479.93" class="node-line" />
-  <text x="2441.23" y="1503.93" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2441.23" y="1503.93" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2666.23" y1="1507.93" x2="2921.23" y2="1507.93" class="node-line" />
   <text x="2441.23" y="1531.93" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2666.23" y1="1535.93" x2="2921.23" y2="1535.93" class="node-line" />
@@ -133,7 +133,7 @@
   <rect x="2416.23" y="1263.75" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2436.23" y="1303.54" class="node-label">ОтОнОт:</text>
   <line x1="2661.23" y1="1307.54" x2="2916.23" y2="1307.54" class="node-line" />
-  <text x="2436.23" y="1331.54" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2436.23" y="1331.54" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2661.23" y1="1335.54" x2="2916.23" y2="1335.54" class="node-line" />
   <text x="2436.23" y="1359.54" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2661.23" y1="1363.54" x2="2916.23" y2="1363.54" class="node-line" />
@@ -142,7 +142,7 @@
   <rect x="2416.23" y="1098.66" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2436.23" y="1138.45" class="node-label">ОтОнОн:</text>
   <line x1="2661.23" y1="1142.45" x2="2916.23" y2="1142.45" class="node-line" />
-  <text x="2436.23" y="1166.45" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2436.23" y="1166.45" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2661.23" y1="1170.45" x2="2916.23" y2="1170.45" class="node-line" />
   <text x="2436.23" y="1194.45" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2661.23" y1="1198.45" x2="2916.23" y2="1198.45" class="node-line" />
@@ -151,7 +151,7 @@
   <rect x="2413.02" y="934.573" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2433.02" y="974.363" class="node-label">ОнОтОт:</text>
   <line x1="2658.02" y1="978.363" x2="2913.02" y2="978.363" class="node-line" />
-  <text x="2433.02" y="1002.36" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2433.02" y="1002.36" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2658.02" y1="1006.36" x2="2913.02" y2="1006.36" class="node-line" />
   <text x="2433.02" y="1030.36" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2658.02" y1="1034.36" x2="2913.02" y2="1034.36" class="node-line" />
@@ -160,7 +160,7 @@
   <rect x="2413.02" y="769.483" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2433.02" y="809.273" class="node-label">ОнОтОн:</text>
   <line x1="2658.02" y1="813.273" x2="2913.02" y2="813.273" class="node-line" />
-  <text x="2433.02" y="837.273" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2433.02" y="837.273" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2658.02" y1="841.273" x2="2913.02" y2="841.273" class="node-line" />
   <text x="2433.02" y="865.273" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2658.02" y1="869.273" x2="2913.02" y2="869.273" class="node-line" />
@@ -169,7 +169,7 @@
   <rect x="2408.02" y="602.093" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2428.02" y="641.883" class="node-label">ОнОнОт:</text>
   <line x1="2653.02" y1="645.883" x2="2908.02" y2="645.883" class="node-line" />
-  <text x="2428.02" y="669.883" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2428.02" y="669.883" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2653.02" y1="673.883" x2="2908.02" y2="673.883" class="node-line" />
   <text x="2428.02" y="697.883" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2653.02" y1="701.883" x2="2908.02" y2="701.883" class="node-line" />
@@ -178,7 +178,7 @@
   <rect x="2408.02" y="435.003" rx="16" ry="16" width="520" height="144.215" class="node-box" />
   <text x="2428.02" y="474.793" class="node-label">ОнОнОн:</text>
   <line x1="2653.02" y1="478.793" x2="2908.02" y2="478.793" class="node-line" />
-  <text x="2428.02" y="502.793" class="node-label">Тамға / Тавро / Brand №:</text>
+  <text x="2428.02" y="502.793" class="node-label">Тамға / Тавро / Brand №</text>
   <line x1="2653.02" y1="506.793" x2="2908.02" y2="506.793" class="node-line" />
   <text x="2428.02" y="530.793" class="node-label">Зоти / Порода / Breed</text>
   <line x1="2653.02" y1="534.793" x2="2908.02" y2="534.793" class="node-line" />
