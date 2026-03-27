@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.db import models
+from django.db import models, transaction, IntegrityError
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.templatetags.static import static
 
@@ -46,11 +46,27 @@ class Horse(models.Model):
     def __str__(self): return f"{self.name} [{self.registry_no}]"
 
     def save(self, *args, **kwargs):
-        if not self.registry_no:
-            reg_code = self.place_of_birth.code if self.place_of_birth and getattr(self.place_of_birth, "code",
-                                                                                   None) else ""
+        if self.registry_no:
+            return super().save(*args, **kwargs)
+
+        reg_code = (
+            self.place_of_birth.code
+            if self.place_of_birth and getattr(self.place_of_birth, "code", None)
+            else ""
+        )
+
+        # Несколько попыток на случай рассинхрона счётчика
+        for _ in range(5):
             self.registry_no = make_horse_registry_no(reg_code)
-        super().save(*args, **kwargs)
+            try:
+                with transaction.atomic():
+                    return super().save(*args, **kwargs)
+            except IntegrityError as e:
+                if "horses_horse_registry_no_key" not in str(e):
+                    raise
+                self.registry_no = ""
+
+        raise IntegrityError("Не удалось сгенерировать уникальный registry_no после 5 попыток")
 
 class HorseDiagram(models.Model):
     """
