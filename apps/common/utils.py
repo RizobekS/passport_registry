@@ -4,7 +4,7 @@ from .models import NumberSequence
 
 def make_horse_registry_no(region_code: str = "") -> str:
     """
-    H-<REG>-<YYYY>-<####$$>, счётчик раздельно по (HORSE, год, REG).
+    H-<REG>-<####$$>, счётчик раздельно по (HORSE, REG).
     """
     year = date.today().year
     reg = (region_code or "FAL").upper() # FAL — безопасный fallback
