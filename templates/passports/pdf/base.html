@@ -61,7 +61,16 @@
     body{ font-family:'DejaVuSansPassport','DejaVu Sans',Arial,sans-serif; color:#111; font-size:var(--font-base); font-weight:400; }
 
     /* разрывы страниц d*/
-    .page{ break-after: page; page-break-after: always; }
+    .page {
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .page.a5-land {
+      page: a5land;
+      break-before: page;
+      page-break-before: always;
+    }
     .page::before {
           content: "";
           position: absolute;
@@ -83,11 +92,11 @@
     .cover-bg{
       position:relative; width:148mm; height:210mm;      /* A5 портрет */
       background:#fff url("{% static_file 'passports/img/cover-bg.png' %}") center/cover no-repeat;
-    }
+    }ы
 
     .text-center{ text-align:center; }
     .p2-wrap{ margin-top:6mm; font-size:calc(var(--font-base) + .4pt); line-height:1.32; }
-    .p2-block{ margin-bottom:10mm; }
+    .p2-block{ margin-bottom:30mm; }
   </style>
 </head>
 <body>
