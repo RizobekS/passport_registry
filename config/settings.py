@@ -156,6 +156,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+# --- Sessions ---
+SESSION_COOKIE_AGE = 30 * 60    # 30 минут
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 LOGIN_URL = "/auth/login/"
 LOGIN_REDIRECT_URL = "/dashboard/"
 LOGOUT_REDIRECT_URL = "/auth/login/"
