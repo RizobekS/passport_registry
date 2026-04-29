@@ -16,9 +16,22 @@
   .barcode img { height: 14mm; }
   .sign-line { margin-top: 8mm; border-top: 1px solid #000; width: 70%; }
   .mt6 { margin-top: 4mm; }
+  .signature::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url("{% static_file 'img/signature.png' %}");
+          background-size: cover; /* Adjust as needed */
+          background-repeat: no-repeat;
+          opacity: 0.8; /* Set desired opacity (0.0 to 1.0) */
+          z-index: 1; /* Place behind the content */
+      }
 </style>
 
-<div class="chip-wrap">
+<div class="chip-wrap signature">
   <div class="chip-title">
     Чипнинг идентификация рақами<br>
     Идентификационный номер чипа<br>
