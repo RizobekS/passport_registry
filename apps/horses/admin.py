@@ -94,7 +94,7 @@ class HorseDiagramInline(admin.StackedInline):
 @admin.register(Horse)
 class HorseAdmin(admin.ModelAdmin):
     list_display = ("name", "registry_no", "microchip", "breed", "color", "birth_date", "place_of_birth", "horse_type", "created_at")
-    search_fields = ("name", "registry_no", "microchip", "brand_mark")
+    search_fields = ("name", "registry_no", "microchip")
     list_filter = ("breed", "color", "place_of_birth", "horse_type")
     readonly_fields = ("registry_no",)
 
